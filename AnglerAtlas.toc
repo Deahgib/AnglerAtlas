@@ -1,0 +1,8 @@
+## Interface: 11404
+## Title: AnglerAtlas
+## Version: 0.0.2
+## Author: Calpico-Firemaw
+## DefaultState: enabled
+
+Data.lua
+Core.lua
