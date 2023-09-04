@@ -1,14 +1,16 @@
-ANGLER_DATA = {}
-ANGLER_DATA.SKILL = {}
-ANGLER_DATA.PLAYER = {}
-ANGLER_DATA.STATE = {
+local _, ns = ...
+
+ns.ANGLER_DATA = {}
+ns.ANGLER_DATA.SKILL = {}
+ns.ANGLER_DATA.PLAYER = {}
+ns.ANGLER_DATA.STATE = {
     selectedFish = nil,
     selectedFishInfo = nil,
     selectedZone = nil,
     zones = {},
 }
-ANGLER_DATA.DATA = {}
-ANGLER_DATA.DATA.zones = {
+ns.ANGLER_DATA.DATA = {}
+ns.ANGLER_DATA.DATA.zones = {
     ["11"] = {
         ["id"] = 11,
         ["name"] = "Wetlands",
@@ -1194,7 +1196,7 @@ ANGLER_DATA.DATA.zones = {
 }
 
 ---------------------------------
-ANGLER_DATA.DATA.fish = {
+ns.ANGLER_DATA.DATA.fish = {
     ["13888"] = {
         ["name"] = "Darkclaw Lobster",
         ["type"] = "C",
@@ -1630,7 +1632,7 @@ ANGLER_DATA.DATA.fish = {
     }
 }
 
-ANGLER_DATA.DATA.recipies = {
+ns.ANGLER_DATA.DATA.recipies = {
     --|   Darkclaw Lobster
     ["13888"] = {
         {
@@ -2092,7 +2094,7 @@ ANGLER_DATA.DATA.recipies = {
     }
 }
 
-ANGLER_DATA.DATA.equipment = {
+ns.ANGLER_DATA.DATA.equipment = {
     ["gear"] = {
         {
             ["id"] = 19972,
@@ -2178,7 +2180,7 @@ ANGLER_DATA.DATA.equipment = {
     }
 }
 
-ANGLER_DATA.skillRankNames = {
+ns.ANGLER_DATA.skillRankNames = {
     {
         ["name"]= "Apprentice",
         ["rank"]= 149
@@ -2197,23 +2199,23 @@ ANGLER_DATA.skillRankNames = {
     }
 }
 
-function ANGLER_DATA:getRankNameForLevel(level)
-    for i = 1, #ANGLER_DATA.skillRankNames do
-        if level <= ANGLER_DATA.skillRankNames[i].rank then
-            return ANGLER_DATA.skillRankNames[i].name
+function ns.ANGLER_DATA:getRankNameForLevel(level)
+    for i = 1, #ns.ANGLER_DATA.skillRankNames do
+        if level <= ns.ANGLER_DATA.skillRankNames[i].rank then
+            return ns.ANGLER_DATA.skillRankNames[i].name
         end
     end
     return "Apprentice"
 end
 
-function ANGLER_DATA:loadPlayerData()
+function ns.ANGLER_DATA:loadPlayerData()
     -- print("Loading player data...")
     -- load player name and realm
-    ANGLER_DATA.PLAYER.name, ANGLER_DATA.PLAYER.realm = UnitName("player")
+    ns.ANGLER_DATA.PLAYER.name, ns.ANGLER_DATA.PLAYER.realm = UnitName("player")
     -- load player level
-    ANGLER_DATA.PLAYER.level = UnitLevel("player")
+    ns.ANGLER_DATA.PLAYER.level = UnitLevel("player")
 
-    ANGLER_DATA.SKILL.hasFishing = false
+    ns.ANGLER_DATA.SKILL.hasFishing = false
     for skillIndex = 1, GetNumSkillLines() do
         -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
         local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
@@ -2221,7 +2223,7 @@ function ANGLER_DATA:loadPlayerData()
         -- print(skillName)
 
         if skillName == "Fishing" then
-            ANGLER_DATA.SKILL.hasFishing = true
+            ns.ANGLER_DATA.SKILL.hasFishing = true
             -- print("---SKILL DATA---")
             -- print("skillName: " .. skillName)
             -- print("isExpanded: " .. tostring(isExpanded))
@@ -2234,11 +2236,11 @@ function ANGLER_DATA:loadPlayerData()
             -- print("skillCostType: " .. skillCostType)
             -- print("skillDescription: " .. skillDescription)
             -- print("----------------")
-            ANGLER_DATA.SKILL.level = skillRank
-            ANGLER_DATA.SKILL.maxLevel = skillMaxRank
-            ANGLER_DATA.SKILL.rankName = ANGLER_DATA:getRankNameForLevel(skillRank)
-            ANGLER_DATA.SKILL.skillModifier = skillModifier
-            ANGLER_DATA.SKILL.modLevel = skillRank + skillModifier
+            ns.ANGLER_DATA.SKILL.level = skillRank
+            ns.ANGLER_DATA.SKILL.maxLevel = skillMaxRank
+            ns.ANGLER_DATA.SKILL.rankName = ns.ANGLER_DATA:getRankNameForLevel(skillRank)
+            ns.ANGLER_DATA.SKILL.skillModifier = skillModifier
+            ns.ANGLER_DATA.SKILL.modLevel = skillRank + skillModifier
         end
     end
 end

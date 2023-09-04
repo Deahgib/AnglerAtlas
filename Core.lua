@@ -1,3 +1,5 @@
+local _, ns = ...
+
 local function splitGold(sourceValue)
     local gold = math.floor(sourceValue / 10000)
     local silver = math.floor((sourceValue - (gold * 10000)) / 100)
@@ -6,7 +8,7 @@ local function splitGold(sourceValue)
 end
 
 
-ANGLER_DATA:loadPlayerData()
+ns.ANGLER_DATA:loadPlayerData()
 
 local UIConfig = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
 UIConfig:SetFrameStrata("DIALOG")
@@ -90,8 +92,8 @@ local textColours = {
 }
 
 local function SkillLevelColor(lvl)
-    if ANGLER_DATA.SKILL.hasFishing then
-        local pLvl = ANGLER_DATA.SKILL.modLevel
+    if ns.ANGLER_DATA.SKILL.hasFishing then
+        local pLvl = ns.ANGLER_DATA.SKILL.modLevel
         if lvl <= pLvl then
             return textColours.green
         elseif lvl > pLvl+75 then
@@ -169,10 +171,10 @@ local backgroundFiles = {
 local offset = 0
 
 local validFish = {}
-for k in pairs(ANGLER_DATA.DATA.fish) do table.insert(validFish, k) end
+for k in pairs(ns.ANGLER_DATA.DATA.fish) do table.insert(validFish, k) end
 
 local validZones = {}
-for k in pairs(ANGLER_DATA.DATA.zones) do table.insert(validZones, k) end
+for k in pairs(ns.ANGLER_DATA.DATA.zones) do table.insert(validZones, k) end
 
 
 -- print("Building UI")
@@ -216,10 +218,10 @@ SetItemButtonTexture(UIConfig.showButtonTab.showButton, GetItemIcon('19970'))
 
 
 -- local function isFishValid(fishId)
---     return ANGLER_DATA.DATA.fish[fishId] ~= nil
+--     return ns.ANGLER_DATA.DATA.fish[fishId] ~= nil
 -- end
 local function updateFishInfo()
-    if ANGLER_DATA.STATE.selectedFish == nil then
+    if ns.ANGLER_DATA.STATE.selectedFish == nil then
         UIConfig.info.name:SetText("No fish selected")
         UIConfig.info.icon.texture:SetTexture(nil)
         UIConfig.info.itemLevel:SetText("")
@@ -231,19 +233,19 @@ local function updateFishInfo()
     local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType,
     itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType,
     expacID, setID, isCraftingReagent
-        = GetItemInfo(ANGLER_DATA.STATE.selectedFish)
+        = GetItemInfo(ns.ANGLER_DATA.STATE.selectedFish)
 
-    local fishData = ANGLER_DATA.DATA.fish[ANGLER_DATA.STATE.selectedFish]
+    local fishData = ns.ANGLER_DATA.DATA.fish[ns.ANGLER_DATA.STATE.selectedFish]
 
     UIConfig.info.name:SetText(itemName)
     UIConfig.info.icon.texture:SetTexture(itemTexture)
-    local levelColour = ANGLER_DATA.PLAYER.level >= itemLevel and textColours.white or textColours.red
+    local levelColour = ns.ANGLER_DATA.PLAYER.level >= itemLevel and textColours.white or textColours.red
     UIConfig.info.itemLevel:SetText(levelColour.."Requires Level "..itemLevel)
     UIConfig.info.itemStackCount:SetText(itemStackCount)
     -- UIConfig.info.goldSellPrice:SetGold(sellPrice)
     -- UIConfig.info.goldSellPrice:Show()
     if Auctionator ~= nil then
-        local auctionPrice = Auctionator.Database:GetPrice(tostring(ANGLER_DATA.STATE.selectedFish))
+        local auctionPrice = Auctionator.Database:GetPrice(tostring(ns.ANGLER_DATA.STATE.selectedFish))
         if auctionPrice ~= nil then
             UIConfig.info.goldAuctionPrice:SetGold(auctionPrice)
             UIConfig.info.goldAuctionPrice:Show()
@@ -311,10 +313,10 @@ end
 
 local function getSortedZonesForFish(fishId)
     local sortedZones = {}
-    for i = 1, #ANGLER_DATA.DATA.fish[fishId].fishedIn do
-        local zoneId = ANGLER_DATA.DATA.fish[fishId].fishedIn[i]
-        if ANGLER_DATA.DATA.zones[zoneId] ~= nil then
-            table.insert(sortedZones, ANGLER_DATA.DATA.zones[zoneId])
+    for i = 1, #ns.ANGLER_DATA.DATA.fish[fishId].fishedIn do
+        local zoneId = ns.ANGLER_DATA.DATA.fish[fishId].fishedIn[i]
+        if ns.ANGLER_DATA.DATA.zones[zoneId] ~= nil then
+            table.insert(sortedZones, ns.ANGLER_DATA.DATA.zones[zoneId])
         end
     end
     table.sort(sortedZones, function(a, b)
@@ -326,19 +328,19 @@ local function getSortedZonesForFish(fishId)
 end
 
 local function updateZoneList()
-    if ANGLER_DATA.STATE.selectedFish == nil then
+    if ns.ANGLER_DATA.STATE.selectedFish == nil then
         UIConfig.zones.scrollFrame:Hide()
         return
     end
-    if ANGLER_DATA.STATE.selectedZone == nil then
+    if ns.ANGLER_DATA.STATE.selectedZone == nil then
         UIConfig.zones.scrollFrame:Hide()
         return
     end
     UIConfig.zones.scrollFrame:Show()
-    -- local fishId = ANGLER_DATA.STATE.selectedFish
-    -- local fishInfo = ANGLER_DATA.DATA.fish[fishId]
-    -- local fishStats = ANGLER_DATA.DATA.zones[ANGLER_DATA.STATE.selectedZone].fishStats[fishId]
-    local sortedZones = getSortedZonesForFish(ANGLER_DATA.STATE.selectedFish)
+    -- local fishId = ns.ANGLER_DATA.STATE.selectedFish
+    -- local fishInfo = ns.ANGLER_DATA.DATA.fish[fishId]
+    -- local fishStats = ns.ANGLER_DATA.DATA.zones[ns.ANGLER_DATA.STATE.selectedZone].fishStats[fishId]
+    local sortedZones = getSortedZonesForFish(ns.ANGLER_DATA.STATE.selectedFish)
     for i = 1, #UIConfig.zones.zoneButtons do
         local zoneButton = UIConfig.zones.zoneButtons[i]
         if zoneButton == nil then
@@ -351,7 +353,7 @@ local function updateZoneList()
             zoneButton:Show()
 
             local zoneNameText = zoneData.name
-            local zoneCatchRateText = CatchRateColor(zoneData.fishStats[ANGLER_DATA.STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[ANGLER_DATA.STATE.selectedFish].catchChance*100).."%"
+            local zoneCatchRateText = CatchRateColor(zoneData.fishStats[ns.ANGLER_DATA.STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[ns.ANGLER_DATA.STATE.selectedFish].catchChance*100).."%"
             local zoneFishingLevelText = SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel)
 
             -- print(zoneNameText)
@@ -367,13 +369,13 @@ local function updateZoneList()
 end
 
 local function updateZoneInfo()
-    if ANGLER_DATA.STATE.selectedZone == nil then
+    if ns.ANGLER_DATA.STATE.selectedZone == nil then
         UIConfig.zoneinfo.name:SetText(ANGLER_DARK_FONT_COLOR.."No zone selected")
         UIConfig.zoneinfo.coastalInland:SetText("")
         UIConfig.zoneinfo.fishRates:Hide()
         return
     end
-    local zoneData = ANGLER_DATA.DATA.zones[ANGLER_DATA.STATE.selectedZone]
+    local zoneData = ns.ANGLER_DATA.DATA.zones[ns.ANGLER_DATA.STATE.selectedZone]
     if zoneData == nil then
         UIConfig.zoneinfo.name:SetText(ANGLER_DARK_FONT_COLOR.."No zone selected")
         UIConfig.zoneinfo.coastalInland:SetText("")
@@ -396,7 +398,7 @@ local function updateZoneInfo()
         if fish == nil then
             break
         end
-        local fishInfo = ANGLER_DATA.DATA.fish[fish.id]
+        local fishInfo = ns.ANGLER_DATA.DATA.fish[fish.id]
         if fishInfo == nil then
             break
         end
@@ -465,13 +467,13 @@ local function updateFishGrid()
         end
         local fishId = fishIcon.fishId
         if fishId ~= nil then
-            local fishData = ANGLER_DATA.DATA.fish[fishId]
+            local fishData = ns.ANGLER_DATA.DATA.fish[fishId]
             if fishData ~= nil then
-                if ANGLER_DATA.SKILL.hasFishing then
+                if ns.ANGLER_DATA.SKILL.hasFishing then
                     fishIcon.status:Show()
-                    if fishData.avoidGetawayLevel <= ANGLER_DATA.SKILL.modLevel then
+                    if fishData.avoidGetawayLevel <= ns.ANGLER_DATA.SKILL.modLevel then
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Green")
-                    elseif fishData.avoidGetawayLevel <= ANGLER_DATA.SKILL.modLevel + 75 then
+                    elseif fishData.avoidGetawayLevel <= ns.ANGLER_DATA.SKILL.modLevel + 75 then
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Yellow")
                     else
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Red")
@@ -485,7 +487,7 @@ local function updateFishGrid()
 end
 
 local function updateRecipes()
-    if ANGLER_DATA.STATE.selectedFish == nil then
+    if ns.ANGLER_DATA.STATE.selectedFish == nil then
         UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."No fish selected")
         for i = 1, #UIConfig.recipies.recipeItems do
             local recipeFrame = UIConfig.recipies.recipeItems[i]
@@ -496,13 +498,13 @@ local function updateRecipes()
         end
         return
     end
-    UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipies for "..ANGLER_DATA.STATE.selectedFishData.name)
+    UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipies for "..ns.ANGLER_DATA.STATE.selectedFishData.name)
     for i = 1, #UIConfig.recipies.recipeItems do
         local recipeFrame = UIConfig.recipies.recipeItems[i]
         if recipeFrame == nil then
             break
         end
-        local recipeData = ANGLER_DATA.DATA.recipies[ANGLER_DATA.STATE.selectedFish][i]
+        local recipeData = ns.ANGLER_DATA.DATA.recipies[ns.ANGLER_DATA.STATE.selectedFish][i]
         if recipeData == nil then
             recipeFrame:Hide()
         else
@@ -520,7 +522,7 @@ local function selectZone(zoneId, anglerFrame)
     end
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
-    ANGLER_DATA.STATE.selectedZone = zoneId
+    ns.ANGLER_DATA.STATE.selectedZone = zoneId
     
     -- print("Selected zone "..zoneId)
     UIConfig.selectedZoneHighlight:Show()
@@ -534,18 +536,18 @@ local function selectFish(fishId, anglerFrame)
         UIConfig.selectedIcon:Hide()
         return
     end
-    if ANGLER_DATA.STATE.selectedFish == fishId then
+    if ns.ANGLER_DATA.STATE.selectedFish == fishId then
         return
     end
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");  -- Page turn
     PlaySound(1189, "Master") -- Meaty thwack
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
-    ANGLER_DATA.STATE.selectedFish = fishId
-    ANGLER_DATA.STATE.selectedFishData = ANGLER_DATA.DATA.fish[ANGLER_DATA.STATE.selectedFish]
+    ns.ANGLER_DATA.STATE.selectedFish = fishId
+    ns.ANGLER_DATA.STATE.selectedFishData = ns.ANGLER_DATA.DATA.fish[ns.ANGLER_DATA.STATE.selectedFish]
     UIConfig.selectedIcon:Show()
     UIConfig.selectedIcon:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
 
-    local zones = getSortedZonesForFish(ANGLER_DATA.STATE.selectedFish)
+    local zones = getSortedZonesForFish(ns.ANGLER_DATA.STATE.selectedFish)
     -- print("Zones for fish "..fishId)
     -- for i = 1, #zones do
     --     print(zones[i].name)
@@ -595,7 +597,7 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         _G[itemFrame:GetName().."NormalTexture"]:SetSize(itemSize*1.662, itemSize*1.662)
 
         -- Fish data for this item
-        local fishData = ANGLER_DATA.DATA.fish[itemID]
+        local fishData = ns.ANGLER_DATA.DATA.fish[itemID]
         itemFrame.itemID = itemID
         itemFrame.fishData = fishData
 
@@ -613,9 +615,9 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         itemFrame.status.indicator.texture:SetAllPoints()
         itemFrame.status.indicator.texture:SetVertexColor(1.0, 1.0, 1.0, 1.0)
 
-        -- if fishData.avoidGetawayLevel <= ANGLER_DATA.SKILL.level then
+        -- if fishData.avoidGetawayLevel <= ns.ANGLER_DATA.SKILL.level then
         --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Green")
-        -- elseif fishData.avoidGetawayLevel <= ANGLER_DATA.SKILL.level + 75 then
+        -- elseif fishData.avoidGetawayLevel <= ns.ANGLER_DATA.SKILL.level + 75 then
         --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Yellow")
         -- else
         --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Red")
@@ -782,10 +784,10 @@ end
 
 -- sort fish by fishing level
 table.sort(validFish, function(a, b)
-    if ANGLER_DATA.DATA.fish[a].avoidGetawayLevel == ANGLER_DATA.DATA.fish[b].avoidGetawayLevel then
-        return ANGLER_DATA.DATA.fish[a].minimumFishingLevel < ANGLER_DATA.DATA.fish[b].minimumFishingLevel
+    if ns.ANGLER_DATA.DATA.fish[a].avoidGetawayLevel == ns.ANGLER_DATA.DATA.fish[b].avoidGetawayLevel then
+        return ns.ANGLER_DATA.DATA.fish[a].minimumFishingLevel < ns.ANGLER_DATA.DATA.fish[b].minimumFishingLevel
     end
-    return ANGLER_DATA.DATA.fish[a].avoidGetawayLevel < ANGLER_DATA.DATA.fish[b].avoidGetawayLevel
+    return ns.ANGLER_DATA.DATA.fish[a].avoidGetawayLevel < ns.ANGLER_DATA.DATA.fish[b].avoidGetawayLevel
 end)
 
 UIConfig.grid = CreateItemGrid(validFish, UIConfig, 42, 6, 3, 15)
@@ -924,7 +926,7 @@ UIConfig.zones.scrollFrame.scrollChild:SetHeight(#validZones * 30)  -- 50 is the
 UIConfig.zones.zoneButtons = {}
 
 for i = 1, #validZones do
-    local zone = ANGLER_DATA.DATA.zones[validZones[i]]
+    local zone = ns.ANGLER_DATA.DATA.zones[validZones[i]]
     local zoneButton = CreateFrame("BUTTON", "angler-zone-button-"..i, UIConfig.zones.scrollFrame.scrollChild, "UIPanelButtonTemplate")
     zoneButton:SetSize(250, 30)
     zoneButton:SetPoint("TOP", UIConfig.zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
@@ -1061,7 +1063,7 @@ local function buildZoneInfoUI(parent)
         fishIcon.data.rate = 0.5
 
         function fishIcon:SetFish(fishId, rate)
-            fishIcon.data.name = ANGLER_DATA.DATA.fish[fishId].name
+            fishIcon.data.name = ns.ANGLER_DATA.DATA.fish[fishId].name
             fishIcon.data.rate = rate
             fishIcon.data.id = fishId
             fishIcon.texture:SetTexture(GetItemIcon(fishId))
@@ -1395,16 +1397,16 @@ UIConfig.equipment:SetScript("OnHide", function()
     PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE, "Master");
 end)
 
-UIConfig.equipment.gear = buildEquipmentRow(UIConfig.equipment, "Gear", ANGLER_DATA.DATA.equipment.gear)
+UIConfig.equipment.gear = buildEquipmentRow(UIConfig.equipment, "Gear", ns.ANGLER_DATA.DATA.equipment.gear)
 UIConfig.equipment.gear:SetPoint("TOPLEFT", UIConfig.equipment, "TOPLEFT", 25, -25)
 
-UIConfig.equipment.rods = buildEquipmentRow(UIConfig.equipment, "Rods", ANGLER_DATA.DATA.equipment.rods)
+UIConfig.equipment.rods = buildEquipmentRow(UIConfig.equipment, "Rods", ns.ANGLER_DATA.DATA.equipment.rods)
 UIConfig.equipment.rods:SetPoint("TOPLEFT", UIConfig.equipment.gear, "BOTTOMLEFT", 0, -20)
 
-UIConfig.equipment.lures = buildEquipmentRow(UIConfig.equipment, "Lures", ANGLER_DATA.DATA.equipment.lures)
+UIConfig.equipment.lures = buildEquipmentRow(UIConfig.equipment, "Lures", ns.ANGLER_DATA.DATA.equipment.lures)
 UIConfig.equipment.lures:SetPoint("TOPLEFT", UIConfig.equipment.rods, "BOTTOMLEFT", 0, -20)
 
-UIConfig.equipment.other = buildEquipmentRow(UIConfig.equipment, "Other", ANGLER_DATA.DATA.equipment.other)
+UIConfig.equipment.other = buildEquipmentRow(UIConfig.equipment, "Other", ns.ANGLER_DATA.DATA.equipment.other)
 UIConfig.equipment.other:SetPoint("TOPLEFT", UIConfig.equipment.lures, "BOTTOMLEFT", 0, -20)
 
 UIConfig.recipiesToggleButton = CreateTabButton("recipies", UIConfig, "Recipies", "Recipies")
@@ -1441,10 +1443,10 @@ UIConfig.selectedZoneHighlight.texture:SetBlendMode("ADD")
 UIConfig.selectedZoneHighlight:Hide()
 
 function UIConfig:Reload()
-    ANGLER_DATA:loadPlayerData()
-    if ANGLER_DATA.SKILL.hasFishing then
-        local skillMod = ANGLER_DATA.SKILL.skillModifier > 0 and "(|cFF00FF00+"..ANGLER_DATA.SKILL.skillModifier.."|cFFFFFFFF) " or ""
-        UIConfig.playerInfo:SetText("level "..ANGLER_DATA.SKILL.level.." "..skillMod..ANGLER_DATA.SKILL.rankName.." angler")
+    ns.ANGLER_DATA:loadPlayerData()
+    if ns.ANGLER_DATA.SKILL.hasFishing then
+        local skillMod = ns.ANGLER_DATA.SKILL.skillModifier > 0 and "(|cFF00FF00+"..ns.ANGLER_DATA.SKILL.skillModifier.."|cFFFFFFFF) " or ""
+        UIConfig.playerInfo:SetText("level "..ns.ANGLER_DATA.SKILL.level.." "..skillMod..ns.ANGLER_DATA.SKILL.rankName.." angler")
     else
         UIConfig.playerInfo:SetText("needs to find a fishing trainer")
     end
@@ -1459,7 +1461,7 @@ function UIConfig:ReloadAll()
     -- TabButton_selectTab("recipies")
     updateRecipes()
     SetPortraitTexture(UIConfig.characterPortrait.texture, "player");
-    UIConfig.playerName:SetText(ANGLER_DATA.PLAYER.name)
+    UIConfig.playerName:SetText(ns.ANGLER_DATA.PLAYER.name)
 end
 
 local function init()
