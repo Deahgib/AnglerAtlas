@@ -8,7 +8,7 @@ end
 
 ANGLER_DATA:loadPlayerData()
 
-local UIConfig = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
+local UIConfig = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate") 
 UIConfig:SetFrameStrata("DIALOG")
 UIConfig:SetSize(860, 490)
 UIConfig:SetPoint("CENTER") -- Doesn't need to be ("CENTER", UIParent, "CENTER")
@@ -486,9 +486,9 @@ end
 
 local function updateRecipes()
     if ANGLER_DATA.STATE.selectedFish == nil then
-        UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."No fish selected")
-        for i = 1, #UIConfig.recipies.recipeItems do
-            local recipeFrame = UIConfig.recipies.recipeItems[i]
+        UIConfig.recipes.text:SetText(ANGLER_DARK_FONT_COLOR.."No fish selected")
+        for i = 1, #UIConfig.recipes.recipeItems do
+            local recipeFrame = UIConfig.recipes.recipeItems[i]
             if recipeFrame == nil then
                 break
             end
@@ -496,13 +496,13 @@ local function updateRecipes()
         end
         return
     end
-    UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipies for "..ANGLER_DATA.STATE.selectedFishData.name)
-    for i = 1, #UIConfig.recipies.recipeItems do
-        local recipeFrame = UIConfig.recipies.recipeItems[i]
+    UIConfig.recipes.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipes for "..ANGLER_DATA.STATE.selectedFishData.name)
+    for i = 1, #UIConfig.recipes.recipeItems do
+        local recipeFrame = UIConfig.recipes.recipeItems[i]
         if recipeFrame == nil then
             break
         end
-        local recipeData = ANGLER_DATA.DATA.recipies[ANGLER_DATA.STATE.selectedFish][i]
+        local recipeData = ANGLER_DATA.DATA.recipes[ANGLER_DATA.STATE.selectedFish][i]
         if recipeData == nil then
             recipeFrame:Hide()
         else
@@ -577,10 +577,10 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
     local stepCursor = -width * 0.5 + itemSize * 0.5
     for i = 1, #itemIds do
         local itemID = itemIds[i]
-        local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType,
-        itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType,
-        expacID, setID, isCraftingReagent
-            = GetItemInfo(itemID)
+        -- local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType,
+        -- itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType,
+        -- expacID, setID, isCraftingReagent
+        --     = GetItemInfo(itemID)
         local itemFrame = CreateFrame("BUTTON", "angler-item-"..i, row, "ItemButtonTemplate");
         itemFrame:SetSize(itemSize, itemSize)
         itemFrame:SetPoint("CENTER", stepCursor, 0)
@@ -1161,40 +1161,40 @@ local function RegisterTab(tabName, tabButton, tabFrame)
 end
 
 
-UIConfig.recipies = CreateFrame("FRAME", "angler-recipies-info", UIConfig, "BackdropTemplate")
-UIConfig.recipies:Raise()
-UIConfig.recipies:SetBackdrop(backdrop)
-UIConfig.recipies:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
-UIConfig.recipies:SetSize(355, 408)
-UIConfig.recipies:SetPoint("TOPLEFT", UIConfig.zoneinfo, "TOPLEFT", 0, 0)
-UIConfig.recipies:Hide()
+UIConfig.recipes = CreateFrame("FRAME", "angler-recipes-info", UIConfig, "BackdropTemplate")
+UIConfig.recipes:Raise()
+UIConfig.recipes:SetBackdrop(backdrop)
+UIConfig.recipes:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
+UIConfig.recipes:SetSize(355, 408)
+UIConfig.recipes:SetPoint("TOPLEFT", UIConfig.zoneinfo, "TOPLEFT", 0, 0)
+UIConfig.recipes:Hide()
 -- On show hide
-UIConfig.recipies:SetScript("OnShow", function()
+UIConfig.recipes:SetScript("OnShow", function()
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
 end)
-UIConfig.recipies:SetScript("OnHide", function()
+UIConfig.recipes:SetScript("OnHide", function()
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
 end)
 
 
 
-UIConfig.recipies.text = UIConfig.recipies:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-UIConfig.recipies.text:SetPoint("TOPLEFT", UIConfig.recipies, "TOPLEFT", 28, -25)
-UIConfig.recipies.text:SetFont("Fonts\\FRIZQT__.ttf", 14)
-UIConfig.recipies.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipies for Raw Longjaw Mud Snapper")
+UIConfig.recipes.text = UIConfig.recipes:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+UIConfig.recipes.text:SetPoint("TOPLEFT", UIConfig.recipes, "TOPLEFT", 28, -25)
+UIConfig.recipes.text:SetFont("Fonts\\FRIZQT__.ttf", 14)
+UIConfig.recipes.text:SetText(ANGLER_DARK_FONT_COLOR.."Recipes for Raw Longjaw Mud Snapper")
 
-UIConfig.recipies.scrollFrame = CreateFrame("ScrollFrame", nil, UIConfig.recipies, "UIPanelScrollFrameTemplate")
-UIConfig.recipies.scrollFrame:SetPoint("TOPLEFT", 25, -43)
-UIConfig.recipies.scrollFrame:SetPoint("BOTTOMRIGHT", -45, 25)
+UIConfig.recipes.scrollFrame = CreateFrame("ScrollFrame", nil, UIConfig.recipes, "UIPanelScrollFrameTemplate")
+UIConfig.recipes.scrollFrame:SetPoint("TOPLEFT", 25, -43)
+UIConfig.recipes.scrollFrame:SetPoint("BOTTOMRIGHT", -45, 25)
 
-UIConfig.recipies.scrollFrame.scrollChild = CreateFrame("Frame")
-UIConfig.recipies.scrollFrame:SetScrollChild(UIConfig.recipies.scrollFrame.scrollChild)
-UIConfig.recipies.scrollFrame.scrollChild:SetWidth(280)
-UIConfig.recipies.scrollFrame.scrollChild:SetHeight(510)  -- 100 is the height of each panel (5 panels) + padding
+UIConfig.recipes.scrollFrame.scrollChild = CreateFrame("Frame")
+UIConfig.recipes.scrollFrame:SetScrollChild(UIConfig.recipes.scrollFrame.scrollChild)
+UIConfig.recipes.scrollFrame.scrollChild:SetWidth(280)
+UIConfig.recipes.scrollFrame.scrollChild:SetHeight(510)  -- 100 is the height of each panel (5 panels) + padding
 
-UIConfig.recipies.recipeItems = {}
+UIConfig.recipes.recipeItems = {}
 for i = 1, 5 do
-    local recipeItem = CreateFrame("FRAME", "angler-recipe-item-"..i, UIConfig.recipies.scrollFrame.scrollChild, "BackdropTemplate")
+    local recipeItem = CreateFrame("FRAME", "angler-recipe-item-"..i, UIConfig.recipes.scrollFrame.scrollChild, "BackdropTemplate")
     local bd = CopyTable(BACKDROP_TEXT_PANEL_0_16)
     bd.bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background"
     bd.insets = { left = 3, right = 3, top = 3, bottom = 3 }
@@ -1202,7 +1202,7 @@ for i = 1, 5 do
     recipeItem:SetBackdrop(bd)
     recipeItem:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     recipeItem:SetSize(270, 100)
-    recipeItem:SetPoint("TOP", UIConfig.recipies.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 102)
+    recipeItem:SetPoint("TOP", UIConfig.recipes.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 102)
 
     recipeItem.data = {}
     recipeItem.data.recipeName = "Blackmouth Oil"
@@ -1335,7 +1335,7 @@ for i = 1, 5 do
         end
     end
 
-    UIConfig.recipies.recipeItems[i] = recipeItem
+    UIConfig.recipes.recipeItems[i] = recipeItem
 end
 
 local equipmentUID = 1
@@ -1407,14 +1407,14 @@ UIConfig.equipment.lures:SetPoint("TOPLEFT", UIConfig.equipment.rods, "BOTTOMLEF
 UIConfig.equipment.other = buildEquipmentRow(UIConfig.equipment, "Other", ANGLER_DATA.DATA.equipment.other)
 UIConfig.equipment.other:SetPoint("TOPLEFT", UIConfig.equipment.lures, "BOTTOMLEFT", 0, -20)
 
-UIConfig.recipiesToggleButton = CreateTabButton("recipies", UIConfig, "Recipies", "Recipies")
-UIConfig.recipiesToggleButton:SetPoint("TOPRIGHT", UIConfig, "TOPRIGHT", -18, -45)
+UIConfig.recipesToggleButton = CreateTabButton("recipes", UIConfig, "Recipes", "Recipes")
+UIConfig.recipesToggleButton:SetPoint("TOPRIGHT", UIConfig, "TOPRIGHT", -18, -45)
 
 UIConfig.equipmentToggleButton = CreateTabButton("equipment", UIConfig, "Equipment", "Equipment")
-UIConfig.equipmentToggleButton:SetPoint("RIGHT", UIConfig.recipiesToggleButton, "LEFT", -5, 0)
+UIConfig.equipmentToggleButton:SetPoint("RIGHT", UIConfig.recipesToggleButton, "LEFT", -5, 0)
 
 RegisterTab('default', nil, UIConfig.zoneinfo)
-RegisterTab('recipies', UIConfig.recipiesToggleButton, UIConfig.recipies)
+RegisterTab('recipes', UIConfig.recipesToggleButton, UIConfig.recipes)
 RegisterTab('equipment', UIConfig.equipmentToggleButton, UIConfig.equipment)
 
 
@@ -1456,7 +1456,7 @@ end
 
 function UIConfig:ReloadAll()
     UIConfig:Reload()
-    -- TabButton_selectTab("recipies")
+    -- TabButton_selectTab("recipes")
     updateRecipes()
     SetPortraitTexture(UIConfig.characterPortrait.texture, "player");
     UIConfig.playerName:SetText(ANGLER_DATA.PLAYER.name)

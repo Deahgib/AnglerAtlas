@@ -1,0 +1,10 @@
+## Interface: 11404
+## Title: AnglerAtlas 
+## Notes: A fishing A-Z
+## Version: 0.0.3
+## Author: Calpico-Firemaw
+## OptionalDeps: Auctionator
+## DefaultState: enabled
+
+Data.lua
+Core.lua

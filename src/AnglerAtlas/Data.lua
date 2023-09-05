@@ -1630,7 +1630,7 @@ ANGLER_DATA.DATA.fish = {
     }
 }
 
-ANGLER_DATA.DATA.recipies = {
+ANGLER_DATA.DATA.recipes = {
     --|   Darkclaw Lobster
     ["13888"] = {
         {
