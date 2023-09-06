@@ -7,4 +7,5 @@
 ## DefaultState: enabled
 
 Data.lua
+Funcs.lua
 Core.lua

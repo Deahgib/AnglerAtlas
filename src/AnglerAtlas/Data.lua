@@ -1,14 +1,14 @@
-ANGLER_DATA = {}
-ANGLER_DATA.SKILL = {}
-ANGLER_DATA.PLAYER = {}
-ANGLER_DATA.STATE = {
+AnglerAtlas = {}
+AnglerAtlas.SKILL = {}
+AnglerAtlas.PLAYER = {}
+AnglerAtlas.STATE = {
     selectedFish = nil,
     selectedFishInfo = nil,
     selectedZone = nil,
     zones = {},
 }
-ANGLER_DATA.DATA = {}
-ANGLER_DATA.DATA.zones = {
+AnglerAtlas.DATA = {}
+AnglerAtlas.DATA.zones = {
     ["11"] = {
         ["id"] = 11,
         ["name"] = "Wetlands",
@@ -1194,7 +1194,7 @@ ANGLER_DATA.DATA.zones = {
 }
 
 ---------------------------------
-ANGLER_DATA.DATA.fish = {
+AnglerAtlas.DATA.fish = {
     ["13888"] = {
         ["name"] = "Darkclaw Lobster",
         ["type"] = "C",
@@ -1630,7 +1630,7 @@ ANGLER_DATA.DATA.fish = {
     }
 }
 
-ANGLER_DATA.DATA.recipes = {
+AnglerAtlas.DATA.recipes = {
     --|   Darkclaw Lobster
     ["13888"] = {
         {
@@ -2092,7 +2092,7 @@ ANGLER_DATA.DATA.recipes = {
     }
 }
 
-ANGLER_DATA.DATA.equipment = {
+AnglerAtlas.DATA.equipment = {
     ["gear"] = {
         {
             ["id"] = 19972,
@@ -2178,7 +2178,7 @@ ANGLER_DATA.DATA.equipment = {
     }
 }
 
-ANGLER_DATA.skillRankNames = {
+AnglerAtlas.skillRankNames = {
     {
         ["name"]= "Apprentice",
         ["rank"]= 149
@@ -2197,23 +2197,26 @@ ANGLER_DATA.skillRankNames = {
     }
 }
 
-function ANGLER_DATA:getRankNameForLevel(level)
-    for i = 1, #ANGLER_DATA.skillRankNames do
-        if level <= ANGLER_DATA.skillRankNames[i].rank then
-            return ANGLER_DATA.skillRankNames[i].name
+AnglerAtlas.UI = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
+AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR = "|cFF222222"
+
+function AnglerAtlas:getRankNameForLevel(level)
+    for i = 1, #AnglerAtlas.skillRankNames do
+        if level <= AnglerAtlas.skillRankNames[i].rank then
+            return AnglerAtlas.skillRankNames[i].name
         end
     end
     return "Apprentice"
 end
 
-function ANGLER_DATA:loadPlayerData()
+function AnglerAtlas:loadPlayerData()
     -- print("Loading player data...")
     -- load player name and realm
-    ANGLER_DATA.PLAYER.name, ANGLER_DATA.PLAYER.realm = UnitName("player")
+    AnglerAtlas.PLAYER.name, AnglerAtlas.PLAYER.realm = UnitName("player")
     -- load player level
-    ANGLER_DATA.PLAYER.level = UnitLevel("player")
+    AnglerAtlas.PLAYER.level = UnitLevel("player")
 
-    ANGLER_DATA.SKILL.hasFishing = false
+    AnglerAtlas.SKILL.hasFishing = false
     for skillIndex = 1, GetNumSkillLines() do
         -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
         local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
@@ -2221,7 +2224,7 @@ function ANGLER_DATA:loadPlayerData()
         -- print(skillName)
 
         if skillName == "Fishing" then
-            ANGLER_DATA.SKILL.hasFishing = true
+            AnglerAtlas.SKILL.hasFishing = true
             -- print("---SKILL DATA---")
             -- print("skillName: " .. skillName)
             -- print("isExpanded: " .. tostring(isExpanded))
@@ -2234,11 +2237,63 @@ function ANGLER_DATA:loadPlayerData()
             -- print("skillCostType: " .. skillCostType)
             -- print("skillDescription: " .. skillDescription)
             -- print("----------------")
-            ANGLER_DATA.SKILL.level = skillRank
-            ANGLER_DATA.SKILL.maxLevel = skillMaxRank
-            ANGLER_DATA.SKILL.rankName = ANGLER_DATA:getRankNameForLevel(skillRank)
-            ANGLER_DATA.SKILL.skillModifier = skillModifier
-            ANGLER_DATA.SKILL.modLevel = skillRank + skillModifier
+            AnglerAtlas.SKILL.level = skillRank
+            AnglerAtlas.SKILL.maxLevel = skillMaxRank
+            AnglerAtlas.SKILL.rankName = AnglerAtlas:getRankNameForLevel(skillRank)
+            AnglerAtlas.SKILL.skillModifier = skillModifier
+            AnglerAtlas.SKILL.modLevel = skillRank + skillModifier
         end
     end
 end
+
+
+
+
+
+-- Data for me:
+
+-- local borderFiles = {
+--     ["UI-DialogBox-TestWatermark-Border"] = "Interface\\DialogFrame\\UI-DialogBox-TestWatermark-Border",
+--     ["UI-DialogBox-Border"] = "Interface\\DialogFrame\\UI-DialogBox-Border",
+--     ["UI-DialogBox-Gold-Border"] = "Interface\\DialogFrame\\UI-DialogBox-Gold-Border",
+--     ["UI-Toast-Border"] = "Interface\\FriendsFrame\\UI-Toast-Border",
+--     ["UI-SliderBar-Border"] = "Interface\\Buttons\\UI-SliderBar-Border",
+--     ["UI-Arena-Border"] = "Interface\\ARENAENEMYFRAME\\UI-Arena-Border",
+--     ["ChatBubble-Backdrop"] = "Interface\\Tooltips\\ChatBubble-Backdrop",
+--     ["UI-Tooltip-Border"] = "Interface\\Tooltips\\UI-Tooltip-Border",
+--     ["UI-TalentFrame-Active"] = "Interface\\TALENTFRAME\\UI-TalentFrame-Active",
+-- }
+
+-- local backgroundFiles = {
+--     ["UI-Background-Rock"] = "Interface\\FrameGeneral\\UI-Background-Rock",
+--     ["UI-Background-Marble"] = "Interface\\FrameGeneral\\UI-Background-Marble",
+--     ["GarrisonMissionParchment"] = "Interface\\Garrison\\GarrisonMissionParchment",
+--     ["AdventureMapParchmentTile"] = "Interface\\AdventureMap\\AdventureMapParchmentTile",
+--     ["AdventureMapTileBg"] = "Interface\\AdventureMap\\AdventureMapTileBg",
+--     ["Bank-Background"] = "Interface\\BankFrame\\Bank-Background",
+--     ["UI-Party-Background"] = "Interface\\CharacterFrame\\UI-Party-Background",
+--     ["GarrisonLandingPageMiddleTile"] = "Interface\\Garrison\\GarrisonLandingPageMiddleTile",
+--     ["GarrisonMissionUIInfoBoxBackgroundTile"] = "Interface\\Garrison\\GarrisonMissionUIInfoBoxBackgroundTile",
+--     ["GarrisonShipMissionParchment"] = "Interface\\Garrison\\GarrisonShipMissionParchment",
+--     ["GarrisonUIBackground"] = "Interface\\Garrison\\GarrisonUIBackground",
+--     ["GarrisonUIBackground2"] = "Interface\\Garrison\\GarrisonUIBackground2",
+--     ["CollectionsBackgroundTile"] = "Interface\\Collections\\CollectionsBackgroundTile",
+--     ["BlackMarketBackground-Tile"] = "Interface\\BlackMarket\\BlackMarketBackground-Tile",
+-- }
+
+-- Backdrops
+-- BACKDROP_ACHIEVEMENTS_0_64
+-- BACKDROP_ARENA_32_32
+-- BACKDROP_DIALOG_32_32
+-- BACKDROP_DARK_DIALOG_32_32
+-- BACKDROP_DIALOG_EDGE_32
+-- BACKDROP_GOLD_DIALOG_32_32
+-- BACKDROP_WATERMARK_DIALOG_0_16
+-- BACKDROP_SLIDER_8_8
+-- BACKDROP_PARTY_32_32
+-- BACKDROP_TOAST_12_12
+-- BACKDROP_CALLOUT_GLOW_0_16
+-- BACKDROP_CALLOUT_GLOW_0_20
+-- BACKDROP_TEXT_PANEL_0_16
+-- BACKDROP_CHARACTER_CREATE_TOOLTIP_32_32
+-- BACKDROP_TUTORIAL_16_16
