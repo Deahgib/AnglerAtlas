@@ -12,6 +12,7 @@ AnglerAtlas.DATA.zones = {
     ["11"] = {
         ["id"] = 11,
         ["name"] = "Wetlands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 125,
         ["fishStats"] = {
             -- Raw Rainbow Fin Albacore
@@ -35,6 +36,7 @@ AnglerAtlas.DATA.zones = {
     ["17"] = {
         ["id"] = 17,
         ["name"] = "The Barrens",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 100,
         ["fishStats"] = {
             -- Deviate Fish
@@ -70,6 +72,7 @@ AnglerAtlas.DATA.zones = {
     ["40"] = {
         ["id"] = 40,
         ["name"] = "Westfall",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 100,
         ["fishStats"] = {
             -- Oily Blackmouth
@@ -101,6 +104,7 @@ AnglerAtlas.DATA.zones = {
     ["130"] = {
         ["id"] = 130,
         ["name"] = "Silverpine Forest",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 100,
         ["fishStats"] = {
             -- Oily Blackmouth
@@ -136,6 +140,7 @@ AnglerAtlas.DATA.zones = {
     ["148"] = {
         ["id"] = 148,
         ["name"] = "Darkshore",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 100,
         ["fishStats"] = {
             -- Darkshore Grouper
@@ -171,6 +176,7 @@ AnglerAtlas.DATA.zones = {
     ["267"] = {
         ["id"] = 267,
         ["name"] = "Hillsbrad Foothills",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 150,
         ["fishStats"] = {
             -- Raw Sagefish
@@ -202,6 +208,7 @@ AnglerAtlas.DATA.zones = {
     ["1497"] = {
         ["id"] = 1497,
         ["name"] = "Undercity",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 100,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -225,6 +232,7 @@ AnglerAtlas.DATA.zones = {
     ["33"] = {
         ["id"] = 33,
         ["name"] = "Stranglethorn Vale",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Firefin Snapper
@@ -264,6 +272,7 @@ AnglerAtlas.DATA.zones = {
     ["16"] = {
         ["id"] = 16,
         ["name"] = "Azshara",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Darkclaw Lobster
@@ -319,6 +328,7 @@ AnglerAtlas.DATA.zones = {
     ["405"] = {
         ["id"] = 405,
         ["name"] = "Desolace",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Mithril Head Trout
@@ -354,6 +364,7 @@ AnglerAtlas.DATA.zones = {
     ["357"] = {
         ["id"] = 357,
         ["name"] = "Feralas",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -405,6 +416,7 @@ AnglerAtlas.DATA.zones = {
     ["440"] = {
         ["id"] = 440,
         ["name"] = "Tanaris",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Spotted Yellowtail
@@ -444,6 +456,7 @@ AnglerAtlas.DATA.zones = {
     ["15"] = {
         ["id"] = 15,
         ["name"] = "Dustwallow Marsh",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Rockscale Cod
@@ -475,6 +488,7 @@ AnglerAtlas.DATA.zones = {
     ["8"] = {
         ["id"] = 8,
         ["name"] = "Swamp of Sorrows",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Rockscale Cod
@@ -506,6 +520,7 @@ AnglerAtlas.DATA.zones = {
     ["406"] = {
         ["id"] = 406,
         ["name"] = "Stonetalon Mountains",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Bristle Whisker Catfish
@@ -529,6 +544,7 @@ AnglerAtlas.DATA.zones = {
     ["45"] = {
         ["id"] = 45,
         ["name"] = "Arathi Highlands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Mitril Head Trout
@@ -560,6 +576,7 @@ AnglerAtlas.DATA.zones = {
     ["47"] = {
         ["id"] = 47,
         ["name"] = "Hinterlands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -615,6 +632,7 @@ AnglerAtlas.DATA.zones = {
     ["331"] = {
         ["id"] = 331,
         ["name"] = "Ashenvale",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Bristle Whisker Catfish
@@ -650,6 +668,7 @@ AnglerAtlas.DATA.zones = {
     ["361"] = {
         ["id"] = 331,
         ["name"] = "Felwood",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -677,6 +696,7 @@ AnglerAtlas.DATA.zones = {
     ["493"] = {
         ["id"] = 493,
         ["name"] = "Moonglade",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -704,6 +724,7 @@ AnglerAtlas.DATA.zones = {
     ["490"] = {
         ["id"] = 490,
         ["name"] = "Un'Goro Crater",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -731,6 +752,7 @@ AnglerAtlas.DATA.zones = {
     ["28"] = {
         ["id"] = 28,
         ["name"] = "Western Plaguelands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Redgill
@@ -758,6 +780,7 @@ AnglerAtlas.DATA.zones = {
     ["1"] = {
         ["id"] = 1,
         ["name"] = "Dun Morogh",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Brilliant Smallfish
@@ -773,6 +796,7 @@ AnglerAtlas.DATA.zones = {
     ["215"] = {
         ["id"] = 215,
         ["name"] = "Mulgore",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Brilliant Smallfish
@@ -788,6 +812,7 @@ AnglerAtlas.DATA.zones = {
     ["12"] = {
         ["id"] = 12,
         ["name"] = "Elwynn Forest",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Brilliant Smallfish
@@ -803,6 +828,7 @@ AnglerAtlas.DATA.zones = {
     ["85"] = {
         ["id"] = 85,
         ["name"] = "Tirisfal Glades",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Brilliant Smallfish
@@ -830,6 +856,7 @@ AnglerAtlas.DATA.zones = {
     ["141"] = {
         ["id"] = 141,
         ["name"] = "Teldrassil",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Slither Skin Mackerel
@@ -849,6 +876,7 @@ AnglerAtlas.DATA.zones = {
     ["14"] = {
         ["id"] = 14,
         ["name"] = "Durotar",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Slither Skin Mackerel
@@ -868,6 +896,7 @@ AnglerAtlas.DATA.zones = {
     ["1657"] = {
         ["id"] = 1657,
         ["name"] = "Darnassus",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -887,6 +916,7 @@ AnglerAtlas.DATA.zones = {
     ["1637"] = {
         ["id"] = 1637,
         ["name"] = "Orgrimmar",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -906,6 +936,7 @@ AnglerAtlas.DATA.zones = {
     ["1519"] = {
         ["id"] = 1519,
         ["name"] = "Stormwind City",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -925,6 +956,7 @@ AnglerAtlas.DATA.zones = {
     ["1638"] = {
         ["id"] = 1638,
         ["name"] = "Thunder Bluff",
+        ["faction"] = "Horde",
         ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -944,6 +976,7 @@ AnglerAtlas.DATA.zones = {
     ["4"] = {
         ["id"] = 4,
         ["name"] = "Blasted Lands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 250,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -975,6 +1008,7 @@ AnglerAtlas.DATA.zones = {
     ["1377"] = {
         ["id"] = 1377,
         ["name"] = "Silithus",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
@@ -998,6 +1032,7 @@ AnglerAtlas.DATA.zones = {
     ["38"] = {
         ["id"] = 38,
         ["name"] = "Loch Modan",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
@@ -1021,6 +1056,7 @@ AnglerAtlas.DATA.zones = {
     ["10"] = {
         ["id"] = 10,
         ["name"] = "Duskwood",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Bristle Whisker Catfish
@@ -1052,6 +1088,7 @@ AnglerAtlas.DATA.zones = {
     ["44"] = {
         ["id"] = 44,
         ["name"] = "Redridge Mountains",
+        ["faction"] = "Alliance",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Bristle Whisker Catfish
@@ -1067,6 +1104,7 @@ AnglerAtlas.DATA.zones = {
     ["400"] = {
         ["id"] = 400,
         ["name"] = "Thousand Needles",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Mithril Head Trout
@@ -1082,6 +1120,7 @@ AnglerAtlas.DATA.zones = {
     ["36"] = {
         ["id"] = 36,
         ["name"] = "Alterac Mountains",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Greater Sagefish
@@ -1101,6 +1140,7 @@ AnglerAtlas.DATA.zones = {
     ["618"] = {
         ["id"] = 618,
         ["name"] = "Winterspring",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
@@ -1124,6 +1164,7 @@ AnglerAtlas.DATA.zones = {
     ["41"] = {
         ["id"] = 41,
         ["name"] = "Deadwind Pass",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
@@ -1147,6 +1188,7 @@ AnglerAtlas.DATA.zones = {
     ["139"] = {
         ["id"] = 139,
         ["name"] = "Eastern Plaguelands",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
@@ -1170,6 +1212,7 @@ AnglerAtlas.DATA.zones = {
     ["46"] = {
         ["id"] = 46,
         ["name"] = "Burning Steppes",
+        ["faction"] = "Contested",
         ["fishingLevel"] = 300,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
@@ -2197,8 +2240,18 @@ AnglerAtlas.skillRankNames = {
     }
 }
 
+AnglerAtlas.DATA.validFish = {}
+for k in pairs(AnglerAtlas.DATA.fish) do table.insert(AnglerAtlas.DATA.validFish, k) end
+AnglerAtlas.DATA.validZones = {}
+for k in pairs(AnglerAtlas.DATA.zones) do table.insert(AnglerAtlas.DATA.validZones, k) end
+    
 AnglerAtlas.UI = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
 AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR = "|cFF222222"
+
+-- Backdrops
+AnglerAtlas.UI.ANGLER_BACKDROP = CopyTable(BACKDROP_ACHIEVEMENTS_0_64)
+AnglerAtlas.UI.ANGLER_BACKDROP.bgFile = "Interface\\AdventureMap\\AdventureMapParchmentTile"
+AnglerAtlas.UI.ANGLER_BACKDROP.insets = { left = 24, right = 24, top = 22, bottom = 24 }
 
 function AnglerAtlas:getRankNameForLevel(level)
     for i = 1, #AnglerAtlas.skillRankNames do
