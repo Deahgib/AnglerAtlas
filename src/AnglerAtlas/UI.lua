@@ -1075,7 +1075,7 @@ function AnglerAtlas.UI:UpdateZoneList()
         else
             zoneButton:Show()
 
-            local zoneNameText = zoneData.name .. " "..zoneData.faction
+            local zoneNameText = zoneData.name
             local zoneCatchRateText = AnglerAtlas.UI:CatchRateColor(zoneData.fishStats[AnglerAtlas.STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[AnglerAtlas.STATE.selectedFish].catchChance*100).."%"
             local zoneFishingLevelText = AnglerAtlas.UI:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel)
 

@@ -58,7 +58,7 @@ function deployAddon() {
 
 
     archive.pipe(output);
-    archive.directory(path.join(srcPath, addonFolderName), false);
+    archive.directory(srcPath, false);
     archive.finalize();
 }
 deployAddon();
