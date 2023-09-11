@@ -1,3 +1,4 @@
+AnglerAtlasSettings = {}
 AnglerAtlas = {}
 AnglerAtlas.SKILL = {}
 AnglerAtlas.PLAYER = {}

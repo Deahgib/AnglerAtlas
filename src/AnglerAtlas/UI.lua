@@ -1,12 +1,77 @@
 -- Create addon interface options tab for AnglerAtlas settings
--- local panel = CreateFrame("Frame")
--- panel.name = "AnglerAtlas"               -- see panel fields
--- InterfaceOptions_AddCategory(panel)  -- see InterfaceOptions API
+if not LibStub then error("AnglerAtlas requires LibStub.") end
 
--- -- add widgets to the panel as desired
--- local title = panel:CreateFontString("ARTWORK", nil, "GameFontNormalLarge")
--- title:SetPoint("TOP")
--- title:SetText("AnglerAtlas")
+local LibDBIcon = LibStub("LibDBIcon-1.0")
+local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("AnglerAtlas", {
+    type = "launcher",
+    icon = "Interface\\Icons\\INV_Fishingpole_01",
+    OnClick = function(self, button)
+        AnglerAtlas.UI:ToggleUI()
+    end,
+    OnTooltipShow = function(tooltip)
+        tooltip:SetText("Angler Atlas")
+    end,
+})
+
+function AnglerAtlas.UI:BuildAddonSettings()
+    local panel = CreateFrame("Frame")
+    panel.name = "AnglerAtlas"               -- see panel fields
+    InterfaceOptions_AddCategory(panel)  -- see InterfaceOptions API
+
+    -- add widgets to the panel as desired
+    local title = panel:CreateFontString("ARTWORK", nil, "GameFontNormalLarge")
+    title:SetPoint("TOP")
+    title:SetText("AnglerAtlas")
+
+    local subtitle = panel:CreateFontString("ARTWORK", nil, "GameFontHighlightSmall")
+    subtitle:SetHeight(40)
+    subtitle:SetPoint("TOPLEFT", 16, -32)
+    subtitle:SetPoint("RIGHT", panel, -32, 0)
+    subtitle:SetNonSpaceWrap(true)
+    subtitle:SetJustifyH("LEFT")
+    subtitle:SetJustifyV("TOP")
+    subtitle:SetText("AnglerAtlas is a fishing addon that shows you where to catch fish, what fish you can catch, and what fish are in season.")
+
+    local info = panel:CreateFontString("ARTWORK", nil, "GameFontNormal")
+    info:SetHeight(40)
+    info:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -8)
+    info:SetPoint("RIGHT", panel, -32, 0)
+    info:SetNonSpaceWrap(true)
+    info:SetJustifyH("LEFT")
+    info:SetJustifyV("TOP")
+    info:SetText("You can always use /aa /angler or /angleratlas to toggle the Angler Atlas main window.")
+
+    local showSpellbookButton = CreateFrame("CheckButton", "AnglerAtlasShowSpellbookButton", panel, "InterfaceOptionsCheckButtonTemplate")
+    showSpellbookButton:SetPoint("TOPLEFT", info, "BOTTOMLEFT", 0, -8)
+    showSpellbookButton.text = showSpellbookButton:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    showSpellbookButton.text:SetPoint("LEFT", showSpellbookButton, "RIGHT", 0, 3)
+    showSpellbookButton.text:SetText("Show AnglerAtlas button in spellbook")
+    showSpellbookButton.tooltipText = "Show AnglerAtlas button in spellbook"
+    showSpellbookButton:SetScript("OnClick", function(self)
+        AnglerAtlasSettings.showSpellbookButton = self:GetChecked()
+        -- AnglerAtlas.UI:ShowSpellbookButton()
+        if AnglerAtlasSettings.showSpellbookButton then
+            AnglerAtlas.UI.showButtonTab:Show()
+        else
+            AnglerAtlas.UI.showButtonTab:Hide()
+        end
+    end)
+    showSpellbookButton:SetChecked(AnglerAtlasSettings.showSpellbookButton)
+
+    local showMinimapButton = CreateFrame("CheckButton", "AnglerAtlasShowMinimapButton", panel, "InterfaceOptionsCheckButtonTemplate")
+    showMinimapButton:SetPoint("TOPLEFT", showSpellbookButton, "BOTTOMLEFT", 0, -8)
+    showMinimapButton.text = showMinimapButton:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    showMinimapButton.text:SetPoint("LEFT", showMinimapButton, "RIGHT", 0, 3)
+    showMinimapButton.text:SetText("Show AnglerAtlas button on minimap")
+    showMinimapButton.tooltipText = "Show AnglerAtlas button on minimap"
+    showMinimapButton:SetScript("OnClick", function(self)
+        AnglerAtlasSettings.miniMapIcon.hide = not self:GetChecked()
+        LibDBIcon:Refresh("AnglerAtlas", AnglerAtlasSettings.miniMapIcon)
+        -- AnglerAtlas.MM:ToggleMinimapButton()
+    end)
+    showMinimapButton:SetChecked(not AnglerAtlasSettings.miniMapIcon.hide)
+
+end
 
 
 local textColours = {
@@ -67,7 +132,7 @@ function AnglerAtlas.UI:BuildShowButtons()
 
 
     AnglerAtlas.UI.showButtonTab.showButton:SetScript("OnClick", function()
-        AnglerAtlas.UI:Show()
+        AnglerAtlas.UI:ToggleUI()
     end)
     AnglerAtlas.UI.showButtonTab.showButton:SetScript("OnEnter", function()
         GameTooltip:SetOwner(AnglerAtlas.UI.showButtonTab.showButton, "ANCHOR_RIGHT")
@@ -79,6 +144,13 @@ function AnglerAtlas.UI:BuildShowButtons()
         GameTooltip:Hide()
     end)
     SetItemButtonTexture(AnglerAtlas.UI.showButtonTab.showButton, GetItemIcon('19970')) 
+
+    if not AnglerAtlasSettings.showSpellbookButton then
+        AnglerAtlas.UI.showButtonTab:Hide()
+    end
+
+    -- Minimap icon
+    LibDBIcon:Register("AnglerAtlas", LDB, AnglerAtlasSettings.miniMapIcon)
 end
 
 
@@ -1273,6 +1345,13 @@ function AnglerAtlas.UI:Build()
     AnglerAtlas.UI:SetMovable(true)
     AnglerAtlas.UI:EnableMouse(true)
     AnglerAtlas.UI:RegisterForDrag("LeftButton")
+    function AnglerAtlas.UI:ToggleUI()
+        if AnglerAtlas.UI:IsShown() then
+            AnglerAtlas.UI:Hide()
+        else
+            AnglerAtlas.UI:Show()
+        end
+    end
     AnglerAtlas.UI:Hide()
     AnglerAtlas.UI:SetScript("OnDragStart", function(self)
         self:StartMoving()
@@ -1280,6 +1359,8 @@ function AnglerAtlas.UI:Build()
     AnglerAtlas.UI:SetScript("OnDragStop", function(self)
         self:StopMovingOrSizing()
     end)
+
+
     AnglerAtlas.UI:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
         PlaySound(SOUNDKIT.FISHING_REEL_IN, "Master");
@@ -1287,18 +1368,6 @@ function AnglerAtlas.UI:Build()
     end)
     AnglerAtlas.UI:SetScript("OnHide", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE, "Master");
-    end)
-
-    AnglerAtlas.UI:RegisterEvent("UNIT_INVENTORY_CHANGED")
-    AnglerAtlas.UI:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-    AnglerAtlas.UI:RegisterEvent("SKILL_LINES_CHANGED")
-    AnglerAtlas.UI:SetScript("OnEvent", function (self, event)
-        -- print("Event: "..event)
-        if event == "UNIT_INVENTORY_CHANGED" or 
-        event == "PLAYER_EQUIPMENT_CHANGED" or
-        event == "SKILL_LINES_CHANGED" then
-            AnglerAtlas:Reload()
-        end
     end)
 
     -- Setup the show/hide button
@@ -1372,4 +1441,6 @@ function AnglerAtlas.UI:Build()
     AnglerAtlas.UI.selectedZoneHighlight.texture:SetPoint("CENTER", 0, 0)
     AnglerAtlas.UI.selectedZoneHighlight.texture:SetBlendMode("ADD")
     AnglerAtlas.UI.selectedZoneHighlight:Hide()
+
+    AnglerAtlas.UI:BuildAddonSettings()
 end

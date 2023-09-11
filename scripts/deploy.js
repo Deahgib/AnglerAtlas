@@ -30,7 +30,9 @@ function deployAddon() {
     const tocFilePath = path.join(srcPath, `${addonFolderName}/${addonFolderName}.toc`);
     updateTocFile(tocFilePath, version, classicInterfaceVersion);
     const tocFilePathClassic = path.join(srcPath, `${addonFolderName}/${addonFolderName}-Classic.toc`);
-    updateTocFile(tocFilePathClassic, version, classicInterfaceVersion);
+    // updateTocFile(tocFilePathClassic, version, classicInterfaceVersion);
+    // Create -Classic.toc file for AnglerAtlas-Classic
+    fs.copyFileSync(tocFilePath, tocFilePathClassic);
 
     // Build a zip of the addon src folder
     const zipFileName = `${addonFolderName}-${version}.zip`;

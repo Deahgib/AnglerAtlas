@@ -39,11 +39,13 @@ end
 function AnglerAtlas:SelectZone(zoneId, anglerFrame)
     if zoneId == nil then
         AnglerAtlas.UI.selectedZoneHighlight:Hide()
-
         return  
     end
+    
+    if AnglerAtlas.STATE.selectedZone == zoneId then
+        return
+    end
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
-    -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
     AnglerAtlas.STATE.selectedZone = zoneId
     
     -- print("Selected zone "..zoneId)
