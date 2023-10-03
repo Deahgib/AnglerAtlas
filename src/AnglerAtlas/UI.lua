@@ -112,7 +112,7 @@ function AnglerAtlas.UI:BuildShowButtons()
 
     AnglerAtlas.UI.showButtonTab = CreateFrame("FRAME", "angler-show-button-tab", SpellBookSideTabsFrame)
     AnglerAtlas.UI.showButtonTab:SetSize(62, 62)
-    AnglerAtlas.UI.showButtonTab:SetPoint("BOTTOMRIGHT", SpellBookSideTabsFrame, "BOTTOMRIGHT", 27, 80)
+    AnglerAtlas.UI.showButtonTab:SetPoint("BOTTOMRIGHT", SpellBookSideTabsFrame, "BOTTOMRIGHT", 27, 150)
     AnglerAtlas.UI.showButtonTab.texture = AnglerAtlas.UI.showButtonTab:CreateTexture(nil,'ARTWORK')
     AnglerAtlas.UI.showButtonTab.texture:SetTexture("Interface\\SPELLBOOK\\SpellBook-SkillLineTab")
     AnglerAtlas.UI.showButtonTab.texture:SetAllPoints()
