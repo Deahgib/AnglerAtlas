@@ -956,6 +956,7 @@ function AnglerAtlas.UI:BuildEquipment()
 
     AnglerAtlas.UI.equipment.other = buildEquipmentRow(AnglerAtlas.UI.equipment, "Other", AnglerAtlas.DATA.equipment.other)
     AnglerAtlas.UI.equipment.other:SetPoint("TOPLEFT", AnglerAtlas.UI.equipment.lures, "BOTTOMLEFT", 0, -20)
+    
 end
 
 function AnglerAtlas.UI:CreateTabManager()

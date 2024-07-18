@@ -1,7 +1,7 @@
 {
   "name": "angleratlas",
-  "version": "0.0.7",
-  "classicInterfaceVersion": "11501",
+  "version": "0.0.9",
+  "classicInterfaceVersion": "11503",
   "description": "",
   "main": "none",
   "scripts": {
