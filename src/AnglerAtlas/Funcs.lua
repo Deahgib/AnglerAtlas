@@ -36,7 +36,7 @@ end
 
 
 
-function AnglerAtlas:SelectZone(zoneId, anglerFrame)
+function AnglerAtlas:SelectZone(zoneId)
     if zoneId == nil then
         AnglerAtlas.UI.selectedZoneHighlight:Hide()
         return  
@@ -49,13 +49,12 @@ function AnglerAtlas:SelectZone(zoneId, anglerFrame)
     AnglerAtlas.STATE.selectedZone = zoneId
     
     -- print("Selected zone "..zoneId)
-    AnglerAtlas.UI.selectedZoneHighlight:Show()
-    AnglerAtlas.UI.selectedZoneHighlight:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
     AnglerAtlas.UI:UpdateZoneList()
     AnglerAtlas.UI:UpdateZoneInfo()
+    AnglerAtlas.UI.zones:SelectItem(zoneId)
 end
 
-function AnglerAtlas:SelectFish(fishId, anglerFrame)
+function AnglerAtlas:SelectFish(fishId)
     if fishId == nil then
         AnglerAtlas.UI.selectedIcon:Hide()
         return
@@ -68,14 +67,14 @@ function AnglerAtlas:SelectFish(fishId, anglerFrame)
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
     AnglerAtlas.STATE.selectedFish = fishId
     AnglerAtlas.STATE.selectedFishData = AnglerAtlas.DATA.fish[AnglerAtlas.STATE.selectedFish]
-    AnglerAtlas.UI.selectedIcon:Show()
-    AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
 
     local zones = AnglerAtlas:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
     -- print("Zones for fish "..fishId)
     -- for i = 1, #zones do
     --     print(zones[i].name)
     -- end
+
+    AnglerAtlas.UI.grid:SelectItem(fishId)
     
     AnglerAtlas.UI:UpdateFishInfo()
     AnglerAtlas.UI:UpdateRecipes()

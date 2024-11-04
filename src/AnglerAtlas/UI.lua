@@ -341,10 +341,11 @@ function AnglerAtlas.UI:CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         end)
 
         itemFrame:SetScript("OnClick", function()
-            AnglerAtlas:SelectFish(itemID, itemFrame)
+            AnglerAtlas:SelectFish(itemID)
         end)
 
         table.insert(row.items, itemFrame)
+        table.insert(uiParent.items, itemFrame)
         table.insert(AnglerAtlas.UI.fishIcons, itemFrame)
 
 
@@ -389,6 +390,7 @@ function AnglerAtlas.UI:CreateItemGrid(itemIds, uiParent, itemSize, itemPadding,
     local stepCursorVertical = height * 0.5 - itemSize * 0.5
     local tmpRow = {}
     local counter = 1
+    grid.items = {}
     grid.rows = {}
     for i = 1, #itemIds do
         local itemID = itemIds[i]
@@ -402,6 +404,14 @@ function AnglerAtlas.UI:CreateItemGrid(itemIds, uiParent, itemSize, itemPadding,
             tmpRow = {}
         end
         counter = counter + 1
+    end
+    function grid:SelectItem (id) 
+        for i = 1, #self.items do
+            if self.items[i].itemID == id then
+                AnglerAtlas.UI.selectedIcon:Show()
+                AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
+            end
+        end
     end
     return grid
 end
@@ -544,7 +554,7 @@ function AnglerAtlas.UI:BuildZonesList()
         zoneButton:SetSize(250, 30)
         zoneButton:SetPoint("TOP", AnglerAtlas.UI.zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
         zoneButton:SetScript("OnClick", function()
-            AnglerAtlas:SelectZone(zoneButton.zoneId, zoneButton)
+            AnglerAtlas:SelectZone(zoneButton.zoneId)
         end)
 
         zoneButton.factionTexture = zoneButton:CreateTexture(nil,'ARTWORK')
@@ -579,6 +589,15 @@ function AnglerAtlas.UI:BuildZonesList()
 
         AnglerAtlas.UI.zones.zoneButtons[i] = zoneButton
 
+    end
+
+    function AnglerAtlas.UI.zones:SelectItem(id)
+        for i = 1, #self.zoneButtons do
+            if self.zoneButtons[i].zoneId == id then
+                AnglerAtlas.UI.selectedIcon:Show()
+                AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", self.zoneButtons[i], "CENTER", 0, 0)
+            end
+        end
     end
 end
 
