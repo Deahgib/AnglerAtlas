@@ -2153,7 +2153,7 @@ AnglerAtlas.DATA.equipment = {
         {
             ["id"] = 6256,
             ["order"] = 1,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = "Sold by vendors across the world."
         },
         {
             ["id"] = 12225,
@@ -2163,7 +2163,7 @@ AnglerAtlas.DATA.equipment = {
         {
             ["id"] = 6365,
             ["order"] = 3,
-            ["desc"] = "Sold by vendors accross the world in limmited stock."
+            ["desc"] = "Sold by vendors across the world in limited stock."
         },
         {
             ["id"] = 6366,
@@ -2198,6 +2198,11 @@ AnglerAtlas.DATA.equipment = {
             ["desc"] = "Sold by vendors accross the world."
         },
         {
+            ["id"] = 6811,
+            ["order"] = 5,
+            ["desc"] = "Available from Alliance quest 'Electropellers' in Darkshore."
+        },
+        {
             ["id"] = 6532,
             ["order"] = 3,
             ["desc"] = "Sold by vendors accross the world."
@@ -2205,8 +2210,8 @@ AnglerAtlas.DATA.equipment = {
         {
             ["id"] = 6533,
             ["order"] = 4,
-            ["desc"] = "Sold by vendors accross the world in limmited supply"
-        },
+            ["desc"] = "Sold by vendors accross the world in limited supply"
+        }
     },
     ["other"] = {
         {
