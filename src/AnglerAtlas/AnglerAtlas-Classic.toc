@@ -1,7 +1,7 @@
-## Interface: 11504
+## Interface: 11505
 ## Title: AnglerAtlas 
 ## Notes: A fishing A-Z
-## Version: 0.0.11
+## Version: 0.0.12
 ## Author: Calpico-Firemaw
 ## SavedVariables: AnglerAtlasSettings
 ## OptionalDeps: Auctionator
