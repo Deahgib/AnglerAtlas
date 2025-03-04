@@ -1,90 +1,53 @@
-
-
-function AnglerAtlas:SplitGold(sourceValue)
-    local gold = math.floor(sourceValue / 10000)
-    local silver = math.floor((sourceValue - (gold * 10000)) / 100)
-    local copper = sourceValue - (gold * 10000) - (silver * 100)
+function AnglerAtlas:SplitGold(sourceCopperValue)
+    local gold = math.floor(sourceCopperValue / 10000)
+    local silver = math.floor((sourceCopperValue - (gold * 10000)) / 100)
+    local copper = sourceCopperValue - (gold * 10000) - (silver * 100)
     return gold, silver, copper
 end
 
-
-
-
-function AnglerAtlas:Reload()
-    AnglerAtlas:loadPlayerData()
-    if AnglerAtlas.SKILL.hasFishing then
-        local skillMod = AnglerAtlas.SKILL.skillModifier > 0 and "(|cFF00FF00+"..AnglerAtlas.SKILL.skillModifier.."|cFFFFFFFF) " or ""
-        AnglerAtlas.UI.playerInfo:SetText("level "..AnglerAtlas.SKILL.level.." "..skillMod..AnglerAtlas.SKILL.rankName.." angler")
-    else
-        AnglerAtlas.UI.playerInfo:SetText("needs to find a fishing trainer")
+function AnglerAtlas:getRankNameForLevel(level)
+    for i = 1, #AnglerAtlas.skillRankNames do
+        if level <= AnglerAtlas.skillRankNames[i].rank then
+            return AnglerAtlas.skillRankNames[i].name
+        end
     end
-    AnglerAtlas.UI:UpdateFishGrid()
-    AnglerAtlas.UI:UpdateFishInfo()
-    AnglerAtlas.UI:UpdateZoneList()
-    AnglerAtlas.UI:UpdateZoneInfo()
-
+    return "Apprentice"
 end
 
-function AnglerAtlas:ReloadAll()
-    AnglerAtlas:Reload()
-    AnglerAtlas.UI:UpdateRecipes()
-    SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");
-    AnglerAtlas.UI.playerName:SetText(AnglerAtlas.PLAYER.name)
+function AnglerAtlas:loadPlayerData()
+    -- print("Loading player data...")
+    -- load player name and realm
+    AnglerAtlas.PLAYER.name, AnglerAtlas.PLAYER.realm = UnitName("player")
+    -- load player level
+    AnglerAtlas.PLAYER.level = UnitLevel("player")
+
+    AnglerAtlas.SKILL.hasFishing = false
+    for skillIndex = 1, GetNumSkillLines() do
+        -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
+        local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
+
+        if skillName == "Fishing" then
+            AnglerAtlas.SKILL.hasFishing = true
+            -- print("---SKILL DATA---")
+            -- print("skillName: " .. skillName)
+            -- print("isExpanded: " .. tostring(isExpanded))
+            -- print("skillRank: " .. skillRank)
+            -- print("numTempPoints: " .. numTempPoints)
+            -- print("skillModifier: " .. skillModifier)
+            -- print("skillMaxRank: " .. skillMaxRank)
+            -- print("isAbandonable: " .. tostring(isAbandonable))
+            -- print("minLevel: " .. minLevel)
+            -- print("skillCostType: " .. skillCostType)
+            -- print("skillDescription: " .. skillDescription)
+            -- print("----------------")
+            AnglerAtlas.SKILL.level = skillRank
+            AnglerAtlas.SKILL.maxLevel = skillMaxRank
+            AnglerAtlas.SKILL.rankName = AnglerAtlas:getRankNameForLevel(skillRank)
+            AnglerAtlas.SKILL.skillModifier = skillModifier
+            AnglerAtlas.SKILL.modLevel = skillRank + skillModifier
+        end
+    end
 end
-
-
-
-
-
-function AnglerAtlas:SelectZone(zoneId)
-    if zoneId == nil then
-        AnglerAtlas.UI.selectedZoneHighlight:Hide()
-        return  
-    end
-    
-    if AnglerAtlas.STATE.selectedZone == zoneId then
-        return
-    end
-    PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
-    AnglerAtlas.STATE.selectedZone = zoneId
-    
-    -- print("Selected zone "..zoneId)
-    AnglerAtlas.UI:UpdateZoneList()
-    AnglerAtlas.UI:UpdateZoneInfo()
-    AnglerAtlas.UI.zones:SelectItem(zoneId)
-end
-
-function AnglerAtlas:SelectFish(fishId)
-    if fishId == nil then
-        AnglerAtlas.UI.selectedIcon:Hide()
-        return
-    end
-    if AnglerAtlas.STATE.selectedFish == fishId then
-        return
-    end
-    PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");  -- Page turn
-    PlaySound(1189, "Master") -- Meaty thwack
-    -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
-    AnglerAtlas.STATE.selectedFish = fishId
-    AnglerAtlas.STATE.selectedFishData = AnglerAtlas.DATA.fish[AnglerAtlas.STATE.selectedFish]
-
-    local zones = AnglerAtlas:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
-    -- print("Zones for fish "..fishId)
-    -- for i = 1, #zones do
-    --     print(zones[i].name)
-    -- end
-
-    AnglerAtlas.UI.grid:SelectItem(fishId)
-    
-    AnglerAtlas.UI:UpdateFishInfo()
-    AnglerAtlas.UI:UpdateRecipes()
-    AnglerAtlas:SelectZone(tostring(zones[1].id), AnglerAtlas.UI.zones.zoneButtons[1])
-
-end
-
-
-
-
 
 
 
@@ -117,3 +80,4 @@ function AnglerAtlas:GetSortedFishByCatchLevel()
     end)
     return sortedFish
 end
+

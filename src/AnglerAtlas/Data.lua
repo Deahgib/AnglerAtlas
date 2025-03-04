@@ -1,5 +1,3 @@
-AnglerAtlasSettings = {}
-AnglerAtlas = {}
 AnglerAtlas.SKILL = {}
 AnglerAtlas.PLAYER = {}
 AnglerAtlas.STATE = {
@@ -2251,66 +2249,11 @@ for k in pairs(AnglerAtlas.DATA.fish) do table.insert(AnglerAtlas.DATA.validFish
 AnglerAtlas.DATA.validZones = {}
 for k in pairs(AnglerAtlas.DATA.zones) do table.insert(AnglerAtlas.DATA.validZones, k) end
     
-AnglerAtlas.UI = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
-AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR = "|cFF222222"
-
--- Backdrops
-AnglerAtlas.UI.ANGLER_BACKDROP = CopyTable(BACKDROP_ACHIEVEMENTS_0_64)
-AnglerAtlas.UI.ANGLER_BACKDROP.bgFile = "Interface\\AdventureMap\\AdventureMapParchmentTile"
-AnglerAtlas.UI.ANGLER_BACKDROP.insets = { left = 24, right = 24, top = 22, bottom = 24 }
-
-function AnglerAtlas:getRankNameForLevel(level)
-    for i = 1, #AnglerAtlas.skillRankNames do
-        if level <= AnglerAtlas.skillRankNames[i].rank then
-            return AnglerAtlas.skillRankNames[i].name
-        end
-    end
-    return "Apprentice"
-end
-
-function AnglerAtlas:loadPlayerData()
-    -- print("Loading player data...")
-    -- load player name and realm
-    AnglerAtlas.PLAYER.name, AnglerAtlas.PLAYER.realm = UnitName("player")
-    -- load player level
-    AnglerAtlas.PLAYER.level = UnitLevel("player")
-
-    AnglerAtlas.SKILL.hasFishing = false
-    for skillIndex = 1, GetNumSkillLines() do
-        -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
-        local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
-
-        -- print(skillName)
-
-        if skillName == "Fishing" then
-            AnglerAtlas.SKILL.hasFishing = true
-            -- print("---SKILL DATA---")
-            -- print("skillName: " .. skillName)
-            -- print("isExpanded: " .. tostring(isExpanded))
-            -- print("skillRank: " .. skillRank)
-            -- print("numTempPoints: " .. numTempPoints)
-            -- print("skillModifier: " .. skillModifier)
-            -- print("skillMaxRank: " .. skillMaxRank)
-            -- print("isAbandonable: " .. tostring(isAbandonable))
-            -- print("minLevel: " .. minLevel)
-            -- print("skillCostType: " .. skillCostType)
-            -- print("skillDescription: " .. skillDescription)
-            -- print("----------------")
-            AnglerAtlas.SKILL.level = skillRank
-            AnglerAtlas.SKILL.maxLevel = skillMaxRank
-            AnglerAtlas.SKILL.rankName = AnglerAtlas:getRankNameForLevel(skillRank)
-            AnglerAtlas.SKILL.skillModifier = skillModifier
-            AnglerAtlas.SKILL.modLevel = skillRank + skillModifier
-        end
-    end
-end
-
 
 
 
 
 -- Data for me:
-
 -- local borderFiles = {
 --     ["UI-DialogBox-TestWatermark-Border"] = "Interface\\DialogFrame\\UI-DialogBox-TestWatermark-Border",
 --     ["UI-DialogBox-Border"] = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -2322,7 +2265,6 @@ end
 --     ["UI-Tooltip-Border"] = "Interface\\Tooltips\\UI-Tooltip-Border",
 --     ["UI-TalentFrame-Active"] = "Interface\\TALENTFRAME\\UI-TalentFrame-Active",
 -- }
-
 -- local backgroundFiles = {
 --     ["UI-Background-Rock"] = "Interface\\FrameGeneral\\UI-Background-Rock",
 --     ["UI-Background-Marble"] = "Interface\\FrameGeneral\\UI-Background-Marble",
@@ -2339,7 +2281,6 @@ end
 --     ["CollectionsBackgroundTile"] = "Interface\\Collections\\CollectionsBackgroundTile",
 --     ["BlackMarketBackground-Tile"] = "Interface\\BlackMarket\\BlackMarketBackground-Tile",
 -- }
-
 -- Backdrops
 -- BACKDROP_ACHIEVEMENTS_0_64
 -- BACKDROP_ARENA_32_32

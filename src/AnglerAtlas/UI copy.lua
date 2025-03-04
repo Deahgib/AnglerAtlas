@@ -1,4 +1,16 @@
+if not LibStub then error("AnglerAtlas requires LibStub.") end
 
+local LibDBIcon = LibStub("LibDBIcon-1.0")
+local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("AnglerAtlas", {
+    type = "launcher",
+    icon = "Interface\\Icons\\INV_Fishingpole_01",
+    OnClick = function(self, button)
+        AnglerAtlas.UI:ToggleUI()
+    end,
+    OnTooltipShow = function(tooltip)
+        tooltip:SetText("Angler Atlas")
+    end,
+})
 
 function AnglerAtlas.UI:BuildAddonSettings()
     local panel = CreateFrame("Frame")
@@ -328,11 +340,10 @@ function AnglerAtlas.UI:CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         end)
 
         itemFrame:SetScript("OnClick", function()
-            AnglerAtlas.UI:SelectFish(itemID)
+            AnglerAtlas.UI:SelectFish(itemID, itemFrame)
         end)
 
         table.insert(row.items, itemFrame)
-        table.insert(uiParent.items, itemFrame)
         table.insert(AnglerAtlas.UI.fishIcons, itemFrame)
 
 
@@ -377,7 +388,6 @@ function AnglerAtlas.UI:CreateItemGrid(itemIds, uiParent, itemSize, itemPadding,
     local stepCursorVertical = height * 0.5 - itemSize * 0.5
     local tmpRow = {}
     local counter = 1
-    grid.items = {}
     grid.rows = {}
     for i = 1, #itemIds do
         local itemID = itemIds[i]
@@ -391,14 +401,6 @@ function AnglerAtlas.UI:CreateItemGrid(itemIds, uiParent, itemSize, itemPadding,
             tmpRow = {}
         end
         counter = counter + 1
-    end
-    function grid:SelectItem (id) 
-        for i = 1, #self.items do
-            if self.items[i].itemID == id then
-                AnglerAtlas.UI.selectedIcon:Show()
-                AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
-            end
-        end
     end
     return grid
 end
@@ -541,7 +543,7 @@ function AnglerAtlas.UI:BuildZonesList()
         zoneButton:SetSize(250, 30)
         zoneButton:SetPoint("TOP", AnglerAtlas.UI.zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
         zoneButton:SetScript("OnClick", function()
-            AnglerAtlas.UI:SelectZone(zoneButton.zoneId)
+            AnglerAtlas.UI:SelectZone(zoneButton.zoneId, zoneButton)
         end)
 
         zoneButton.factionTexture = zoneButton:CreateTexture(nil,'ARTWORK')
@@ -576,15 +578,6 @@ function AnglerAtlas.UI:BuildZonesList()
 
         AnglerAtlas.UI.zones.zoneButtons[i] = zoneButton
 
-    end
-
-    function AnglerAtlas.UI.zones:SelectItem(id)
-        for i = 1, #self.zoneButtons do
-            if self.zoneButtons[i].zoneId == id then
-                AnglerAtlas.UI.selectedIcon:Show()
-                AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", self.zoneButtons[i], "CENTER", 0, 0)
-            end
-        end
     end
 end
 
@@ -1347,110 +1340,3 @@ end
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -- UI Build
-
-function AnglerAtlas.UI:Build()
-    AnglerAtlas.UI:SetFrameStrata("DIALOG")
-    AnglerAtlas.UI:SetSize(860, 490)
-    AnglerAtlas.UI:SetPoint("CENTER") -- Doesn't need to be ("CENTER", UIParent, "CENTER")
-    AnglerAtlas.UI:SetMovable(true)
-    AnglerAtlas.UI:EnableMouse(true)
-    AnglerAtlas.UI:RegisterForDrag("LeftButton")
-    function AnglerAtlas.UI:ToggleUI()
-        if AnglerAtlas.UI:IsShown() then
-            AnglerAtlas.UI:Hide()
-        else
-            AnglerAtlas.UI:Show()
-        end
-    end
-    AnglerAtlas.UI:Hide()
-    AnglerAtlas.UI:SetScript("OnDragStart", function(self)
-        self:StartMoving()
-    end)
-    AnglerAtlas.UI:SetScript("OnDragStop", function(self)
-        self:StopMovingOrSizing()
-    end)
-
-
-    AnglerAtlas.UI:SetScript("OnShow", function()
-        PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
-        PlaySound(SOUNDKIT.FISHING_REEL_IN, "Master");
-        AnglerAtlas.UI:ReloadAll()
-    end)
-    AnglerAtlas.UI:SetScript("OnHide", function()
-        PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE, "Master");
-    end)
-
-    -- Setup the show/hide button
-    AnglerAtlas.UI:BuildShowButtons()
-
-    -- Character Blurb
-    AnglerAtlas.UI.playerName = AnglerAtlas.UI:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    AnglerAtlas.UI.playerName:SetPoint("TOPLEFT", AnglerAtlas.UI, "TOPLEFT", 60, -46)
-    AnglerAtlas.UI.playerName:SetFont("Fonts\\FRIZQT__.ttf", 18, "OUTLINE")
-    AnglerAtlas.UI.playerInfo = AnglerAtlas.UI:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    AnglerAtlas.UI.playerInfo:SetPoint("BOTTOMLEFT", AnglerAtlas.UI.playerName, "BOTTOMRIGHT", 5, 1)
-    AnglerAtlas.UI.playerInfo:SetFont("Fonts\\FRIZQT__.ttf", 12, "OUTLINE")
-
-    -- Pretty up the frame
-    AnglerAtlas.UI:BuildFrameDecorations()
-
-    -- Make the Fish grid
-    AnglerAtlas.UI.fishIcons = {}
-    AnglerAtlas.UI.grid = AnglerAtlas.UI:CreateItemGrid(AnglerAtlas:GetSortedFishByCatchLevel(), AnglerAtlas.UI, 42, 6, 3, 15)
-    AnglerAtlas.UI.grid:SetPoint("TOPLEFT", 10, -70)
-
-    -- Make the fish info panel
-    AnglerAtlas.UI:BuildFishInfo()
-    
-    -- Make the zones list
-    AnglerAtlas.UI:BuildZonesList()
-    
-    -- Make the zone info panel
-    AnglerAtlas.UI.BuildZoneInfoUI()
-
-
-    AnglerAtlas.UI.tabManager = AnglerAtlas.UI:CreateTabManager()
-
-    -- Make the recipes panel
-    AnglerAtlas.UI:BuildRecipes()
-
-    -- Make the equipment panel
-    AnglerAtlas.UI:BuildEquipment()
-
-    -- Make the tab buttons
-    AnglerAtlas.UI.recipesToggleButton = AnglerAtlas.UI.tabManager:CreateTabButton("recipes", AnglerAtlas.UI, "Recipes", "Recipes")
-    AnglerAtlas.UI.recipesToggleButton:SetPoint("TOPRIGHT", AnglerAtlas.UI, "TOPRIGHT", -18, -45)
-
-    AnglerAtlas.UI.equipmentToggleButton = AnglerAtlas.UI.tabManager:CreateTabButton("equipment", AnglerAtlas.UI, "Equipment", "Equipment")
-    AnglerAtlas.UI.equipmentToggleButton:SetPoint("RIGHT", AnglerAtlas.UI.recipesToggleButton, "LEFT", -5, 0)
-
-    -- Register the tabs
-    AnglerAtlas.UI.tabManager:Register('default', nil, AnglerAtlas.UI.zoneinfo)
-    AnglerAtlas.UI.tabManager:Register('recipes', AnglerAtlas.UI.recipesToggleButton, AnglerAtlas.UI.recipes)
-    AnglerAtlas.UI.tabManager:Register('equipment', AnglerAtlas.UI.equipmentToggleButton, AnglerAtlas.UI.equipment)
-    
-    
-    AnglerAtlas.UI.selectedIcon = CreateFrame("FRAME", "angler-grid-selected-icon", AnglerAtlas.UI.grid.rows[1].items[1])
-    AnglerAtlas.UI.selectedIcon:SetSize(37, 37)
-    AnglerAtlas.UI.selectedIcon:SetPoint("CENTER", 0, 0)
-
-    AnglerAtlas.UI.selectedIcon.texture = AnglerAtlas.UI.selectedIcon:CreateTexture(nil,'ARTWORK')
-    AnglerAtlas.UI.selectedIcon.texture:SetTexture("Interface\\Store\\store-item-highlight")
-    AnglerAtlas.UI.selectedIcon.texture:SetSize(64, 64)
-    AnglerAtlas.UI.selectedIcon.texture:SetPoint("CENTER", 0, 0)
-    AnglerAtlas.UI.selectedIcon.texture:SetBlendMode("ADD")
-    AnglerAtlas.UI.selectedIcon:Hide()
-
-    AnglerAtlas.UI.selectedZoneHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", AnglerAtlas.UI.zones.zoneButtons[1])
-    AnglerAtlas.UI.selectedZoneHighlight:SetSize(250, 30)
-    AnglerAtlas.UI.selectedZoneHighlight:SetPoint("CENTER", 0, 0)
-
-    AnglerAtlas.UI.selectedZoneHighlight.texture = AnglerAtlas.UI.selectedZoneHighlight:CreateTexture(nil,'ARTWORK')
-    AnglerAtlas.UI.selectedZoneHighlight.texture:SetTexture("Interface\\Buttons\\UI-Common-MouseHilight")
-    AnglerAtlas.UI.selectedZoneHighlight.texture:SetSize(380, 34)
-    AnglerAtlas.UI.selectedZoneHighlight.texture:SetPoint("CENTER", 0, 0)
-    AnglerAtlas.UI.selectedZoneHighlight.texture:SetBlendMode("ADD")
-    AnglerAtlas.UI.selectedZoneHighlight:Hide()
-
-    AnglerAtlas.UI:BuildAddonSettings()
-end
