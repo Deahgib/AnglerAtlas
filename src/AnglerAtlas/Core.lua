@@ -1,4 +1,4 @@
-
+local DATA = AnglerAtlas.MM:GetModule("DATA")
 local UI = AnglerAtlas.MM:GetModule("UI")
 
 local function LoadSettings()
@@ -35,7 +35,7 @@ local function On_PlayerLogout()
 end
 
 local function On_PlayerEnteringWorld()
-    AnglerAtlas:loadPlayerData()
+    DATA:LoadPlayerData()
 end
 
 local function On_SomethingInterestingChanged()

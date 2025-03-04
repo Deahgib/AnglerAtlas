@@ -1,6 +1,8 @@
 local LibDBIcon = AnglerAtlas.MM:GetModule("LibDBIcon")
 local LDB = AnglerAtlas.MM:GetModule("LDB")
 
+local UI = AnglerAtlas.MM:GetModule("UI")
+
 local ShowButtons = {}
 function ShowButtons:Create(parent)
     
@@ -13,20 +15,20 @@ function ShowButtons:Create(parent)
 
     showButtons.showButton = CreateFrame("BUTTON", "angler-show-button", showButtons, "ItemButtonTemplate")
     showButtons.showButton:SetSize(32, 32)
-    -- -- print(AnglerAtlas.UI.showButton.NormalTexture)
-    -- AnglerAtlas.UI.showButton.NormalTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Up")
-    -- AnglerAtlas.UI.showButton.NormalTexture:SetSize(16, 16)
+    -- -- print(UI.showButton.NormalTexture)
+    -- UI.showButton.NormalTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Up")
+    -- UI.showButton.NormalTexture:SetSize(16, 16)
     showButtons.showButton:SetPoint("TOPLEFT", showButtons, "TOPLEFT", 3, -10)
 
 
     -- for k, v in pairs(AnglerAtlas.showButtons.showButton) do
     --     print(k)
     -- end
-    _G[AnglerAtlas.showButtons.showButton:GetName().."NormalTexture"]:SetSize(50, 50)
+    _G[showButtons.showButton:GetName().."NormalTexture"]:SetSize(50, 50)
 
 
     showButtons.showButton:SetScript("OnClick", function()
-        AnglerAtlas.UI:ToggleUI()
+        UI:ToggleUI()
     end)
     showButtons.showButton:SetScript("OnEnter", function()
         GameTooltip:SetOwner(showButtons.showButton, "ANCHOR_RIGHT")

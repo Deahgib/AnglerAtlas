@@ -1,6 +1,14 @@
 local UI = AnglerAtlas.MM:GetModule("UI")
 
+local DATA = AnglerAtlas.MM:GetModule("DATA")
+
+local FrameDecorations = AnglerAtlas.MM:GetModule("FrameDecorations")
+
 local ShowButtons = AnglerAtlas.MM:GetModule("ShowButtons")
+
+local FishGrid = AnglerAtlas.MM:GetModule("FishGrid")
+
+local FishInfo = AnglerAtlas.MM:GetModule("FishInfo")
 
 -------------------------------------------------
 -- Battle plans:
@@ -64,15 +72,14 @@ function UI:Build()
     UI.playerInfo:SetFont("Fonts\\FRIZQT__.ttf", 12, "OUTLINE")
 
     -- Pretty up the frame
-    UI:BuildFrameDecorations()
+    FrameDecorations:Create(UI)
 
     -- Make the Fish grid
-    UI.fishIcons = {}
-    UI.grid = UI:CreateItemGrid(AnglerAtlas:GetSortedFishByCatchLevel(), UI, 42, 6, 3, 15)
+    UI.grid = FishGrid:Create(DATA:GetSortedFishByCatchLevel(), UI, 42, 6, 3, 15)
     UI.grid:SetPoint("TOPLEFT", 10, -70)
 
     -- Make the fish info panel
-    UI:BuildFishInfo()
+    FishInfo:Create(UI)
     
     -- Make the zones list
     UI:BuildZonesList()
@@ -167,7 +174,7 @@ function UI:SelectFish(fishId)
     PlaySound(1189, "Master") -- Meaty thwack
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
     AnglerAtlas.STATE.selectedFish = fishId
-    AnglerAtlas.STATE.selectedFishData = AnglerAtlas.DATA.fish[AnglerAtlas.STATE.selectedFish]
+    AnglerAtlas.STATE.selectedFishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
 
     local zones = AnglerAtlas:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
     -- print("Zones for fish "..fishId)
@@ -181,4 +188,27 @@ function UI:SelectFish(fishId)
     UI:UpdateRecipes()
     UI:SelectZone(tostring(zones[1].id), UI.zones.zoneButtons[1])
 
+end
+
+
+function UI:Reload()
+    DATA:LoadPlayerData()
+    if AnglerAtlas.SKILL.hasFishing then
+        local skillMod = AnglerAtlas.SKILL.skillModifier > 0 and "(|cFF00FF00+"..AnglerAtlas.SKILL.skillModifier.."|cFFFFFFFF) " or ""
+        UI.playerInfo:SetText("level "..AnglerAtlas.SKILL.level.." "..skillMod..AnglerAtlas.SKILL.rankName.." angler")
+    else
+        UI.playerInfo:SetText("needs to find a fishing trainer")
+    end
+    FishGrid:Update()
+    FishInfo:Update()
+    AnglerAtlas.UI:UpdateZoneList()
+    AnglerAtlas.UI:UpdateZoneInfo()
+
+end
+
+function UI:ReloadAll()
+    UI:Reload()
+    AnglerAtlas.UI:UpdateRecipes()
+    SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");
+    UI.playerName:SetText(AnglerAtlas.PLAYER.name)
 end
