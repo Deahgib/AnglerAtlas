@@ -2,7 +2,7 @@
 ## Title: AnglerAtlas 
 ## Notes: A fishing A-Z
 ## Version: 0.0.13
-## Author: Calpico-Firemaw
+## Author: deahgib
 ## SavedVariables: AnglerAtlasSettings
 ## OptionalDeps: Auctionator
 ## DefaultState: enabled
