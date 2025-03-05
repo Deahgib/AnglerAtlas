@@ -1,5 +1,7 @@
 local UI = AnglerAtlas.MM:GetModule("UI")
 
+local STATE = AnglerAtlas.MM:GetModule("STATE")
+
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local FrameDecorations = AnglerAtlas.MM:GetModule("FrameDecorations")
@@ -120,18 +122,6 @@ function UI:Build()
     tabManager:Register('default', nil, UI.zoneinfo)
     tabManager:Register('recipes', recipesToggleButton, resipesUI)
     tabManager:Register('equipment', equipmentToggleButton, equipmentUI)
-    
-    
-    UI.selectedIcon = CreateFrame("FRAME", "angler-grid-selected-icon", UI.grid.rows[1].items[1])
-    UI.selectedIcon:SetSize(37, 37)
-    UI.selectedIcon:SetPoint("CENTER", 0, 0)
-
-    UI.selectedIcon.texture = UI.selectedIcon:CreateTexture(nil,'ARTWORK')
-    UI.selectedIcon.texture:SetTexture("Interface\\Store\\store-item-highlight")
-    UI.selectedIcon.texture:SetSize(64, 64)
-    UI.selectedIcon.texture:SetPoint("CENTER", 0, 0)
-    UI.selectedIcon.texture:SetBlendMode("ADD")
-    UI.selectedIcon:Hide()
 
     UI.selectedZoneHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", UI.zones.zoneButtons[1])
     UI.selectedZoneHighlight:SetSize(250, 30)
@@ -162,11 +152,11 @@ function UI:SelectZone(zoneId)
         return  
     end
     
-    if AnglerAtlas.STATE.selectedZone == zoneId then
+    if STATE.selectedZone == zoneId then
         return
     end
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
-    AnglerAtlas.STATE.selectedZone = zoneId
+    STATE.selectedZone = zoneId
     
     -- print("Selected zone "..zoneId)
     ZonesList:Update()
@@ -177,25 +167,25 @@ end
 
 function UI:SelectFish(fishId)
     if fishId == nil then
-        UI.selectedIcon:Hide()
+        FishGrid:HideSelected()
         return
     end
-    if AnglerAtlas.STATE.selectedFish == fishId then
+    if STATE.selectedFish == fishId then
         return
     end
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");  -- Page turn
     PlaySound(1189, "Master") -- Meaty thwack
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
-    AnglerAtlas.STATE.selectedFish = fishId
-    AnglerAtlas.STATE.selectedFishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
+    STATE.selectedFish = fishId
+    STATE.selectedFishData = DATA.fish[STATE.selectedFish]
 
-    local zones = DATA:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
+    local zones = DATA:GetSortedZonesForFish(STATE.selectedFish)
     -- print("Zones for fish "..fishId)
     -- for i = 1, #zones do
     --     print(zones[i].name)
     -- end
 
-    FishGrid:SelectFish(fishId)
+    -- FishGrid:SelectFish(fishId)
     FishInfo:Update()
     Resipes:Update()
     UI:SelectZone(tostring(zones[1].id), UI.zones.zoneButtons[1])
@@ -205,9 +195,9 @@ end
 
 function UI:Reload()
     DATA:LoadPlayerData()
-    if AnglerAtlas.SKILL.hasFishing then
-        local skillMod = AnglerAtlas.SKILL.skillModifier > 0 and "(|cFF00FF00+"..AnglerAtlas.SKILL.skillModifier.."|cFFFFFFFF) " or ""
-        UI.playerInfo:SetText("level "..AnglerAtlas.SKILL.level.." "..skillMod..AnglerAtlas.SKILL.rankName.." angler")
+    if DATA.playerSkill.hasFishing then
+        local skillMod = DATA.playerSkill.skillModifier > 0 and "(|cFF00FF00+"..DATA.playerSkill.skillModifier.."|cFFFFFFFF) " or ""
+        UI.playerInfo:SetText("level "..DATA.playerSkill.level.." "..skillMod..DATA.playerSkill.rankName.." angler")
     else
         UI.playerInfo:SetText("needs to find a fishing trainer")
     end
@@ -222,5 +212,5 @@ function UI:ReloadAll()
     UI:Reload()
     Resipes:Update()
     SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");
-    UI.playerName:SetText(AnglerAtlas.PLAYER.name)
+    UI.playerName:SetText(DATA.playerInfo.name)
 end

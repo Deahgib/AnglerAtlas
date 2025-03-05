@@ -3,8 +3,9 @@ local FishGrid = {}
 local UI = AnglerAtlas.MM:GetModule("UI")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
-
 local fishIcons = {}
+local rows = {}
+local selectedIcon = nil
 
 local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
     -- length of itemIds
@@ -58,14 +59,6 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         itemFrame.status.indicator.texture:SetAllPoints()
         itemFrame.status.indicator.texture:SetVertexColor(1.0, 1.0, 1.0, 1.0)
 
-        -- if fishData.avoidGetawayLevel <= AnglerAtlas.SKILL.level then
-        --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Green")
-        -- elseif fishData.avoidGetawayLevel <= AnglerAtlas.SKILL.level + 75 then
-        --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Yellow")
-        -- else
-        --     itemFrame.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Red")
-        -- end
-
         itemFrame:SetScript("OnEnter", function()
             GameTooltip:SetOwner(itemFrame, "ANCHOR_LEFT")
             -- GameTooltip:AddLine(itemFrame.fishData.name)
@@ -79,13 +72,12 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
 
         itemFrame:SetScript("OnClick", function()
             UI:SelectFish(itemID)
+            selectedIcon:SetPoint("CENTER", itemFrame, "CENTER", 0, 0)
+            selectedIcon:Show()
         end)
 
         table.insert(row.items, itemFrame)
-        table.insert(uiParent.items, itemFrame)
         table.insert(fishIcons, itemFrame)
-
-
 
         stepCursor = stepCursor + stepSize
     end
@@ -100,10 +92,10 @@ function FishGrid:Create(itemIds, uiParent, itemSize, itemPadding, maxColumns, f
         columns = maxColumns
     end 
 
-    local rows = math.ceil(length / maxColumns)
+    local rowsceil = math.ceil(length / maxColumns)
 
     local width = itemSize * columns + itemPadding * (columns - 1)
-    local height = itemSize * rows + itemPadding * (rows - 1)
+    local height = itemSize * rowsceil + itemPadding * (rowsceil - 1)
     local stepSize = itemSize + itemPadding
 
     local grid = CreateFrame("FRAME", "angler-grid", uiParent, "BackdropTemplate")
@@ -127,32 +119,46 @@ function FishGrid:Create(itemIds, uiParent, itemSize, itemPadding, maxColumns, f
     local stepCursorVertical = height * 0.5 - itemSize * 0.5
     local tmpRow = {}
     local counter = 1
-    grid.items = {}
-    grid.rows = {}
     for i = 1, #itemIds do
         local itemID = itemIds[i]
         table.insert(tmpRow, itemID)
         if counter >= maxColumns or i == #itemIds then
             local row = CreateItemRow(tmpRow, grid, itemSize, itemPadding)
             row:SetPoint("CENTER", 0, stepCursorVertical)
-            table.insert(grid.rows, row)
+            table.insert(rows, row)
             counter = 0
             stepCursorVertical = stepCursorVertical - stepSize
             tmpRow = {}
         end
         counter = counter + 1
     end
+
+    selectedIcon = CreateFrame("FRAME", "angler-grid-selected-icon", fishIcons[1])
+    selectedIcon:SetSize(37, 37)
+    selectedIcon:SetPoint("CENTER", 0, 0)
+
+    selectedIcon.texture = selectedIcon:CreateTexture(nil,'OVERLAY')
+    selectedIcon.texture:SetTexture("Interface\\Store\\store-item-highlight")
+    selectedIcon.texture:SetSize(64, 64)
+    selectedIcon.texture:SetPoint("CENTER", 0, 0)
+    selectedIcon.texture:SetBlendMode("ADD")
+    selectedIcon:Hide()
+
     return grid
 end
 
-function FishGrid:SelectFish(id)
-    for i = 1, #grid.items do
-        if grid.items[i].itemID == id then
-            UI.selectedIcon:Show()
-            UI.selectedIcon:SetPoint("CENTER", grid.items[i], "CENTER", 0, 0)
-        end
-    end
+function FishGrid:HideSelected()
+    selectedIcon:Hide()
 end
+
+-- function FishGrid:SelectFish(id)
+--     for i = 1, #fishIcons do
+--         if fishIcons[i].itemID == id then
+            
+--             return
+--         end
+--     end
+-- end
 
 function FishGrid:Update()
     for i = 1, #fishIcons do
@@ -164,11 +170,11 @@ function FishGrid:Update()
         if fishId ~= nil then
             local fishData = DATA.fish[fishId]
             if fishData ~= nil then
-                if AnglerAtlas.SKILL.hasFishing then
+                if DATA.playerSkill.hasFishing then
                     fishIcon.status:Show()
-                    if fishData.avoidGetawayLevel <= AnglerAtlas.SKILL.modLevel then
+                    if fishData.avoidGetawayLevel <= DATA.playerSkill.modLevel then
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Green")
-                    elseif fishData.avoidGetawayLevel <= AnglerAtlas.SKILL.modLevel + 75 then
+                    elseif fishData.avoidGetawayLevel <= DATA.playerSkill.modLevel + 75 then
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Yellow")
                     else
                         fishIcon.status.indicator.texture:SetTexture("Interface\\COMMON\\Indicator-Red")
@@ -180,6 +186,5 @@ function FishGrid:Update()
         end
     end
 end
-
 
 AnglerAtlas.MM:RegisterModule("FishGrid", FishGrid)

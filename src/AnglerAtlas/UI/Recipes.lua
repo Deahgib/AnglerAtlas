@@ -1,7 +1,7 @@
 local Resipes = {}
 
 local UI = AnglerAtlas.MM:GetModule("UI")
-
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
@@ -193,7 +193,7 @@ function Resipes:Update()
         error("Recipes frame not created")
         return
     end
-    if AnglerAtlas.STATE.selectedFish == nil then
+    if STATE.selectedFish == nil then
         recipes.text:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."No fish selected")
         for i = 1, #recipes.recipeItems do
             local recipeFrame = recipes.recipeItems[i]
@@ -204,13 +204,13 @@ function Resipes:Update()
         end
         return
     end
-    recipes.text:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."Recipes for "..AnglerAtlas.STATE.selectedFishData.name)
+    recipes.text:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."Recipes for "..STATE.selectedFishData.name)
     for i = 1, #recipes.recipeItems do
         local recipeFrame = recipes.recipeItems[i]
         if recipeFrame == nil then
             break
         end
-        local recipeData = DATA.recipes[AnglerAtlas.STATE.selectedFish][i]
+        local recipeData = DATA.recipes[STATE.selectedFish][i]
         if recipeData == nil then
             recipeFrame:Hide()
         else

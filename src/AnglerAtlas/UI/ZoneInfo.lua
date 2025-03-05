@@ -1,7 +1,7 @@
 local ZoneInfo = {}
 
 local UI = AnglerAtlas.MM:GetModule("UI")
-
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local ZoneInfoFishRates = AnglerAtlas.MM:GetModule("ZoneInfoFishRates")
@@ -81,13 +81,13 @@ function ZoneInfo:Update()
         return
     end
 
-    if AnglerAtlas.STATE.selectedZone == nil then
+    if STATE.selectedZone == nil then
         zoneinfo.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
         zoneinfo.coastalInland:SetText("")
         zoneinfo.fishRates:Hide()
         return
     end
-    local zoneData = DATA.zones[AnglerAtlas.STATE.selectedZone]
+    local zoneData = DATA.zones[STATE.selectedZone]
     if zoneData == nil then
         zoneinfo.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
         zoneinfo.coastalInland:SetText("")

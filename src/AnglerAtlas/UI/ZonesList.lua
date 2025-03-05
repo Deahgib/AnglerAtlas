@@ -1,6 +1,7 @@
 local ZonesList = {}
 
 local UI = AnglerAtlas.MM:GetModule("UI")
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local zones = nil
@@ -82,8 +83,8 @@ function ZonesList:Create(uiParent)
     function zones:SelectItem(id)
         for i = 1, #self.zoneButtons do
             if self.zoneButtons[i].zoneId == id then
-                UI.selectedIcon:Show()
-                UI.selectedIcon:SetPoint("CENTER", self.zoneButtons[i], "CENTER", 0, 0)
+                UI.selectedZoneHighlight:Show()
+                UI.selectedZoneHighlight:SetPoint("CENTER", self.zoneButtons[i], "CENTER", 0, 0)
             end
         end
     end
@@ -97,19 +98,19 @@ function ZonesList:Update()
         return
     end
     
-    if AnglerAtlas.STATE.selectedFish == nil then
+    if STATE.selectedFish == nil then
         zones.scrollFrame:Hide()
         return
     end
-    if AnglerAtlas.STATE.selectedZone == nil then
+    if STATE.selectedZone == nil then
         zones.scrollFrame:Hide()
         return
     end
     zones.scrollFrame:Show()
-    -- local fishId = AnglerAtlas.STATE.selectedFish
+    -- local fishId = STATE.selectedFish
     -- local fishInfo = DATA.fish[fishId]
-    -- local fishStats = DATA.zones[AnglerAtlas.STATE.selectedZone].fishStats[fishId]
-    local sortedZones = DATA:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
+    -- local fishStats = DATA.zones[STATE.selectedZone].fishStats[fishId]
+    local sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
     for i = 1, #zones.zoneButtons do
         local zoneButton = zones.zoneButtons[i]
         if zoneButton == nil then
@@ -122,7 +123,7 @@ function ZonesList:Update()
             zoneButton:Show()
 
             local zoneNameText = zoneData.name
-            local zoneCatchRateText = DATA:CatchRateColor(zoneData.fishStats[AnglerAtlas.STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[AnglerAtlas.STATE.selectedFish].catchChance*100).."%"
+            local zoneCatchRateText = DATA:CatchRateColor(zoneData.fishStats[STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[STATE.selectedFish].catchChance*100).."%"
             local zoneFishingLevelText = DATA:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel)
 
             if zoneData.faction == "Contested" then

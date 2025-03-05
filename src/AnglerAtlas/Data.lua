@@ -1,12 +1,13 @@
-AnglerAtlas.SKILL = {}
-AnglerAtlas.PLAYER = {}
-AnglerAtlas.STATE = {
+
+local STATE = {
     selectedFish = nil,
     selectedFishInfo = nil,
     selectedZone = nil,
     zones = {},
 }
 local DATA = {}
+DATA.playerSkill = {}
+DATA.playerInfo = {}
 DATA.zones = {
     ["11"] = {
         ["id"] = 11,
@@ -2285,17 +2286,17 @@ end
 function DATA:LoadPlayerData()
     -- print("Loading player data...")
     -- load player name and realm
-    AnglerAtlas.PLAYER.name, AnglerAtlas.PLAYER.realm = UnitName("player")
+    DATA.playerInfo.name, DATA.playerInfo.realm = UnitName("player")
     -- load player level
-    AnglerAtlas.PLAYER.level = UnitLevel("player")
+    DATA.playerInfo.level = UnitLevel("player")
 
-    AnglerAtlas.SKILL.hasFishing = false
+    DATA.playerSkill.hasFishing = false
     for skillIndex = 1, GetNumSkillLines() do
         -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
         local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
 
         if skillName == "Fishing" then
-            AnglerAtlas.SKILL.hasFishing = true
+            DATA.playerSkill.hasFishing = true
             -- print("---SKILL DATA---")
             -- print("skillName: " .. skillName)
             -- print("isExpanded: " .. tostring(isExpanded))
@@ -2308,11 +2309,11 @@ function DATA:LoadPlayerData()
             -- print("skillCostType: " .. skillCostType)
             -- print("skillDescription: " .. skillDescription)
             -- print("----------------")
-            AnglerAtlas.SKILL.level = skillRank
-            AnglerAtlas.SKILL.maxLevel = skillMaxRank
-            AnglerAtlas.SKILL.rankName = DATA:GetRankNameForLevel(skillRank)
-            AnglerAtlas.SKILL.skillModifier = skillModifier
-            AnglerAtlas.SKILL.modLevel = skillRank + skillModifier
+            DATA.playerSkill.level = skillRank
+            DATA.playerSkill.maxLevel = skillMaxRank
+            DATA.playerSkill.rankName = DATA:GetRankNameForLevel(skillRank)
+            DATA.playerSkill.skillModifier = skillModifier
+            DATA.playerSkill.modLevel = skillRank + skillModifier
         end
     end
 end
@@ -2340,8 +2341,8 @@ DATA.textColours = {
 }
 
 function DATA:SkillLevelColor(lvl)
-    if AnglerAtlas.SKILL.hasFishing then
-        local pLvl = AnglerAtlas.SKILL.modLevel
+    if DATA.playerSkill.hasFishing then
+        local pLvl = DATA.playerSkill.modLevel
         if lvl <= pLvl then
             return DATA.textColours.green
         elseif lvl > pLvl+75 then
@@ -2367,6 +2368,7 @@ end
 
 print("Hello from Data.lua")
 AnglerAtlas.MM:RegisterModule("DATA", DATA)
+AnglerAtlas.MM:RegisterModule("STATE", STATE)
 
 
 -- Data for me:

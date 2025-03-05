@@ -1,6 +1,7 @@
 
 local FishInfo = {}
 
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
@@ -118,7 +119,7 @@ function FishInfo:Update()
         return
     end
 
-    if AnglerAtlas.STATE.selectedFish == nil then
+    if STATE.selectedFish == nil then
         info.name:SetText("No fish selected")
         info.icon.texture:SetTexture(nil)
         info.itemLevel:SetText("")
@@ -130,19 +131,19 @@ function FishInfo:Update()
     local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType,
     itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType,
     expacID, setID, isCraftingReagent
-        = GetItemInfo(AnglerAtlas.STATE.selectedFish)
+        = GetItemInfo(STATE.selectedFish)
 
-    local fishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
+    local fishData = DATA.fish[STATE.selectedFish]
 
     info.name:SetText(itemName)
     info.icon.texture:SetTexture(itemTexture)
-    local levelColour = AnglerAtlas.PLAYER.level >= itemLevel and DATA.textColours.white or DATA.textColours.red
+    local levelColour = DATA.playerInfo.level >= itemLevel and DATA.textColours.white or DATA.textColours.red
     info.itemLevel:SetText(levelColour.."Requires Level "..itemLevel)
     info.itemStackCount:SetText(itemStackCount)
     -- info.goldSellPrice:SetGold(sellPrice)
     -- info.goldSellPrice:Show()
     if Auctionator ~= nil then
-        local auctionPrice = Auctionator.Database:GetPrice(tostring(AnglerAtlas.STATE.selectedFish))
+        local auctionPrice = Auctionator.Database:GetPrice(tostring(STATE.selectedFish))
         if auctionPrice ~= nil then
             info.goldAuctionPrice:SetGold(auctionPrice)
             info.goldAuctionPrice:Show()
