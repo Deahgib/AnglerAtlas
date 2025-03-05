@@ -1,3 +1,5 @@
+local DATA = AnglerAtlas.MM:GetModule("DATA")
+local UI = AnglerAtlas.MM:GetModule("UI")
 
 local function LoadSettings()
     if AnglerAtlasSettings == nil then 
@@ -25,20 +27,28 @@ EventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 
 local function On_AddonLoaded()
     LoadSettings()
-    AnglerAtlas.UI:Build()
-    AnglerAtlas:SelectFish(nil)
+    UI:Build()
+    UI:SelectFish(nil)
 end
 
 local function On_PlayerLogout()
 end
 
 local function On_PlayerEnteringWorld()
-    AnglerAtlas:loadPlayerData()
+    DATA:LoadPlayerData()
 end
 
 local function On_SomethingInterestingChanged()
-    AnglerAtlas:Reload()
+    UI:Reload()
 end
+
+local function OnCommand(msg)
+    UI:ToggleUI()
+end
+SLASH_ANGLER_TOGGLE1 = "/aa"
+SLASH_ANGLER_TOGGLE2 = "/angler"
+SLASH_ANGLER_TOGGLE3 = "/angleratlas"
+SlashCmdList["ANGLER_TOGGLE"] = OnCommand
 
 EventFrame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "AnglerAtlas" then
@@ -53,12 +63,3 @@ EventFrame:SetScript("OnEvent", function(self, event, arg1)
         On_SomethingInterestingChanged()
     end
 end)
-
-local function OnCommand(msg)
-    AnglerAtlas.UI:ToggleUI()
-end
-SLASH_ANGLER_TOGGLE1 = "/aa"
-SLASH_ANGLER_TOGGLE2 = "/angler"
-SLASH_ANGLER_TOGGLE3 = "/angleratlas"
-SlashCmdList["ANGLER_TOGGLE"] = OnCommand
-

@@ -1,15 +1,14 @@
-AnglerAtlasSettings = {}
-AnglerAtlas = {}
-AnglerAtlas.SKILL = {}
-AnglerAtlas.PLAYER = {}
-AnglerAtlas.STATE = {
+
+local STATE = {
     selectedFish = nil,
     selectedFishInfo = nil,
     selectedZone = nil,
     zones = {},
 }
-AnglerAtlas.DATA = {}
-AnglerAtlas.DATA.zones = {
+local DATA = {}
+DATA.playerSkill = {}
+DATA.playerInfo = {}
+DATA.zones = {
     ["11"] = {
         ["id"] = 11,
         ["name"] = "Wetlands",
@@ -667,7 +666,7 @@ AnglerAtlas.DATA.zones = {
         }
     },
     ["361"] = {
-        ["id"] = 331,
+        ["id"] = 361,
         ["name"] = "Felwood",
         ["faction"] = "Contested",
         ["fishingLevel"] = 300,
@@ -1238,7 +1237,7 @@ AnglerAtlas.DATA.zones = {
 }
 
 ---------------------------------
-AnglerAtlas.DATA.fish = {
+DATA.fish = {
     ["13888"] = {
         ["name"] = "Darkclaw Lobster",
         ["type"] = "C",
@@ -1674,11 +1673,11 @@ AnglerAtlas.DATA.fish = {
     }
 }
 
-AnglerAtlas.DATA.recipes = {
+DATA.recipes = {
     --|   Darkclaw Lobster
     ["13888"] = {
         {
-            ["productId"] = "18245",
+            ["productId"] = "13933",
             ['productQ'] = 1,
             ["recipeName"] = "Lobster Stew",
             ['reagents'] = {
@@ -2136,98 +2135,122 @@ AnglerAtlas.DATA.recipes = {
     }
 }
 
-AnglerAtlas.DATA.equipment = {
+local function wrapText(text, maxLength)
+    local wrappedText = ""
+    local lineLength = 0
+
+    for word in text:gmatch("%S+") do
+        if lineLength + #word + 1 > maxLength then
+            wrappedText = wrappedText .. "\n" .. word
+            lineLength = #word
+        else
+            if lineLength > 0 then
+                wrappedText = wrappedText .. " " .. word
+                lineLength = lineLength + #word + 1
+            else
+                wrappedText = wrappedText .. word
+                lineLength = #word
+            end
+        end
+    end
+
+    return wrappedText
+end
+
+local charsForWrap = 50
+
+DATA.equipment = {
     ["gear"] = {
         {
             ["id"] = 19972,
             ["order"] = 1,
-            ["desc"] = "Reward for turning in a rare Keefer’s Angelfish during the Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for turning in a rare Keefer’s Angelfish during the Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
         {
             ["id"] = 19969,
             ["order"] = 2,
-            ["desc"] = "Reward for turning in a rare Brownell’s Blue Striped Racer during the Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for turning in a rare Brownell’s Blue Striped Racer during the Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
     },
     ["rods"] = {
         {
             ["id"] = 6256,
             ["order"] = 1,
-            ["desc"] = "Sold by vendors across the world."
+            ["desc"] = wrapText("Sold by vendors across the world.", charsForWrap)
         },
         {
             ["id"] = 12225,
             ["order"] = 2,
-            ["desc"] = "Alliance only. Quest reward from \"The Family and the Fishing Pole\" from Gubber Blump south west of Auberdine in Darkshore."
+            ["desc"] = wrapText("Alliance only. Quest reward from \"The Family and the Fishing Pole\" from Gubber Blump south west of Auberdine in Darkshore.", charsForWrap)
         },
         {
             ["id"] = 6365,
             ["order"] = 3,
-            ["desc"] = "Sold by vendors across the world in limited stock."
+            ["desc"] = wrapText("Sold by vendors across the world in limited stock.", charsForWrap)
         },
         {
             ["id"] = 6366,
             ["order"] = 4,
-            ["desc"] = "Extremely rare drop from inland fishing spots in 10-20 zones."
+            ["desc"] = wrapText("Extremely rare drop from inland fishing spots in 10-20 zones.", charsForWrap)
         },
         {
             ["id"] = 6367,
             ["order"] = 5,
-            ["desc"] = "Found in \"Shellfish Trap\" in SW corner of Desolace. ~1% drop rate."
+            ["desc"] = wrapText("Found in \"Shellfish Trap\" in SW corner of Desolace. ~1% drop rate.", charsForWrap)
         },
         {
             ["id"] = 19022,
             ["order"] = 6,
-            ["desc"] = "Horde only. Quest reward from \"Snapjaws, Mon!\" from Katoom the Angler on the eastern shore of the Hinterlands."
+            ["desc"] = wrapText("Horde only. Quest reward from \"Snapjaws, Mon!\" from Katoom the Angler on the eastern shore of the Hinterlands.", charsForWrap)
         },
         {
             ["id"] = 19970,
             ["order"] = 7,
-            ["desc"] = "Reward for winning the prestigious Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for winning the prestigious Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
     },
     ["lures"] = {
         {
             ["id"] = 6529,
             ["order"] = 1,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6530,
             ["order"] = 2,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6811,
             ["order"] = 5,
-            ["desc"] = "Available from Alliance quest 'Electropellers' in Darkshore."
+            ["desc"] = wrapText("Available from Alliance quest 'Electropellers' in Darkshore.", charsForWrap)
         },
         {
             ["id"] = 6532,
             ["order"] = 3,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6533,
             ["order"] = 4,
-            ["desc"] = "Sold by vendors accross the world in limited supply"
+            ["desc"] = wrapText("Sold by vendors accross the world in limited supply", charsForWrap)
         }
     },
     ["other"] = {
         {
             ["id"] = 19971,
             ["order"] = 1,
-            ["desc"] = "Reward for turning in a rare Dezian Queenfish during the Stranglethorn Fishing Extravaganza. This is a permanent +5 fishing to a pole."
+            ["desc"] = wrapText("Reward for turning in a rare Dezian Queenfish during the Stranglethorn Fishing Extravaganza. This is a permanent +5 fishing to a pole.", charsForWrap)
         },
         {
             ["id"] = 11152,
             ["order"] = 2,
-            ["desc"] = "Enchanters can find this recipe on the murlocs in Hillsbrad Foothills."
+            ["desc"] = wrapText("Enchanters can find this recipe on the murlocs in Hillsbrad Foothills.", charsForWrap)
         }
     }
 }
 
-AnglerAtlas.skillRankNames = {
+local skillRankNames = {
     {
         ["name"]= "Apprentice",
         ["rank"]= 149
@@ -2246,44 +2269,57 @@ AnglerAtlas.skillRankNames = {
     }
 }
 
-AnglerAtlas.DATA.validFish = {}
-for k in pairs(AnglerAtlas.DATA.fish) do table.insert(AnglerAtlas.DATA.validFish, k) end
-AnglerAtlas.DATA.validZones = {}
-for k in pairs(AnglerAtlas.DATA.zones) do table.insert(AnglerAtlas.DATA.validZones, k) end
-    
-AnglerAtlas.UI = CreateFrame("FRAME", "angler-root", UIParent, "BasicFrameTemplate")
-AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR = "|cFF222222"
+DATA.validFish = {}
+for k in pairs(DATA.fish) do table.insert(DATA.validFish, k) end
+DATA.validZones = {}
+for k in pairs(DATA.zones) do table.insert(DATA.validZones, k) end
+  
+function DATA:SplitGold(sourceCopperValue)
+    local gold = math.floor(sourceCopperValue / 10000)
+    local silver = math.floor((sourceCopperValue - (gold * 10000)) / 100)
+    local copper = sourceCopperValue - (gold * 10000) - (silver * 100)
+    return gold, silver, copper
+end
 
--- Backdrops
-AnglerAtlas.UI.ANGLER_BACKDROP = CopyTable(BACKDROP_ACHIEVEMENTS_0_64)
-AnglerAtlas.UI.ANGLER_BACKDROP.bgFile = "Interface\\AdventureMap\\AdventureMapParchmentTile"
-AnglerAtlas.UI.ANGLER_BACKDROP.insets = { left = 24, right = 24, top = 22, bottom = 24 }
+function DATA:GetSortedZonesForFish(fishId)
+    local sortedZones = {}
+    for i = 1, #DATA.fish[fishId].fishedIn do
+        local zoneId = DATA.fish[fishId].fishedIn[i]
+        if DATA.zones[zoneId] ~= nil then
+            table.insert(sortedZones, DATA.zones[zoneId])
+        end
+    end
+    table.sort(sortedZones, function(a, b)
+        local aPerct = a.fishStats[fishId].catchChance
+        local bPerct = b.fishStats[fishId].catchChance
+        return aPerct > bPerct
+    end)
+    return sortedZones
+end
 
-function AnglerAtlas:getRankNameForLevel(level)
-    for i = 1, #AnglerAtlas.skillRankNames do
-        if level <= AnglerAtlas.skillRankNames[i].rank then
-            return AnglerAtlas.skillRankNames[i].name
+function DATA:GetRankNameForLevel(level)
+    for i = 1, #skillRankNames do
+        if level <= skillRankNames[i].rank then
+            return skillRankNames[i].name
         end
     end
     return "Apprentice"
 end
 
-function AnglerAtlas:loadPlayerData()
-    -- print("Loading player data...")
-    -- load player name and realm
-    AnglerAtlas.PLAYER.name, AnglerAtlas.PLAYER.realm = UnitName("player")
-    -- load player level
-    AnglerAtlas.PLAYER.level = UnitLevel("player")
 
-    AnglerAtlas.SKILL.hasFishing = false
+function DATA:LoadPlayerData()
+    -- load player name and realm
+    DATA.playerInfo.name, DATA.playerInfo.realm = UnitName("player")
+    -- load player level
+    DATA.playerInfo.level = UnitLevel("player")
+
+    DATA.playerSkill.hasFishing = false
     for skillIndex = 1, GetNumSkillLines() do
         -- skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription
         local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(skillIndex)
 
-        -- print(skillName)
-
         if skillName == "Fishing" then
-            AnglerAtlas.SKILL.hasFishing = true
+            DATA.playerSkill.hasFishing = true
             -- print("---SKILL DATA---")
             -- print("skillName: " .. skillName)
             -- print("isExpanded: " .. tostring(isExpanded))
@@ -2296,21 +2332,68 @@ function AnglerAtlas:loadPlayerData()
             -- print("skillCostType: " .. skillCostType)
             -- print("skillDescription: " .. skillDescription)
             -- print("----------------")
-            AnglerAtlas.SKILL.level = skillRank
-            AnglerAtlas.SKILL.maxLevel = skillMaxRank
-            AnglerAtlas.SKILL.rankName = AnglerAtlas:getRankNameForLevel(skillRank)
-            AnglerAtlas.SKILL.skillModifier = skillModifier
-            AnglerAtlas.SKILL.modLevel = skillRank + skillModifier
+            DATA.playerSkill.level = skillRank
+            DATA.playerSkill.maxLevel = skillMaxRank
+            DATA.playerSkill.rankName = DATA:GetRankNameForLevel(skillRank)
+            DATA.playerSkill.skillModifier = skillModifier
+            DATA.playerSkill.modLevel = skillRank + skillModifier
         end
     end
 end
 
+function DATA:GetSortedFishByCatchLevel()
+    local sortedFish = {}
+    for i = 0, #DATA.validFish do
+        table.insert(sortedFish, DATA.validFish[i])
+    end
+    table.sort(sortedFish, function(a, b)
+        if DATA.fish[a].avoidGetawayLevel == DATA.fish[b].avoidGetawayLevel then
+            return DATA.fish[a].minimumFishingLevel < DATA.fish[b].minimumFishingLevel
+        end
+        return DATA.fish[a].avoidGetawayLevel < DATA.fish[b].avoidGetawayLevel
+    end)
+    return sortedFish
+end
+
+DATA.textColours = {
+    ['green'] = "|cFF00FF00",
+    ['red'] = "|cFFFF0000",
+    ['white'] = "|cFFFFFFFF",
+    ['yellow'] = "|cFFFFFF00",
+    ['grey'] = "|cFF888888",
+}
+
+function DATA:SkillLevelColor(lvl)
+    if DATA.playerSkill.hasFishing then
+        local pLvl = DATA.playerSkill.modLevel
+        if lvl <= pLvl then
+            return DATA.textColours.green
+        elseif lvl > pLvl+75 then
+            return DATA.textColours.red
+        else
+            return DATA.textColours.yellow
+        end
+    else
+        return DATA.textColours.red
+    end
+end
+
+function DATA:CatchRateColor(rate)
+    if rate <= 0.10 then
+        return DATA.textColours.red
+    elseif rate <= 0.3333 then
+        return DATA.textColours.yellow
+    else
+        return DATA.textColours.green
+    end
+end
 
 
+AnglerAtlas.MM:RegisterModule("DATA", DATA)
+AnglerAtlas.MM:RegisterModule("STATE", STATE)
 
 
 -- Data for me:
-
 -- local borderFiles = {
 --     ["UI-DialogBox-TestWatermark-Border"] = "Interface\\DialogFrame\\UI-DialogBox-TestWatermark-Border",
 --     ["UI-DialogBox-Border"] = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -2322,7 +2405,6 @@ end
 --     ["UI-Tooltip-Border"] = "Interface\\Tooltips\\UI-Tooltip-Border",
 --     ["UI-TalentFrame-Active"] = "Interface\\TALENTFRAME\\UI-TalentFrame-Active",
 -- }
-
 -- local backgroundFiles = {
 --     ["UI-Background-Rock"] = "Interface\\FrameGeneral\\UI-Background-Rock",
 --     ["UI-Background-Marble"] = "Interface\\FrameGeneral\\UI-Background-Marble",
@@ -2339,7 +2421,6 @@ end
 --     ["CollectionsBackgroundTile"] = "Interface\\Collections\\CollectionsBackgroundTile",
 --     ["BlackMarketBackground-Tile"] = "Interface\\BlackMarket\\BlackMarketBackground-Tile",
 -- }
-
 -- Backdrops
 -- BACKDROP_ACHIEVEMENTS_0_64
 -- BACKDROP_ARENA_32_32
