@@ -1,6 +1,7 @@
 
 local FishInfo = {}
 
+local DATA = AnglerAtlas.MM:GetModule("DATA")
 local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
 local info = nil
@@ -83,7 +84,7 @@ function FishInfo:Create(uiParent)
     info.levelText = info:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     info.levelText:SetPoint("TOPLEFT", info.icon, "BOTTOMLEFT", 0, -10)
     info.levelText:SetFont("Fonts\\FRIZQT__.ttf", 10, "THINOUTLINE")
-    -- info.levelText:SetText("Min fishing level "..AnglerAtlas.UI:SkillLevelColor(1).."1|cFFFFFFFF, optimal fishing level "..AnglerAtlas.UI:SkillLevelColor(455).."455")
+    -- info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(1).."1|cFFFFFFFF, optimal fishing level "..DATA:SkillLevelColor(455).."455")
 
     info.waterType = info:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     info.waterType:SetPoint("TOPLEFT", info.levelText, "BOTTOMLEFT", 0, -5)
@@ -131,11 +132,11 @@ function FishInfo:Update()
     expacID, setID, isCraftingReagent
         = GetItemInfo(AnglerAtlas.STATE.selectedFish)
 
-    local fishData = AnglerAtlas.DATA.fish[AnglerAtlas.STATE.selectedFish]
+    local fishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
 
     info.name:SetText(itemName)
     info.icon.texture:SetTexture(itemTexture)
-    local levelColour = AnglerAtlas.PLAYER.level >= itemLevel and textColours.white or textColours.red
+    local levelColour = AnglerAtlas.PLAYER.level >= itemLevel and DATA.textColours.white or DATA.textColours.red
     info.itemLevel:SetText(levelColour.."Requires Level "..itemLevel)
     info.itemStackCount:SetText(itemStackCount)
     -- info.goldSellPrice:SetGold(sellPrice)
@@ -169,7 +170,7 @@ function FishInfo:Update()
     end
 
     
-    info.levelText:SetText("Min fishing level "..AnglerAtlas.UI:SkillLevelColor(fishData.minimumFishingLevel)..tostring(fishData.minimumFishingLevel).."|cFFFFFFFF, optimal fishing level "..AnglerAtlas.UI:SkillLevelColor(fishData.avoidGetawayLevel)..tostring(fishData.avoidGetawayLevel))
+    info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(fishData.minimumFishingLevel)..tostring(fishData.minimumFishingLevel).."|cFFFFFFFF, optimal fishing level "..DATA:SkillLevelColor(fishData.avoidGetawayLevel)..tostring(fishData.avoidGetawayLevel))
 
     local waterType = ""
     if fishData.type == "C" then

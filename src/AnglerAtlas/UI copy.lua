@@ -219,7 +219,7 @@ function AnglerAtlas.UI:CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         _G[itemFrame:GetName().."NormalTexture"]:SetSize(itemSize*1.662, itemSize*1.662)
 
         -- Fish data for this item
-        local fishData = AnglerAtlas.DATA.fish[itemID]
+        local fishData = DATA.fish[itemID]
         itemFrame.itemID = itemID
         itemFrame.fishData = fishData
 
@@ -450,12 +450,12 @@ function AnglerAtlas.UI:BuildZonesList()
     AnglerAtlas.UI.zones.scrollFrame.scrollChild = CreateFrame("Frame")
     AnglerAtlas.UI.zones.scrollFrame:SetScrollChild(AnglerAtlas.UI.zones.scrollFrame.scrollChild)
     AnglerAtlas.UI.zones.scrollFrame.scrollChild:SetWidth(260)
-    AnglerAtlas.UI.zones.scrollFrame.scrollChild:SetHeight(#AnglerAtlas.DATA.validZones * 30)  -- 50 is the height of each button
+    AnglerAtlas.UI.zones.scrollFrame.scrollChild:SetHeight(#DATA.validZones * 30)  -- 50 is the height of each button
 
     AnglerAtlas.UI.zones.zoneButtons = {}
 
-    for i = 1, #AnglerAtlas.DATA.validZones do
-        local zone = AnglerAtlas.DATA.zones[AnglerAtlas.DATA.validZones[i]]
+    for i = 1, #DATA.validZones do
+        local zone = DATA.zones[DATA.validZones[i]]
         local zoneButton = CreateFrame("BUTTON", "angler-zone-button-"..i, AnglerAtlas.UI.zones.scrollFrame.scrollChild, "UIPanelButtonTemplate")
         zoneButton:SetSize(250, 30)
         zoneButton:SetPoint("TOP", AnglerAtlas.UI.zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
@@ -601,7 +601,7 @@ function AnglerAtlas.UI.BuildZoneInfoUI()
         fishIcon.data.rate = 0.5
 
         function fishIcon:SetFish(fishId, rate)
-            fishIcon.data.name = AnglerAtlas.DATA.fish[fishId].name
+            fishIcon.data.name = DATA.fish[fishId].name
             fishIcon.data.rate = rate
             fishIcon.data.id = fishId
             fishIcon.texture:SetTexture(GetItemIcon(fishId))
@@ -864,16 +864,16 @@ function AnglerAtlas.UI:BuildEquipment()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE, "Master");
     end)
 
-    AnglerAtlas.UI.equipment.gear = buildEquipmentRow(AnglerAtlas.UI.equipment, "Gear", AnglerAtlas.DATA.equipment.gear)
+    AnglerAtlas.UI.equipment.gear = buildEquipmentRow(AnglerAtlas.UI.equipment, "Gear", DATA.equipment.gear)
     AnglerAtlas.UI.equipment.gear:SetPoint("TOPLEFT", AnglerAtlas.UI.equipment, "TOPLEFT", 25, -25)
 
-    AnglerAtlas.UI.equipment.rods = buildEquipmentRow(AnglerAtlas.UI.equipment, "Rods", AnglerAtlas.DATA.equipment.rods)
+    AnglerAtlas.UI.equipment.rods = buildEquipmentRow(AnglerAtlas.UI.equipment, "Rods", DATA.equipment.rods)
     AnglerAtlas.UI.equipment.rods:SetPoint("TOPLEFT", AnglerAtlas.UI.equipment.gear, "BOTTOMLEFT", 0, -20)
 
-    AnglerAtlas.UI.equipment.lures = buildEquipmentRow(AnglerAtlas.UI.equipment, "Lures", AnglerAtlas.DATA.equipment.lures)
+    AnglerAtlas.UI.equipment.lures = buildEquipmentRow(AnglerAtlas.UI.equipment, "Lures", DATA.equipment.lures)
     AnglerAtlas.UI.equipment.lures:SetPoint("TOPLEFT", AnglerAtlas.UI.equipment.rods, "BOTTOMLEFT", 0, -20)
 
-    AnglerAtlas.UI.equipment.other = buildEquipmentRow(AnglerAtlas.UI.equipment, "Other", AnglerAtlas.DATA.equipment.other)
+    AnglerAtlas.UI.equipment.other = buildEquipmentRow(AnglerAtlas.UI.equipment, "Other", DATA.equipment.other)
     AnglerAtlas.UI.equipment.other:SetPoint("TOPLEFT", AnglerAtlas.UI.equipment.lures, "BOTTOMLEFT", 0, -20)
     
 end
@@ -965,7 +965,7 @@ function AnglerAtlas.UI:UpdateFishInfo()
     expacID, setID, isCraftingReagent
         = GetItemInfo(AnglerAtlas.STATE.selectedFish)
 
-    local fishData = AnglerAtlas.DATA.fish[AnglerAtlas.STATE.selectedFish]
+    local fishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
 
     AnglerAtlas.UI.info.name:SetText(itemName)
     AnglerAtlas.UI.info.icon.texture:SetTexture(itemTexture)
@@ -1053,8 +1053,8 @@ function AnglerAtlas.UI:UpdateZoneList()
     end
     AnglerAtlas.UI.zones.scrollFrame:Show()
     -- local fishId = AnglerAtlas.STATE.selectedFish
-    -- local fishInfo = AnglerAtlas.DATA.fish[fishId]
-    -- local fishStats = AnglerAtlas.DATA.zones[AnglerAtlas.STATE.selectedZone].fishStats[fishId]
+    -- local fishInfo = DATA.fish[fishId]
+    -- local fishStats = DATA.zones[AnglerAtlas.STATE.selectedZone].fishStats[fishId]
     local sortedZones = AnglerAtlas:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
     for i = 1, #AnglerAtlas.UI.zones.zoneButtons do
         local zoneButton = AnglerAtlas.UI.zones.zoneButtons[i]
@@ -1103,7 +1103,7 @@ function AnglerAtlas.UI:UpdateZoneInfo()
         AnglerAtlas.UI.zoneinfo.fishRates:Hide()
         return
     end
-    local zoneData = AnglerAtlas.DATA.zones[AnglerAtlas.STATE.selectedZone]
+    local zoneData = DATA.zones[AnglerAtlas.STATE.selectedZone]
     if zoneData == nil then
         AnglerAtlas.UI.zoneinfo.name:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
         AnglerAtlas.UI.zoneinfo.coastalInland:SetText("")
@@ -1137,7 +1137,7 @@ function AnglerAtlas.UI:UpdateZoneInfo()
         if fish == nil then
             break
         end
-        local fishInfo = AnglerAtlas.DATA.fish[fish.id]
+        local fishInfo = DATA.fish[fish.id]
         if fishInfo == nil then
             break
         end
@@ -1206,7 +1206,7 @@ function AnglerAtlas.UI:UpdateFishGrid()
         end
         local fishId = fishIcon.fishId
         if fishId ~= nil then
-            local fishData = AnglerAtlas.DATA.fish[fishId]
+            local fishData = DATA.fish[fishId]
             if fishData ~= nil then
                 if AnglerAtlas.SKILL.hasFishing then
                     fishIcon.status:Show()
@@ -1243,7 +1243,7 @@ function AnglerAtlas.UI:UpdateRecipes()
         if recipeFrame == nil then
             break
         end
-        local recipeData = AnglerAtlas.DATA.recipes[AnglerAtlas.STATE.selectedFish][i]
+        local recipeData = DATA.recipes[AnglerAtlas.STATE.selectedFish][i]
         if recipeData == nil then
             recipeFrame:Hide()
         else

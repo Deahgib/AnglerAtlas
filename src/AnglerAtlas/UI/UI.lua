@@ -10,6 +10,18 @@ local FishGrid = AnglerAtlas.MM:GetModule("FishGrid")
 
 local FishInfo = AnglerAtlas.MM:GetModule("FishInfo")
 
+local ZonesList = AnglerAtlas.MM:GetModule("ZonesList")
+
+local ZoneInfo = AnglerAtlas.MM:GetModule("ZoneInfo")
+
+local TabManager = AnglerAtlas.MM:GetModule("TabManager")
+
+local Resipes = AnglerAtlas.MM:GetModule("Resipes")
+
+local Equipment = AnglerAtlas.MM:GetModule("Equipment")
+
+local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
+
 -------------------------------------------------
 -- Battle plans:
 -------------------------------------------------
@@ -72,7 +84,8 @@ function UI:Build()
     UI.playerInfo:SetFont("Fonts\\FRIZQT__.ttf", 12, "OUTLINE")
 
     -- Pretty up the frame
-    FrameDecorations:Create(UI)
+    local fd = FrameDecorations:Create(UI)
+    UI.characterPortrait = fd.characterPortrait
 
     -- Make the Fish grid
     UI.grid = FishGrid:Create(DATA:GetSortedFishByCatchLevel(), UI, 42, 6, 3, 15)
@@ -82,31 +95,31 @@ function UI:Build()
     FishInfo:Create(UI)
     
     -- Make the zones list
-    UI:BuildZonesList()
+    UI.zones = ZonesList:Create(UI)
     
     -- Make the zone info panel
-    UI.BuildZoneInfoUI()
+    ZoneInfo:Create(UI)
 
 
-    UI.tabManager = UI:CreateTabManager()
+    local tabManager = TabManager:Create()
 
     -- Make the recipes panel
-    UI:BuildRecipes()
+    local resipesUI = Resipes:Create(UI)
 
     -- Make the equipment panel
-    UI:BuildEquipment()
+    local equipmentUI = Equipment:Create(UI)
 
     -- Make the tab buttons
-    UI.recipesToggleButton = UI.tabManager:CreateTabButton("recipes", UI, "Recipes", "Recipes")
-    UI.recipesToggleButton:SetPoint("TOPRIGHT", UI, "TOPRIGHT", -18, -45)
+    local recipesToggleButton = tabManager:CreateTabButton("recipes", UI, "Recipes", "Recipes")
+    recipesToggleButton:SetPoint("TOPRIGHT", UI, "TOPRIGHT", -18, -45)
 
-    UI.equipmentToggleButton = UI.tabManager:CreateTabButton("equipment", UI, "Equipment", "Equipment")
-    UI.equipmentToggleButton:SetPoint("RIGHT", UI.recipesToggleButton, "LEFT", -5, 0)
+    local equipmentToggleButton = tabManager:CreateTabButton("equipment", UI, "Equipment", "Equipment")
+    equipmentToggleButton:SetPoint("RIGHT", recipesToggleButton, "LEFT", -5, 0)
 
     -- Register the tabs
-    UI.tabManager:Register('default', nil, UI.zoneinfo)
-    UI.tabManager:Register('recipes', UI.recipesToggleButton, UI.recipes)
-    UI.tabManager:Register('equipment', UI.equipmentToggleButton, UI.equipment)
+    tabManager:Register('default', nil, UI.zoneinfo)
+    tabManager:Register('recipes', recipesToggleButton, resipesUI)
+    tabManager:Register('equipment', equipmentToggleButton, equipmentUI)
     
     
     UI.selectedIcon = CreateFrame("FRAME", "angler-grid-selected-icon", UI.grid.rows[1].items[1])
@@ -131,7 +144,7 @@ function UI:Build()
     UI.selectedZoneHighlight.texture:SetBlendMode("ADD")
     UI.selectedZoneHighlight:Hide()
 
-    UI:BuildAddonSettings()
+    SettingsAA:Create(UI)
 end
 
 
@@ -156,8 +169,8 @@ function UI:SelectZone(zoneId)
     AnglerAtlas.STATE.selectedZone = zoneId
     
     -- print("Selected zone "..zoneId)
-    UI:UpdateZoneList()
-    UI:UpdateZoneInfo()
+    ZonesList:Update()
+    ZoneInfo:Update()
     UI.zones:SelectItem(zoneId)
 end
 
@@ -176,16 +189,15 @@ function UI:SelectFish(fishId)
     AnglerAtlas.STATE.selectedFish = fishId
     AnglerAtlas.STATE.selectedFishData = DATA.fish[AnglerAtlas.STATE.selectedFish]
 
-    local zones = AnglerAtlas:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
+    local zones = DATA:GetSortedZonesForFish(AnglerAtlas.STATE.selectedFish)
     -- print("Zones for fish "..fishId)
     -- for i = 1, #zones do
     --     print(zones[i].name)
     -- end
 
-    UI.grid:SelectItem(fishId)
-    
-    UI:UpdateFishInfo()
-    UI:UpdateRecipes()
+    FishGrid:SelectFish(fishId)
+    FishInfo:Update()
+    Resipes:Update()
     UI:SelectZone(tostring(zones[1].id), UI.zones.zoneButtons[1])
 
 end
@@ -201,14 +213,14 @@ function UI:Reload()
     end
     FishGrid:Update()
     FishInfo:Update()
-    AnglerAtlas.UI:UpdateZoneList()
-    AnglerAtlas.UI:UpdateZoneInfo()
+    ZonesList:Update()
+    ZoneInfo:Update()
 
 end
 
 function UI:ReloadAll()
     UI:Reload()
-    AnglerAtlas.UI:UpdateRecipes()
+    Resipes:Update()
     SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");
     UI.playerName:SetText(AnglerAtlas.PLAYER.name)
 end

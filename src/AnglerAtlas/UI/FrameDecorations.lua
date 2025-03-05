@@ -26,6 +26,12 @@ function FrameDecorations:Create(UIParent)
     topBanner:SetTexture("Interface\\COMMON\\UI-Goldborder-_tile", "REPEAT", "CLAMP", "LINEAR")
     topBanner:SetSize(855, 64)
     topBanner:SetPoint("TOP", UIParent, "TOP", -1, -23)
+
+    return {
+        characterPortrait = characterPortrait,
+        title = title,
+        topBanner = topBanner
+    }
 end
 
 AnglerAtlas.MM:RegisterModule("FrameDecorations", FrameDecorations)

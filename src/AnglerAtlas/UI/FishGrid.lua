@@ -142,17 +142,17 @@ function FishGrid:Create(itemIds, uiParent, itemSize, itemPadding, maxColumns, f
         end
         counter = counter + 1
     end
-    function grid:SelectItem (id) 
-        for i = 1, #self.items do
-            if self.items[i].itemID == id then
-                UI.selectedIcon:Show()
-                UI.selectedIcon:SetPoint("CENTER", anglerFrame, "CENTER", 0, 0)
-            end
-        end
-    end
     return grid
 end
 
+function FishGrid:SelectFish(id)
+    for i = 1, #grid.items do
+        if grid.items[i].itemID == id then
+            UI.selectedIcon:Show()
+            UI.selectedIcon:SetPoint("CENTER", grid.items[i], "CENTER", 0, 0)
+        end
+    end
+end
 
 function FishGrid:Update()
     for i = 1, #fishIcons do

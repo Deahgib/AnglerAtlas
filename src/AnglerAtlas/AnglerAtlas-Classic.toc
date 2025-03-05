@@ -17,12 +17,19 @@ Dependencies.lua
 UI/UIPreloader.lua
 
 Data.lua
+Settings.lua
 
+UI/TabManager.lua
 UI/ShowButtons.lua
 UI/FrameDecorations.lua
 UI/GoldDisplay.lua
 UI/FishGrid.lua
 UI/FishInfo.lua
+UI/ZonesList.lua
+UI/ZoneInfoFishRates.lua
+UI/ZoneInfo.lua
+UI/Recipes.lua
+UI/Equipment.lua
 
 UI/UI.lua
 

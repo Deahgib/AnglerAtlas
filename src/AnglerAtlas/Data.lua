@@ -2249,6 +2249,28 @@ for k in pairs(DATA.fish) do table.insert(DATA.validFish, k) end
 DATA.validZones = {}
 for k in pairs(DATA.zones) do table.insert(DATA.validZones, k) end
   
+function DATA:SplitGold(sourceCopperValue)
+    local gold = math.floor(sourceCopperValue / 10000)
+    local silver = math.floor((sourceCopperValue - (gold * 10000)) / 100)
+    local copper = sourceCopperValue - (gold * 10000) - (silver * 100)
+    return gold, silver, copper
+end
+
+function DATA:GetSortedZonesForFish(fishId)
+    local sortedZones = {}
+    for i = 1, #DATA.fish[fishId].fishedIn do
+        local zoneId = DATA.fish[fishId].fishedIn[i]
+        if DATA.zones[zoneId] ~= nil then
+            table.insert(sortedZones, DATA.zones[zoneId])
+        end
+    end
+    table.sort(sortedZones, function(a, b)
+        local aPerct = a.fishStats[fishId].catchChance
+        local bPerct = b.fishStats[fishId].catchChance
+        return aPerct > bPerct
+    end)
+    return sortedZones
+end
 
 function DATA:GetRankNameForLevel(level)
     for i = 1, #skillRankNames do
@@ -2308,6 +2330,40 @@ function DATA:GetSortedFishByCatchLevel()
     end)
     return sortedFish
 end
+
+DATA.textColours = {
+    ['green'] = "|cFF00FF00",
+    ['red'] = "|cFFFF0000",
+    ['white'] = "|cFFFFFFFF",
+    ['yellow'] = "|cFFFFFF00",
+    ['grey'] = "|cFF888888",
+}
+
+function DATA:SkillLevelColor(lvl)
+    if AnglerAtlas.SKILL.hasFishing then
+        local pLvl = AnglerAtlas.SKILL.modLevel
+        if lvl <= pLvl then
+            return DATA.textColours.green
+        elseif lvl > pLvl+75 then
+            return DATA.textColours.red
+        else
+            return DATA.textColours.yellow
+        end
+    else
+        return DATA.textColours.red
+    end
+end
+
+function DATA:CatchRateColor(rate)
+    if rate <= 0.10 then
+        return DATA.textColours.red
+    elseif rate <= 0.3333 then
+        return DATA.textColours.yellow
+    else
+        return DATA.textColours.green
+    end
+end
+
 
 print("Hello from Data.lua")
 AnglerAtlas.MM:RegisterModule("DATA", DATA)

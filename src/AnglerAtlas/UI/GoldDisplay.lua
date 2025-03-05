@@ -1,6 +1,8 @@
 
 local GoldDisplay = {}
 
+local DATA = AnglerAtlas.MM:GetModule("DATA")
+
 function GoldDisplay:Create(uiParent, curencyType)
     local goldDisplay = CreateFrame("FRAME", "angler-gold-display", uiParent, "BackdropTemplate")
     goldDisplay:SetBackdrop({
@@ -56,11 +58,11 @@ function GoldDisplay:Create(uiParent, curencyType)
     goldDisplay.isNegative = false
 
     goldDisplay.SetGold = function(self, value)
-        local fontColor = value < 0 and textColours.red or textColours.white
+        local fontColor = value < 0 and DATA.textColours.red or DATA.textColours.white
         if value < 0 then
             value = value * -1
         end
-        local gold, silver, copper = AnglerAtlas:SplitGold(value)
+        local gold, silver, copper = DATA:SplitGold(value)
         if gold <= 0 then
             self.goldIcon:Hide()
             self.gold:Hide()
