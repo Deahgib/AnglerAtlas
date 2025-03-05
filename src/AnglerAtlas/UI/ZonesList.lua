@@ -46,7 +46,6 @@ function ZonesList:Create(uiParent)
         zoneButton:SetSize(250, 30)
         zoneButton:SetPoint("TOP", zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
         zoneButton:SetScript("OnClick", function()
-            print("Selecting zone "..zoneButton.zoneId)
             UI:SelectZone(zoneButton.zoneId)
         end)
 
@@ -147,16 +146,10 @@ function ZonesList:Update()
                 
                 zoneButton.factionTexture:Show()
             end
+        
             
-
-            -- print(zoneNameText)
-            -- print(zoneCatchRateText)
-            -- print(zoneFishingLevelText)
-            
-            -- print("Selected id "..STATE.selectedZone.." ("..type(STATE.selectedZone)..") zone id "..zoneData.id.." ("..type(zoneData.id)..")")
             zoneButton:SetZone(tostring(zoneData.id), zoneNameText, zoneCatchRateText, "")
             if tostring(zoneData.id) == STATE.selectedZone then
-                -- print("Selected zone "..zoneData.name)
                 selectedZoneHighlight:SetPoint("CENTER", zoneButton,"CENTER", 0, 0)
                 selectedZoneHighlight:Show()
             end
