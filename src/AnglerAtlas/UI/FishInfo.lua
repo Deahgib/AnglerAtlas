@@ -151,7 +151,6 @@ function FishInfo:Update()
             info.goldAuctionPrice:Hide()
         end
     else
-        -- print("Auctionator not loaded")
         info.goldAuctionPrice:Hide()
     end
 

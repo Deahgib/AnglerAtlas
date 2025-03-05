@@ -3,7 +3,7 @@ local Equipment = {}
 local UI = AnglerAtlas.MM:GetModule("UI")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
-function Equipment:Create(uiParent)
+function Equipment:Create(uiParent, anchor)
     local equipmentUID = 1
     local function buildEquipmentRow(parent, equipmentHeader, equipmentData)
         local equipmentRow = CreateFrame("FRAME", "angler-equipment-row-"..equipmentUID, parent)
@@ -32,12 +32,16 @@ function Equipment:Create(uiParent)
             equipmentItem:SetScript("OnEnter", function()
                 GameTooltip:SetOwner(equipmentItem, "ANCHOR_LEFT", 0, 0)
                 GameTooltip:SetItemByID(tostring(data.id))
-                GameTooltip:AddLine(" ")
-                GameTooltip:AddLine(data.desc)
                 GameTooltip:Show()
             end)
             equipmentItem:SetScript("OnLeave", function()
                 GameTooltip:Hide()
+            end)
+            GameTooltip:HookScript("OnTooltipSetItem", function(self)
+                if GameTooltip:GetOwner() == equipmentItem then
+                    GameTooltip:AddLine(" ")
+                    GameTooltip:AddLine(data.desc)
+                end
             end)
             prevAnchor = equipmentItem
             equipmentRow.items[i] = equipmentItem
@@ -51,7 +55,7 @@ function Equipment:Create(uiParent)
     equipment:SetBackdrop(BACKDROP_GOLD_DIALOG_32_32)
     equipment:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     equipment:SetSize(355, 408)
-    equipment:SetPoint("TOPLEFT", UI.zoneinfo, "TOPLEFT", 0, 0)
+    equipment:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0)
     equipment:Hide()
     -- On show hide
     equipment:SetScript("OnShow", function()
@@ -73,6 +77,7 @@ function Equipment:Create(uiParent)
     equipment.other = buildEquipmentRow(equipment, "Other", DATA.equipment.other)
     equipment.other:SetPoint("TOPLEFT", equipment.lures, "BOTTOMLEFT", 0, -20)
     
+    return equipment
 end
 
 AnglerAtlas.MM:RegisterModule("Equipment", Equipment)

@@ -1,6 +1,7 @@
 local FishGrid = {}
 
 local UI = AnglerAtlas.MM:GetModule("UI")
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local fishIcons = {}
@@ -30,9 +31,7 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
         local itemFrame = CreateFrame("BUTTON", "angler-item-"..i, row, "ItemButtonTemplate");
         itemFrame:SetSize(itemSize, itemSize)
         itemFrame:SetPoint("CENTER", stepCursor, 0)
-        -- print(itemName.." "..itemTexture.." "..GetItemIcon(itemID))
         itemFrame.texture = itemFrame:CreateTexture('fish-face','ARTWORK', nil, 1)
-        -- print(itemFrame.texture)
         itemFrame.texture:SetAllPoints()
         -- itemFrame.texture:SetTexture(GetItemIcon(itemID)) -- replace with icon id of the respective poisons.
         SetItemButtonTexture(itemFrame, GetItemIcon(itemID))
@@ -72,8 +71,6 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
 
         itemFrame:SetScript("OnClick", function()
             UI:SelectFish(itemID)
-            selectedIcon:SetPoint("CENTER", itemFrame, "CENTER", 0, 0)
-            selectedIcon:Show()
         end)
 
         table.insert(row.items, itemFrame)
@@ -169,6 +166,10 @@ function FishGrid:Update()
         local fishId = fishIcon.fishId
         if fishId ~= nil then
             local fishData = DATA.fish[fishId]
+            if fishId == STATE.selectedFish then
+                selectedIcon:Show()
+                selectedIcon:SetPoint("CENTER", fishIcon, "CENTER", 0, 0)
+            end
             if fishData ~= nil then
                 if DATA.playerSkill.hasFishing then
                     fishIcon.status:Show()

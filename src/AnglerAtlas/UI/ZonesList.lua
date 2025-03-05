@@ -5,6 +5,9 @@ local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local zones = nil
+local selectedZoneHighlight = nil
+
+local zoneButtons = {}
 
 function ZonesList:Create(uiParent)
     zones = CreateFrame("FRAME", "angler-fish-info", uiParent, "BackdropTemplate")
@@ -35,7 +38,7 @@ function ZonesList:Create(uiParent)
     zones.scrollFrame.scrollChild:SetWidth(260)
     zones.scrollFrame.scrollChild:SetHeight(#DATA.validZones * 30)  -- 50 is the height of each button
 
-    zones.zoneButtons = {}
+    zoneButtons = {}
 
     for i = 1, #DATA.validZones do
         local zone = DATA.zones[DATA.validZones[i]]
@@ -43,6 +46,7 @@ function ZonesList:Create(uiParent)
         zoneButton:SetSize(250, 30)
         zoneButton:SetPoint("TOP", zones.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 30)
         zoneButton:SetScript("OnClick", function()
+            print("Selecting zone "..zoneButton.zoneId)
             UI:SelectZone(zoneButton.zoneId)
         end)
 
@@ -76,20 +80,26 @@ function ZonesList:Create(uiParent)
         end
         zoneButton:Hide()
 
-        zones.zoneButtons[i] = zoneButton
+        zoneButtons[i] = zoneButton
 
     end
 
-    function zones:SelectItem(id)
-        for i = 1, #self.zoneButtons do
-            if self.zoneButtons[i].zoneId == id then
-                UI.selectedZoneHighlight:Show()
-                UI.selectedZoneHighlight:SetPoint("CENTER", self.zoneButtons[i], "CENTER", 0, 0)
-            end
-        end
-    end
+    selectedZoneHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", zoneButtons[1])
+    selectedZoneHighlight:SetSize(250, 30)
+    selectedZoneHighlight:SetPoint("CENTER", 0, 0)
+    
+    selectedZoneHighlight.texture = selectedZoneHighlight:CreateTexture(nil,'OVERLAY')
+    selectedZoneHighlight.texture:SetTexture("Interface\\Buttons\\UI-Common-MouseHilight")
+    selectedZoneHighlight.texture:SetSize(380, 34)
+    selectedZoneHighlight.texture:SetPoint("CENTER", 0, 0)
+    selectedZoneHighlight.texture:SetBlendMode("ADD")
+    selectedZoneHighlight:Hide()
     
     return zones
+end
+
+function ZonesList:HideSelected()
+    selectedZoneHighlight:Hide()
 end
 
 function ZonesList:Update()
@@ -111,8 +121,8 @@ function ZonesList:Update()
     -- local fishInfo = DATA.fish[fishId]
     -- local fishStats = DATA.zones[STATE.selectedZone].fishStats[fishId]
     local sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
-    for i = 1, #zones.zoneButtons do
-        local zoneButton = zones.zoneButtons[i]
+    for i = 1, #zoneButtons do
+        local zoneButton = zoneButtons[i]
         if zoneButton == nil then
             break
         end
@@ -142,7 +152,14 @@ function ZonesList:Update()
             -- print(zoneNameText)
             -- print(zoneCatchRateText)
             -- print(zoneFishingLevelText)
+            
+            -- print("Selected id "..STATE.selectedZone.." ("..type(STATE.selectedZone)..") zone id "..zoneData.id.." ("..type(zoneData.id)..")")
             zoneButton:SetZone(tostring(zoneData.id), zoneNameText, zoneCatchRateText, "")
+            if tostring(zoneData.id) == STATE.selectedZone then
+                -- print("Selected zone "..zoneData.name)
+                selectedZoneHighlight:SetPoint("CENTER", zoneButton,"CENTER", 0, 0)
+                selectedZoneHighlight:Show()
+            end
         end
         
     end

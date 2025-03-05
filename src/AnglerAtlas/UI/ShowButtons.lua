@@ -15,15 +15,11 @@ function ShowButtons:Create(parent)
 
     showButtons.showButton = CreateFrame("BUTTON", "angler-show-button", showButtons, "ItemButtonTemplate")
     showButtons.showButton:SetSize(32, 32)
-    -- -- print(UI.showButton.NormalTexture)
     -- UI.showButton.NormalTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Up")
     -- UI.showButton.NormalTexture:SetSize(16, 16)
     showButtons.showButton:SetPoint("TOPLEFT", showButtons, "TOPLEFT", 3, -10)
 
 
-    -- for k, v in pairs(AnglerAtlas.showButtons.showButton) do
-    --     print(k)
-    -- end
     _G[showButtons.showButton:GetName().."NormalTexture"]:SetSize(50, 50)
 
 

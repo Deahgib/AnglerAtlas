@@ -9,7 +9,6 @@ function TabManager:Create()
             if self.selectedTab == tabName then
                 return
             end
-            -- print("Selecting tab "..tabName)
             for k, v in pairs(self.infoTabs) do
                 if k == tabName then
                     v:Show()

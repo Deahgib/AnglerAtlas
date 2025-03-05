@@ -10,7 +10,6 @@ local modules = {}
 function AnglerAtlas.MM:RegisterModule(name, module)
     if (not modules[name]) then
         modules[name] = module
-        print("Registered module: "..name)
         return modules[name]
     else
         error("Module "..name.." already exists")

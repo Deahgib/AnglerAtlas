@@ -666,7 +666,7 @@ DATA.zones = {
         }
     },
     ["361"] = {
-        ["id"] = 331,
+        ["id"] = 361,
         ["name"] = "Felwood",
         ["faction"] = "Contested",
         ["fishingLevel"] = 300,
@@ -1677,7 +1677,7 @@ DATA.recipes = {
     --|   Darkclaw Lobster
     ["13888"] = {
         {
-            ["productId"] = "18245",
+            ["productId"] = "13933",
             ['productQ'] = 1,
             ["recipeName"] = "Lobster Stew",
             ['reagents'] = {
@@ -2135,93 +2135,117 @@ DATA.recipes = {
     }
 }
 
+local function wrapText(text, maxLength)
+    local wrappedText = ""
+    local lineLength = 0
+
+    for word in text:gmatch("%S+") do
+        if lineLength + #word + 1 > maxLength then
+            wrappedText = wrappedText .. "\n" .. word
+            lineLength = #word
+        else
+            if lineLength > 0 then
+                wrappedText = wrappedText .. " " .. word
+                lineLength = lineLength + #word + 1
+            else
+                wrappedText = wrappedText .. word
+                lineLength = #word
+            end
+        end
+    end
+
+    return wrappedText
+end
+
+local charsForWrap = 50
+
 DATA.equipment = {
     ["gear"] = {
         {
             ["id"] = 19972,
             ["order"] = 1,
-            ["desc"] = "Reward for turning in a rare Keefer’s Angelfish during the Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for turning in a rare Keefer’s Angelfish during the Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
         {
             ["id"] = 19969,
             ["order"] = 2,
-            ["desc"] = "Reward for turning in a rare Brownell’s Blue Striped Racer during the Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for turning in a rare Brownell’s Blue Striped Racer during the Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
     },
     ["rods"] = {
         {
             ["id"] = 6256,
             ["order"] = 1,
-            ["desc"] = "Sold by vendors across the world."
+            ["desc"] = wrapText("Sold by vendors across the world.", charsForWrap)
         },
         {
             ["id"] = 12225,
             ["order"] = 2,
-            ["desc"] = "Alliance only. Quest reward from \"The Family and the Fishing Pole\" from Gubber Blump south west of Auberdine in Darkshore."
+            ["desc"] = wrapText("Alliance only. Quest reward from \"The Family and the Fishing Pole\" from Gubber Blump south west of Auberdine in Darkshore.", charsForWrap)
         },
         {
             ["id"] = 6365,
             ["order"] = 3,
-            ["desc"] = "Sold by vendors across the world in limited stock."
+            ["desc"] = wrapText("Sold by vendors across the world in limited stock.", charsForWrap)
         },
         {
             ["id"] = 6366,
             ["order"] = 4,
-            ["desc"] = "Extremely rare drop from inland fishing spots in 10-20 zones."
+            ["desc"] = wrapText("Extremely rare drop from inland fishing spots in 10-20 zones.", charsForWrap)
         },
         {
             ["id"] = 6367,
             ["order"] = 5,
-            ["desc"] = "Found in \"Shellfish Trap\" in SW corner of Desolace. ~1% drop rate."
+            ["desc"] = wrapText("Found in \"Shellfish Trap\" in SW corner of Desolace. ~1% drop rate.", charsForWrap)
         },
         {
             ["id"] = 19022,
             ["order"] = 6,
-            ["desc"] = "Horde only. Quest reward from \"Snapjaws, Mon!\" from Katoom the Angler on the eastern shore of the Hinterlands."
+            ["desc"] = wrapText("Horde only. Quest reward from \"Snapjaws, Mon!\" from Katoom the Angler on the eastern shore of the Hinterlands.", charsForWrap)
         },
         {
             ["id"] = 19970,
             ["order"] = 7,
-            ["desc"] = "Reward for winning the prestigious Stranglethorn Fishing Extravaganza."
+            ["desc"] = wrapText("Reward for winning the prestigious Stranglethorn Fishing Extravaganza.", charsForWrap)
         },
     },
     ["lures"] = {
         {
             ["id"] = 6529,
             ["order"] = 1,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6530,
             ["order"] = 2,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6811,
             ["order"] = 5,
-            ["desc"] = "Available from Alliance quest 'Electropellers' in Darkshore."
+            ["desc"] = wrapText("Available from Alliance quest 'Electropellers' in Darkshore.", charsForWrap)
         },
         {
             ["id"] = 6532,
             ["order"] = 3,
-            ["desc"] = "Sold by vendors accross the world."
+            ["desc"] = wrapText("Sold by vendors accross the world.", charsForWrap)
         },
         {
             ["id"] = 6533,
             ["order"] = 4,
-            ["desc"] = "Sold by vendors accross the world in limited supply"
+            ["desc"] = wrapText("Sold by vendors accross the world in limited supply", charsForWrap)
         }
     },
     ["other"] = {
         {
             ["id"] = 19971,
             ["order"] = 1,
-            ["desc"] = "Reward for turning in a rare Dezian Queenfish during the Stranglethorn Fishing Extravaganza. This is a permanent +5 fishing to a pole."
+            ["desc"] = wrapText("Reward for turning in a rare Dezian Queenfish during the Stranglethorn Fishing Extravaganza. This is a permanent +5 fishing to a pole.", charsForWrap)
         },
         {
             ["id"] = 11152,
             ["order"] = 2,
-            ["desc"] = "Enchanters can find this recipe on the murlocs in Hillsbrad Foothills."
+            ["desc"] = wrapText("Enchanters can find this recipe on the murlocs in Hillsbrad Foothills.", charsForWrap)
         }
     }
 }
@@ -2284,7 +2308,6 @@ end
 
 
 function DATA:LoadPlayerData()
-    -- print("Loading player data...")
     -- load player name and realm
     DATA.playerInfo.name, DATA.playerInfo.realm = UnitName("player")
     -- load player level
@@ -2366,7 +2389,6 @@ function DATA:CatchRateColor(rate)
 end
 
 
-print("Hello from Data.lua")
 AnglerAtlas.MM:RegisterModule("DATA", DATA)
 AnglerAtlas.MM:RegisterModule("STATE", STATE)
 

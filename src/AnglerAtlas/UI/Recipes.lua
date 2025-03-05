@@ -8,13 +8,13 @@ local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
 local recipes = nil
 
-function Resipes:Create(uiParent)
+function Resipes:Create(uiParent, anchor)
     recipes = CreateFrame("FRAME", "angler-recipes-info", uiParent, "BackdropTemplate")
     recipes:Raise()
     recipes:SetBackdrop(UI.ANGLER_BACKDROP)
     recipes:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     recipes:SetSize(355, 408)
-    recipes:SetPoint("TOPLEFT", UI.zoneinfo, "TOPLEFT", 0, 0)
+    recipes:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0)
     recipes:Hide()
     -- On show hide
     recipes:SetScript("OnShow", function()
@@ -185,6 +185,8 @@ function Resipes:Create(uiParent)
 
         recipes.recipeItems[i] = recipeItem
     end
+
+    return recipes
 end
 
 

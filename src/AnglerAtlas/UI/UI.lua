@@ -39,7 +39,7 @@ local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 
 -- Create a function UI:Refresh() that will update the fish
 
-
+local isInitialised = false
 
 function UI:Build()
     
@@ -100,16 +100,16 @@ function UI:Build()
     UI.zones = ZonesList:Create(UI)
     
     -- Make the zone info panel
-    ZoneInfo:Create(UI)
+    local zoneInfo = ZoneInfo:Create(UI)
 
 
     local tabManager = TabManager:Create()
 
     -- Make the recipes panel
-    local resipesUI = Resipes:Create(UI)
+    local resipesUI = Resipes:Create(UI, zoneInfo)
 
     -- Make the equipment panel
-    local equipmentUI = Equipment:Create(UI)
+    local equipmentUI = Equipment:Create(UI, zoneInfo)
 
     -- Make the tab buttons
     local recipesToggleButton = tabManager:CreateTabButton("recipes", UI, "Recipes", "Recipes")
@@ -119,26 +119,20 @@ function UI:Build()
     equipmentToggleButton:SetPoint("RIGHT", recipesToggleButton, "LEFT", -5, 0)
 
     -- Register the tabs
-    tabManager:Register('default', nil, UI.zoneinfo)
+    tabManager:Register('default', nil, zoneInfo)
     tabManager:Register('recipes', recipesToggleButton, resipesUI)
     tabManager:Register('equipment', equipmentToggleButton, equipmentUI)
 
-    UI.selectedZoneHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", UI.zones.zoneButtons[1])
-    UI.selectedZoneHighlight:SetSize(250, 30)
-    UI.selectedZoneHighlight:SetPoint("CENTER", 0, 0)
-
-    UI.selectedZoneHighlight.texture = UI.selectedZoneHighlight:CreateTexture(nil,'ARTWORK')
-    UI.selectedZoneHighlight.texture:SetTexture("Interface\\Buttons\\UI-Common-MouseHilight")
-    UI.selectedZoneHighlight.texture:SetSize(380, 34)
-    UI.selectedZoneHighlight.texture:SetPoint("CENTER", 0, 0)
-    UI.selectedZoneHighlight.texture:SetBlendMode("ADD")
-    UI.selectedZoneHighlight:Hide()
-
     SettingsAA:Create(UI)
+
+    isInitialised = true
 end
 
 
 function UI:ToggleUI()
+    if not isInitialised then
+        return
+    end
     if UI:IsShown() then
         UI:Hide()
     else
@@ -146,26 +140,36 @@ function UI:ToggleUI()
     end
 end
 
-function UI:SelectZone(zoneId)
+function UI:SelectZone(zoneId, incSF)
+    if not isInitialised then
+        return
+    end
+
     if zoneId == nil then
-        UI.selectedZoneHighlight:Hide()
+        ZonesList:HideSelected()
         return  
     end
     
-    if STATE.selectedZone == zoneId then
-        return
+    if STATE.selectedZone ~= zoneId then
+        STATE.selectedZone = zoneId
     end
-    PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
-    STATE.selectedZone = zoneId
-    
-    -- print("Selected zone "..zoneId)
+
+    incSF = incSF or false
+    if not incSF then
+        PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
+    end
+
     ZonesList:Update()
     ZoneInfo:Update()
-    UI.zones:SelectItem(zoneId)
+
+    
 end
 
 
-function UI:SelectFish(fishId)
+function UI:SelectFish(fishId, skipZoneSelect)
+    if not isInitialised then
+        return
+    end
     if fishId == nil then
         FishGrid:HideSelected()
         return
@@ -173,6 +177,8 @@ function UI:SelectFish(fishId)
     if STATE.selectedFish == fishId then
         return
     end
+    skipZoneSelect = skipZoneSelect or false
+
     PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");  -- Page turn
     PlaySound(1189, "Master") -- Meaty thwack
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
@@ -180,20 +186,41 @@ function UI:SelectFish(fishId)
     STATE.selectedFishData = DATA.fish[STATE.selectedFish]
 
     local zones = DATA:GetSortedZonesForFish(STATE.selectedFish)
-    -- print("Zones for fish "..fishId)
-    -- for i = 1, #zones do
-    --     print(zones[i].name)
-    -- end
+    
+    -- Check if the zones for the new fish contains the currently selected zone
+    local zoneFound = false
+    for i = 1, #zones do
+        if tostring(zones[i].id) == STATE.selectedZone then
+            zoneFound = true
+            break
+        end
+    end
 
-    -- FishGrid:SelectFish(fishId)
+    FishGrid:Update()
     FishInfo:Update()
     Resipes:Update()
-    UI:SelectZone(tostring(zones[1].id), UI.zones.zoneButtons[1])
+    if not skipZoneSelect then
+        UI:SelectZone(tostring(zones[1].id), true)
 
+        -- if not zoneFound then
+        --     -- print("Selecting zone "..zones[1].id)
+        --     -- set incSF to true to avoid double page turning sounds
+        --     UI:SelectZone(tostring(zones[1].id), true)
+        -- else
+        --     -- print("No zone skipping ayways")
+        --     ZonesList:Update()
+        --     ZoneInfo:Update()
+        -- end 
+    else
+        ZonesList:Update()
+        ZoneInfo:Update()
+    end
 end
 
-
 function UI:Reload()
+    if not isInitialised then
+        return
+    end
     DATA:LoadPlayerData()
     if DATA.playerSkill.hasFishing then
         local skillMod = DATA.playerSkill.skillModifier > 0 and "(|cFF00FF00+"..DATA.playerSkill.skillModifier.."|cFFFFFFFF) " or ""
@@ -209,6 +236,9 @@ function UI:Reload()
 end
 
 function UI:ReloadAll()
+    if not isInitialised then
+        return
+    end
     UI:Reload()
     Resipes:Update()
     SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");

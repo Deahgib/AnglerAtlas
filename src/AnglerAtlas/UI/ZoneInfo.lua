@@ -6,104 +6,92 @@ local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local ZoneInfoFishRates = AnglerAtlas.MM:GetModule("ZoneInfoFishRates")
 
-local zoneinfo = nil
+local zoneInfoFrame = nil
 
 function ZoneInfo:Create(uiParent)
-    zoneinfo = CreateFrame("FRAME", "angler-zone-info", uiParent, "BackdropTemplate")
-    -- zoneinfo:SetBackdrop({
-    --     bgFile = "Interface\\FrameGeneral\\UI-Background-Marble", 
-    --     edgeFile = "Interface\\FriendsFrame\\UI-Toast-Border", 
-    --     tile = true, 
-    --     tileSize = 200, 
-    --     edgeSize = 8, 
-    --     insets = { 
-    --         left = 3, 
-    --         right = 3, 
-    --         top = 1, 
-    --         bottom = 1 
-    --     } 
-    -- })
-    zoneinfo:SetBackdrop(UI.ANGLER_BACKDROP)
+    zoneInfoFrame = CreateFrame("FRAME", "angler-zone-info", uiParent, "BackdropTemplate")
 
-    zoneinfo:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
-    zoneinfo:SetSize(300, 408)
-    zoneinfo:SetPoint("TOPLEFT", UI.info, "TOPRIGHT", 5, 0)
+    zoneInfoFrame:SetBackdrop(UI.ANGLER_BACKDROP)
 
-    zoneinfo.factionTexture = zoneinfo:CreateTexture(nil,'ARTWORK')
-    zoneinfo.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Alliance")
-    zoneinfo.factionTexture:SetSize(32, 32)
-    zoneinfo.factionTexture:SetPoint("TOPRIGHT", zoneinfo, "TOPRIGHT", -27, -30)
-    zoneinfo.factionTexture:Hide()
+    zoneInfoFrame:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
+    zoneInfoFrame:SetSize(300, 408)
+    zoneInfoFrame:SetPoint("TOPLEFT", UI.info, "TOPRIGHT", 5, 0)
 
-    zoneinfo.name = zoneinfo:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    zoneinfo.name:SetPoint("TOPLEFT", zoneinfo, "TOPLEFT", 28, -30)
-    zoneinfo.name:SetFont("Fonts\\FRIZQT__.ttf", 18)
+    zoneInfoFrame.factionTexture = zoneInfoFrame:CreateTexture(nil,'ARTWORK')
+    zoneInfoFrame.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Alliance")
+    zoneInfoFrame.factionTexture:SetSize(32, 32)
+    zoneInfoFrame.factionTexture:SetPoint("TOPRIGHT", zoneInfoFrame, "TOPRIGHT", -27, -30)
+    zoneInfoFrame.factionTexture:Hide()
+
+    zoneInfoFrame.name = zoneInfoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    zoneInfoFrame.name:SetPoint("TOPLEFT", zoneInfoFrame, "TOPLEFT", 28, -30)
+    zoneInfoFrame.name:SetFont("Fonts\\FRIZQT__.ttf", 18)
     -- zoneinfo.name:SetText("Zone name")
 
-    zoneinfo.coastalInland = zoneinfo:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    zoneinfo.coastalInland:SetPoint("TOPLEFT", zoneinfo.name, "BOTTOMLEFT", 0, -12)
-    zoneinfo.coastalInland:SetFont("Fonts\\FRIZQT__.ttf", 12)
-    zoneinfo.coastalInland:SetWordWrap(true)
-    zoneinfo.coastalInland:SetWidth(250)
-    zoneinfo.coastalInland:SetJustifyH("LEFT")
+    zoneInfoFrame.coastalInland = zoneInfoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    zoneInfoFrame.coastalInland:SetPoint("TOPLEFT", zoneInfoFrame.name, "BOTTOMLEFT", 0, -12)
+    zoneInfoFrame.coastalInland:SetFont("Fonts\\FRIZQT__.ttf", 12)
+    zoneInfoFrame.coastalInland:SetWordWrap(true)
+    zoneInfoFrame.coastalInland:SetWidth(250)
+    zoneInfoFrame.coastalInland:SetJustifyH("LEFT")
     -- zoneinfo.coastalInland:SetText("Has coastal and inland fishing")
 
-    zoneinfo.fishingLevelMin = zoneinfo:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    zoneinfo.fishingLevelMin:SetPoint("TOPLEFT", zoneinfo.coastalInland, "BOTTOMLEFT", 0, -7)
-    zoneinfo.fishingLevelMin:SetFont("Fonts\\FRIZQT__.ttf", 12)
-    zoneinfo.fishingLevelMin:SetWordWrap(true)
-    zoneinfo.fishingLevelMin:SetWidth(250)
-    zoneinfo.fishingLevelMin:SetJustifyH("LEFT")
+    zoneInfoFrame.fishingLevelMin = zoneInfoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    zoneInfoFrame.fishingLevelMin:SetPoint("TOPLEFT", zoneInfoFrame.coastalInland, "BOTTOMLEFT", 0, -7)
+    zoneInfoFrame.fishingLevelMin:SetFont("Fonts\\FRIZQT__.ttf", 12)
+    zoneInfoFrame.fishingLevelMin:SetWordWrap(true)
+    zoneInfoFrame.fishingLevelMin:SetWidth(250)
+    zoneInfoFrame.fishingLevelMin:SetJustifyH("LEFT")
 
-    zoneinfo.fishingLevelMax = zoneinfo:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    zoneinfo.fishingLevelMax:SetPoint("TOPLEFT", zoneinfo.fishingLevelMin, "BOTTOMLEFT", 0, -7)
-    zoneinfo.fishingLevelMax:SetFont("Fonts\\FRIZQT__.ttf", 12)
-    zoneinfo.fishingLevelMax:SetWordWrap(true)
-    zoneinfo.fishingLevelMax:SetWidth(250)
-    zoneinfo.fishingLevelMax:SetJustifyH("LEFT")
+    zoneInfoFrame.fishingLevelMax = zoneInfoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    zoneInfoFrame.fishingLevelMax:SetPoint("TOPLEFT", zoneInfoFrame.fishingLevelMin, "BOTTOMLEFT", 0, -7)
+    zoneInfoFrame.fishingLevelMax:SetFont("Fonts\\FRIZQT__.ttf", 12)
+    zoneInfoFrame.fishingLevelMax:SetWordWrap(true)
+    zoneInfoFrame.fishingLevelMax:SetWidth(250)
+    zoneInfoFrame.fishingLevelMax:SetJustifyH("LEFT")
 
-    zoneinfo.notes = zoneinfo:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    zoneinfo.notes:SetPoint("TOPLEFT", zoneinfo.fishingLevelMax, "BOTTOMLEFT", 0, -7)
-    zoneinfo.notes:SetFont("Fonts\\FRIZQT__.ttf", 12)
-    zoneinfo.notes:SetWordWrap(true)
-    zoneinfo.notes:SetWidth(250)
-    zoneinfo.notes:SetJustifyH("LEFT")
+    zoneInfoFrame.notes = zoneInfoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    zoneInfoFrame.notes:SetPoint("TOPLEFT", zoneInfoFrame.fishingLevelMax, "BOTTOMLEFT", 0, -7)
+    zoneInfoFrame.notes:SetFont("Fonts\\FRIZQT__.ttf", 12)
+    zoneInfoFrame.notes:SetWordWrap(true)
+    zoneInfoFrame.notes:SetWidth(250)
+    zoneInfoFrame.notes:SetJustifyH("LEFT")
 
-    zoneinfo.fishRates = ZoneInfoFishRates:Create(zoneinfo)
+    zoneInfoFrame.fishRates = ZoneInfoFishRates:Create(zoneInfoFrame)
 
-    return zoneinfo
+    return zoneInfoFrame
 end
 
 
 function ZoneInfo:Update()
-    if zoneinfo == nil then
+    if zoneInfoFrame == nil then
         error("ZoneInfo frame not created")
         return
     end
 
     if STATE.selectedZone == nil then
-        zoneinfo.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
-        zoneinfo.coastalInland:SetText("")
-        zoneinfo.fishRates:Hide()
+        zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
+        zoneInfoFrame.coastalInland:SetText("")
+        zoneInfoFrame.fishRates:Hide()
         return
     end
     local zoneData = DATA.zones[STATE.selectedZone]
     if zoneData == nil then
-        zoneinfo.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
-        zoneinfo.coastalInland:SetText("")
-        zoneinfo.fishRates:Hide()
+        zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
+        zoneInfoFrame.coastalInland:SetText("")
+        zoneInfoFrame.fishRates:Hide()
         return
     end
-    zoneinfo.name:SetText(UI.ANGLER_DARK_FONT_COLOR..zoneData.name)
+    zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR..zoneData.name)
     
     if zoneData.faction == "Contested" then
-        zoneinfo.factionTexture:Hide()
+        zoneInfoFrame.factionTexture:Hide()
     else
-        zoneinfo.factionTexture:Show()
+        zoneInfoFrame.factionTexture:Show()
         if zoneData.faction == "Horde" then
-            zoneinfo.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Horde")
+            zoneInfoFrame.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Horde")
         elseif zoneData.faction == "Alliance" then
-            zoneinfo.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Alliance")
+            zoneInfoFrame.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Alliance")
         end
     end
 
@@ -153,20 +141,20 @@ function ZoneInfo:Update()
     end
 
     if hasCoastal and hasInland then
-        zoneinfo.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has both |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." and |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has both |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." and |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
     elseif hasCoastal then
-        zoneinfo.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
     elseif hasInland then
-        zoneinfo.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
     else
-        zoneinfo.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has no |cFFFF0000coastal"..UI.ANGLER_DARK_FONT_COLOR.." or |cFFFF0000inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has no |cFFFF0000coastal"..UI.ANGLER_DARK_FONT_COLOR.." or |cFFFF0000inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
     end
 
-    zoneinfo.fishingLevelMin:SetText(UI.ANGLER_DARK_FONT_COLOR.."Min fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel))
-    zoneinfo.fishingLevelMax:SetText(UI.ANGLER_DARK_FONT_COLOR.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..UI.ANGLER_DARK_FONT_COLOR.." (required to catch all fish in this zone)")
+    zoneInfoFrame.fishingLevelMin:SetText(UI.ANGLER_DARK_FONT_COLOR.."Min fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel))
+    zoneInfoFrame.fishingLevelMax:SetText(UI.ANGLER_DARK_FONT_COLOR.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..UI.ANGLER_DARK_FONT_COLOR.." (required to catch all fish in this zone)")
 
 
-    ZoneInfoFishRates:Update(sortedFish, zoneinfo)
+    ZoneInfoFishRates:Update(sortedFish, zoneInfoFrame)
 end
 
 
