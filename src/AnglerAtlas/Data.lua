@@ -2135,6 +2135,54 @@ DATA.recipes = {
     }
 }
 
+DATA.mapToZoneID = {
+    [1411] = "14", -- Durotar
+    [1412] = "215", -- Mulgore
+    [1413] = "17", -- The Barrens
+    [1416] = "36", -- Alterac Mountains
+    [1417] = "45", -- Arathi Highlands
+    [1418] = "3", -- Badlands
+    [1419] = "4", -- Blasted Lands
+    [1420] = "85", -- Tirisfal Glades
+    [1421] = "130", -- Silverpine Forest
+    [1422] = "28", -- Western Plaguelands
+    [1423] = "139", -- Eastern Plaguelands
+    [1424] = "267", -- Hillsbrad Foothills
+    [1425] = "47", -- The Hinterlands
+    [1426] = "1", -- Dun Morogh
+    [1427] = "51", -- Searing Gorge
+    [1428] = "46", -- Burning Steppes
+    [1429] = "12", -- Elwynn Forest
+    [1430] = "41", -- Deadwind Pass
+    [1432] = "38", -- Loch Modan
+    [1433] = "44", -- Redridge Mountains
+    [1434] = "33", -- Stranglethorn Vale
+    [1435] = "8", -- Swamp of Sorrows
+    [1436] = "40", -- Westfall
+    [1437] = "11", -- Wetlands
+    [1438] = "141", -- Teldrassil
+    [1439] = "10", -- Duskwood
+    [1440] = "331", -- Ashenvale
+    [1441] = "400", -- Thousand Needles
+    [1442] = "406", -- Stonetalon Mountains
+    [1443] = "405", -- Desolace
+    [1444] = "357", -- Feralas
+    [1445] = "15", -- Dustwallow Marsh
+    [1446] = "440", -- Tanaris
+    [1447] = "16", -- Azshara
+    [1448] = "361", -- Felwood
+    [1449] = "490", -- Un'Goro Crater
+    [1450] = "493",  -- Moonglade
+    [1451] = "1377", -- Silithus
+    [1452] = "618",  -- Winterspring
+    [1453] = "1519", -- Stormwind City
+    [1454] = "1637", -- Orgrimmar
+    [1455] = "1537", -- Ironforge
+    [1456] = "1638", -- Thunder Bluff
+    [1457] = "1657", -- Darnassus
+    [1458] = "1497", -- Undercity
+}
+
 local function wrapText(text, maxLength)
     local wrappedText = ""
     local lineLength = 0
