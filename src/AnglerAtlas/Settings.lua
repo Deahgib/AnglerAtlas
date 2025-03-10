@@ -61,8 +61,6 @@ function SettingsAA:Create()
     end)
     showMinimapButton:SetChecked(not AnglerAtlasSettings.miniMapIcon.hide)
 
-    -- Now add a line for AnglerAtlasSettings.showMapZoneFishInfo
-
     local showMapZoneFishInfoButton = CreateFrame("CheckButton", "AnglerAtlasShowMapZoneFishInfo", panel, "InterfaceOptionsCheckButtonTemplate")
     showMapZoneFishInfoButton:SetPoint("TOPLEFT", showMinimapButton, "BOTTOMLEFT", 0, -8)
     showMapZoneFishInfoButton.text = showMapZoneFishInfoButton:CreateFontString(nil, "OVERLAY", "GameFontNormal")
