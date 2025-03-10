@@ -23,16 +23,16 @@ local function GetZoneIDFromMapID(mapID)
 end
 
 function MapFishRates:OnZoneChanged()
-    print("==================")
-    print("Zone changed")
-    print("==================")
+    -- print("==================")
+    -- print("Zone changed")
+    -- print("==================")
     MapFishRates:Update()
 end
 
 function MapFishRates:OnMapOpened()
-    print("==================")
-    print("Map opened")
-    print("==================")
+    -- print("==================")
+    -- print("Map opened")
+    -- print("==================")
     MapFishRates:Update()
 end
 
@@ -129,22 +129,22 @@ end
 
 function MapFishRates:Update()
     local mapID = GetCurrentMapID()
-    print("ID: "..mapID.." | currentZoneID: "..currentMapID)
+    -- print("ID: "..mapID.." | currentZoneID: "..currentMapID)
     if not mapID then return end
     if mapID == currentMapID then return end
     currentMapID = mapID
-    print("New map ID: "..mapID)
+    -- print("New map ID: "..mapID)
     mapFishRates:Hide()
     mapFishRatesText:SetText("")
 
     local zoneID = GetZoneIDFromMapID(mapID)
-    print("Zone ID: "..tostring(zoneID))
+    -- print("Zone ID: "..tostring(zoneID))
 
     if not DATA.zones[zoneID] then return end
 
     local zoneData = DATA.zones[zoneID]
 
-    print("Map: "..DATA.zones[zoneID].name)
+    -- print("Map: "..DATA.zones[zoneID].name)
 
     local sortedFish = {}
     for k, v in pairs(zoneData.fishStats) do
