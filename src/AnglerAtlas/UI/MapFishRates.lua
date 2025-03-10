@@ -16,7 +16,10 @@ local function GetZoneIDFromMapID(mapID)
     if not mapID then return end
     local zoneID = DATA.mapToZoneID[mapID]
     if not zoneID then
-        print("No zone ID for map ID: "..mapID)
+        if mapID == 947 or mapID == 1414 or mapID == 1415 then
+            return
+        end
+        print("AnglerAtlas: No zone ID for map ID: "..mapID)
         return
     end
     return zoneID
