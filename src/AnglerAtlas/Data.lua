@@ -1254,6 +1254,9 @@ DATA.fish = {
         ["avoidGetawayLevel"] = 75,
         ["isBuffFish"] = true,
         ["isAlchemicFish"] = true,
+        ["requirements"] = {
+            "The Wailing Caverns is also a good quiet place to fish these with a drop rate of ~31%.",
+        },
         ["fishedIn"] = {
             "17", -- The Barrens
             "4" -- Blasted Lands
