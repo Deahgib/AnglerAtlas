@@ -4,15 +4,35 @@ local UI = AnglerAtlas.MM:GetModule("UI")
 local mapFishRates = nil
 local mapFishRatesText = nil
 
-local currentZoneID = nil
+local currentMapID = -1
 
--- function MapFishRates:OnZoneChanged()
---     print("Zone changed")
---     MapFishRates:Update()
--- end
+local function GetCurrentMapID()
+    local mapID = WorldMapFrame:GetMapID()
+    if not mapID then return end
+    return mapID
+end
+
+local function GetZoneIDFromMapID(mapID)
+    if not mapID then return end
+    local zoneID = DATA.mapToZoneID[mapID]
+    if not zoneID then
+        print("No zone ID for map ID: "..mapID)
+        return
+    end
+    return zoneID
+end
+
+function MapFishRates:OnZoneChanged()
+    print("==================")
+    print("Zone changed")
+    print("==================")
+    MapFishRates:Update()
+end
 
 function MapFishRates:OnMapOpened()
+    print("==================")
     print("Map opened")
+    print("==================")
     MapFishRates:Update()
 end
 
@@ -25,12 +45,10 @@ function MapFishRates:Build()
         MapFishRates:OnMapOpened()
     end)
 
-    -- Register zone change event on frame
-    -- local evenFrame = CreateFrame("Frame")
-    -- evenFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-    -- evenFrame:SetScript("OnEvent", function(self, event, ...)
-    --     MapFishRates:OnZoneChanged()
-    -- end)
+    -- Hook into the OnMapChanged function
+    hooksecurefunc(map, "OnMapChanged", function()
+        MapFishRates:OnZoneChanged()
+    end)
 
 
     -- Add text in the bottomright corner
@@ -63,7 +81,12 @@ function MapFishRates:Build()
         fishIcon:SetSize(24, 24)
         fishIcon:SetPoint("TOP", mapFishRates, "TOP", 0, -6 - (i - 1) * 26)
         fishIcon:SetScript("OnClick", function()
-            UI:SelectFish(fishIcon.data.id, true)
+            UI:SelectFish(fishIcon.data.id)
+            UI:Show()
+            local zoneID = GetZoneIDFromMapID(GetCurrentMapID())
+            if not zoneID then return end
+            UI:SelectZone(zoneID)
+            
         end)
         fishIcon.texture = fishIcon:CreateTexture(nil,'ARTWORK')
         fishIcon.texture:SetAllPoints()
@@ -104,44 +127,24 @@ function MapFishRates:Build()
     end
 end
 
-function GetZoneIDFromMapID(mapID)
-    local mapInfo = C_Map.GetMapInfo(mapID)
-    if not mapInfo then return nil end
-
-    -- Check if the map has a parent map
-    while mapInfo and mapInfo.parentMapID and mapInfo.mapType ~= Enum.UIMapType.Zone do
-        mapInfo = C_Map.GetMapInfo(mapInfo.parentMapID)
-    end
-
-    -- Return the map ID if it is a zone
-    if mapInfo and mapInfo.mapType == Enum.UIMapType.Zone then
-        return mapInfo.mapID
-    end
-
-    return nil
-end
-
 function MapFishRates:Update()
-    local mapID = C_Map.GetBestMapForUnit("player")
+    local mapID = GetCurrentMapID()
+    print("ID: "..mapID.." | currentZoneID: "..currentMapID)
     if not mapID then return end
-    if mapID == currentZoneID then return end
-    currentZoneID = mapID
-    -- print("New map ID: "..mapID)
+    if mapID == currentMapID then return end
+    currentMapID = mapID
+    print("New map ID: "..mapID)
     mapFishRates:Hide()
     mapFishRatesText:SetText("")
 
-    local zoneID = DATA.mapToZoneID[mapID]
-    if not zoneID then
-        print("No zone ID for map ID: "..mapID)
-        return
-    end
-    -- print("Zone ID: "..zoneID)
+    local zoneID = GetZoneIDFromMapID(mapID)
+    print("Zone ID: "..tostring(zoneID))
 
     if not DATA.zones[zoneID] then return end
 
     local zoneData = DATA.zones[zoneID]
 
-    -- print("Map: "..DATA.zones[zoneID].name)
+    print("Map: "..DATA.zones[zoneID].name)
 
     local sortedFish = {}
     for k, v in pairs(zoneData.fishStats) do
