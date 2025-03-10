@@ -131,6 +131,12 @@ function MapFishRates:Build()
 end
 
 function MapFishRates:Update()
+    if AnglerAtlasSettings.showMapZoneFishInfo == false then
+        mapFishRates:Hide()
+        mapFishRatesText:SetText("")
+        return 
+    end
+
     local mapID = GetCurrentMapID()
     -- print("ID: "..mapID.." | currentZoneID: "..currentMapID)
     if not mapID then return end

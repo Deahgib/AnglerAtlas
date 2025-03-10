@@ -17,6 +17,10 @@ local function LoadSettings()
     if AnglerAtlasSettings.showSpellbookButton == nil then
         AnglerAtlasSettings.showSpellbookButton = true
     end
+
+    if AnglerAtlasSettings.showMapZoneFishInfo == nil then
+        AnglerAtlasSettings.showMapZoneFishInfo = true
+    end
 end
 
 local EventFrame = CreateFrame("Frame")
