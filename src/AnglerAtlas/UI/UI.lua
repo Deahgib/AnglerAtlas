@@ -24,6 +24,7 @@ local Equipment = AnglerAtlas.MM:GetModule("Equipment")
 
 local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 
+
 -------------------------------------------------
 -- Battle plans:
 -------------------------------------------------

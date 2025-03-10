@@ -65,10 +65,8 @@ function ZoneInfoFishRates:Create(uiParent)
             GameTooltip:Hide()
         end)
 
-
-
-
-        fishRates.icons[i] = fishIcon
+        -- fishRates.icons[i] = fishIcon
+        table.insert(fishRates.icons, fishIcon)
     end
     fishRates:Hide()
 
