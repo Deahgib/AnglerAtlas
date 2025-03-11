@@ -28,11 +28,13 @@ function updateTocFile(tocFilePath, version, classicInterfaceVersion) {
 function deployAddon() {
     // Update .toc file with version information for AnglerAtlas and AnglerAtlas-Classic
     const tocFilePath = path.join(srcPath, `${addonFolderName}/${addonFolderName}.toc`);
-    updateTocFile(tocFilePath, version, classicInterfaceVersion);
     const tocFilePathClassic = path.join(srcPath, `${addonFolderName}/${addonFolderName}-Classic.toc`);
+    updateTocFile(tocFilePathClassic, version, classicInterfaceVersion);
     // updateTocFile(tocFilePathClassic, version, classicInterfaceVersion);
     // Create -Classic.toc file for AnglerAtlas-Classic
-    fs.copyFileSync(tocFilePath, tocFilePathClassic);
+    // fs.copyFileSync(tocFilePath, tocFilePathClassic);
+    // Use .toc file for AnglerAtlas-Classic as main template
+    fs.copyFileSync(tocFilePathClassic, tocFilePath);
 
     // Build a zip of the addon src folder
     const zipFileName = `${addonFolderName}-${version}.zip`;
