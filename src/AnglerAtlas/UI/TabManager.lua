@@ -36,7 +36,7 @@ function TabManager:Create()
 
             local tabButton = CreateFrame("BUTTON", "angler-tab-button-"..tabName, tabBackground, "ItemButtonTemplate")
             tabButton:SetSize(24, 24)
-            tabButton:SetPoint("TOPLEFT", tabBackground, "TOPLEFT", 9, -23)
+            tabButton:SetPoint("TOPLEFT", tabBackground, "TOPLEFT", 8.5, -23)
             _G[tabButton:GetName().."NormalTexture"]:SetSize(24*1.662, 24*1.662)
             tabButton:SetScript("OnEnter", function()
                 GameTooltip:SetOwner(tabButton, "ANCHOR_TOP")
