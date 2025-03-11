@@ -15,7 +15,7 @@ function ZoneInfo:Create(uiParent)
 
     zoneInfoFrame:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     zoneInfoFrame:SetSize(300, 408)
-    zoneInfoFrame:SetPoint("TOPLEFT", UI.info, "TOPRIGHT", 5, 0)
+    zoneInfoFrame:SetPoint("TOPLEFT", uiParent, "TOPLEFT", 0, 0)
 
     zoneInfoFrame.factionTexture = zoneInfoFrame:CreateTexture(nil,'ARTWORK')
     zoneInfoFrame.factionTexture:SetTexture("Interface\\FriendsFrame\\PlusManz-Alliance")

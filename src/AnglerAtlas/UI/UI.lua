@@ -16,11 +16,9 @@ local ZonesList = AnglerAtlas.MM:GetModule("ZonesList")
 
 local ZoneInfo = AnglerAtlas.MM:GetModule("ZoneInfo")
 
-local TabManager = AnglerAtlas.MM:GetModule("TabManager")
-
 local Resipes = AnglerAtlas.MM:GetModule("Resipes")
 
-local Equipment = AnglerAtlas.MM:GetModule("Equipment")
+local RightSideInformationPanel = AnglerAtlas.MM:GetModule("RightSideInformationPanel")
 
 local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 
@@ -100,29 +98,7 @@ function UI:Build()
     -- Make the zones list
     UI.zones = ZonesList:Create(UI)
     
-    -- Make the zone info panel
-    local zoneInfo = ZoneInfo:Create(UI)
-
-
-    local tabManager = TabManager:Create()
-
-    -- Make the recipes panel
-    local resipesUI = Resipes:Create(UI, zoneInfo)
-
-    -- Make the equipment panel
-    local equipmentUI = Equipment:Create(UI, zoneInfo)
-
-    -- Make the tab buttons
-    local recipesToggleButton = tabManager:CreateTabButton("recipes", UI, "Recipes", "Recipes")
-    recipesToggleButton:SetPoint("TOPRIGHT", UI, "TOPRIGHT", -18, -45)
-
-    local equipmentToggleButton = tabManager:CreateTabButton("equipment", UI, "Equipment", "Equipment")
-    equipmentToggleButton:SetPoint("RIGHT", recipesToggleButton, "LEFT", -5, 0)
-
-    -- Register the tabs
-    tabManager:Register('default', nil, zoneInfo)
-    tabManager:Register('recipes', recipesToggleButton, resipesUI)
-    tabManager:Register('equipment', equipmentToggleButton, equipmentUI)
+    RightSideInformationPanel:Create(UI)
 
     SettingsAA:Create(UI)
 
