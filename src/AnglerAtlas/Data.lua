@@ -2407,11 +2407,13 @@ function DATA:GetSortedFishByCatchLevel()
 end
 
 DATA.textColours = {
-    ['green'] = "|cFF00FF00",
+    ['green'] = "|cFF66FF00",
     ['red'] = "|cFFFF0000",
     ['white'] = "|cFFFFFFFF",
     ['yellow'] = "|cFFFFFF00",
     ['grey'] = "|cFF888888",
+    ['dark'] = "|cFF121212",
+    ['gold'] = "|cFFEAFF24"
 }
 
 function DATA:SkillLevelColor(lvl)

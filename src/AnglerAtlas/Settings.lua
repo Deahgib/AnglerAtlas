@@ -1,4 +1,5 @@
 local SettingsAA = {}
+local UI = AnglerAtlas.MM:GetModule("UI")
 
 function SettingsAA:Create()
     local panel = CreateFrame("Frame")
@@ -39,11 +40,11 @@ function SettingsAA:Create()
     showSpellbookButton.tooltipText = "Show AnglerAtlas button in spellbook"
     showSpellbookButton:SetScript("OnClick", function(self)
         AnglerAtlasSettings.showSpellbookButton = self:GetChecked()
-        -- AnglerAtlas.UI:ShowSpellbookButton()
+        -- UI:ShowSpellbookButton()
         if AnglerAtlasSettings.showSpellbookButton then
-            AnglerAtlas.UI.showButtonTab:Show()
+            UI.showButtonTab:Show()
         else
-            AnglerAtlas.UI.showButtonTab:Hide()
+            UI.showButtonTab:Hide()
         end
     end)
     showSpellbookButton:SetChecked(AnglerAtlasSettings.showSpellbookButton)
@@ -57,7 +58,6 @@ function SettingsAA:Create()
     showMinimapButton:SetScript("OnClick", function(self)
         AnglerAtlasSettings.miniMapIcon.hide = not self:GetChecked()
         LibDBIcon:Refresh("AnglerAtlas", AnglerAtlasSettings.miniMapIcon)
-        -- AnglerAtlas.MM:ToggleMinimapButton()
     end)
     showMinimapButton:SetChecked(not AnglerAtlasSettings.miniMapIcon.hide)
 

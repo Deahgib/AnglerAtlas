@@ -85,7 +85,6 @@ function FishInfo:Create(uiParent)
     info.levelText = info:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     info.levelText:SetPoint("TOPLEFT", info.icon, "BOTTOMLEFT", 0, -10)
     info.levelText:SetFont("Fonts\\FRIZQT__.ttf", 10, "THINOUTLINE")
-    -- info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(1).."1|cFFFFFFFF, optimal fishing level "..DATA:SkillLevelColor(455).."455")
 
     info.waterType = info:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     info.waterType:SetPoint("TOPLEFT", info.levelText, "BOTTOMLEFT", 0, -5)
@@ -170,13 +169,13 @@ function FishInfo:Update()
     end
 
     
-    info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(fishData.minimumFishingLevel)..tostring(fishData.minimumFishingLevel).."|cFFFFFFFF, optimal fishing level "..DATA:SkillLevelColor(fishData.avoidGetawayLevel)..tostring(fishData.avoidGetawayLevel))
+    info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(fishData.minimumFishingLevel)..tostring(fishData.minimumFishingLevel)..DATA.textColours.white..", optimal fishing level "..DATA:SkillLevelColor(fishData.avoidGetawayLevel)..tostring(fishData.avoidGetawayLevel))
 
     local waterType = ""
     if fishData.type == "C" then
-        waterType = "Can be caught in |cFF00FF00coastal|cFFFFFFFF waters."
+        waterType = "Can be caught in "..DATA.textColours.green.."coastal"..DATA.textColours.white.." waters."
     elseif fishData.type == "I" then
-        waterType = "Can be caught in |cFF00FF00inland|cFFFFFFFF waters."
+        waterType = "Can be caught in "..DATA.textColours.green.."inland"..DATA.textColours.white.." waters."
     else
         waterType = ""
     end

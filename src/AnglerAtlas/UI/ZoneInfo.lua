@@ -70,19 +70,19 @@ function ZoneInfo:Update()
     end
 
     if STATE.selectedZone == nil then
-        zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
+        zoneInfoFrame.name:SetText(DATA.textColours.dark.."No zone selected")
         zoneInfoFrame.coastalInland:SetText("")
         zoneInfoFrame.fishRates:Hide()
         return
     end
     local zoneData = DATA.zones[STATE.selectedZone]
     if zoneData == nil then
-        zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR.."No zone selected")
+        zoneInfoFrame.name:SetText(DATA.textColours.dark.."No zone selected")
         zoneInfoFrame.coastalInland:SetText("")
         zoneInfoFrame.fishRates:Hide()
         return
     end
-    zoneInfoFrame.name:SetText(UI.ANGLER_DARK_FONT_COLOR..zoneData.name)
+    zoneInfoFrame.name:SetText(DATA.textColours.dark..zoneData.name)
     
     if zoneData.faction == "Contested" then
         zoneInfoFrame.factionTexture:Hide()
@@ -141,17 +141,17 @@ function ZoneInfo:Update()
     end
 
     if hasCoastal and hasInland then
-        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has both |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." and |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(DATA.textColours.dark.."Has both "..DATA.textColours.green.."coastal"..DATA.textColours.dark.." and "..DATA.textColours.green.."inland"..DATA.textColours.dark.." waters.")
     elseif hasCoastal then
-        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00coastal"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(DATA.textColours.dark.."Has "..DATA.textColours.green.."coastal"..DATA.textColours.dark.." waters.")
     elseif hasInland then
-        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has |cFF00FF00inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(DATA.textColours.dark.."Has "..DATA.textColours.green.."inland"..DATA.textColours.dark.." waters.")
     else
-        zoneInfoFrame.coastalInland:SetText(UI.ANGLER_DARK_FONT_COLOR.."Has no |cFFFF0000coastal"..UI.ANGLER_DARK_FONT_COLOR.." or |cFFFF0000inland"..UI.ANGLER_DARK_FONT_COLOR.." waters.")
+        zoneInfoFrame.coastalInland:SetText(DATA.textColours.dark.."Has no "..DATA.textColours.red.."coastal"..DATA.textColours.dark.." or "..DATA.textColours.red.."inland"..DATA.textColours.dark.." waters.")
     end
 
-    zoneInfoFrame.fishingLevelMin:SetText(UI.ANGLER_DARK_FONT_COLOR.."Min fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel))
-    zoneInfoFrame.fishingLevelMax:SetText(UI.ANGLER_DARK_FONT_COLOR.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..UI.ANGLER_DARK_FONT_COLOR.." (required to catch all fish in this zone)")
+    zoneInfoFrame.fishingLevelMin:SetText(DATA.textColours.dark.."Min fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel))
+    zoneInfoFrame.fishingLevelMax:SetText(DATA.textColours.dark.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..DATA.textColours.dark.." (required to catch all fish in this zone)")
 
 
     ZoneInfoFishRates:Update(sortedFish, zoneInfoFrame)
