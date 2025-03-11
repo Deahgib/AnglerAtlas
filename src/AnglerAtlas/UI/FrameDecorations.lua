@@ -1,4 +1,5 @@
 local FrameDecorations = {}
+local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 function FrameDecorations:Create(UIParent)
     local characterPortrait = CreateFrame("FRAME", "angler-character-portrait", UIParent)
@@ -18,7 +19,7 @@ function FrameDecorations:Create(UIParent)
 
     local title = UIParent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     title:SetPoint("LEFT", UIParent.TitleBg, "LEFT", 60, 0)
-    title:SetText("|cFFEAFF24Angler Atlas")
+    title:SetText(DATA.textColours.gold.."Angler Atlas")
     title:SetFont("Fonts\\FRIZQT__.ttf", 11, "OUTLINE")
 
     local topBanner = UIParent:CreateTexture(nil,'ARTWORK')

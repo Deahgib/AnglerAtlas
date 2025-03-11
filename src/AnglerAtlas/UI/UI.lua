@@ -41,9 +41,6 @@ local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 local isInitialised = false
 
 function UI:Build()
-    
-    UI.ANGLER_DARK_FONT_COLOR = "|cFF222222"
-
     -- Backdrops
     UI.ANGLER_BACKDROP = CopyTable(BACKDROP_ACHIEVEMENTS_0_64)
     UI.ANGLER_BACKDROP.bgFile = "Interface\\AdventureMap\\AdventureMapParchmentTile"
@@ -85,8 +82,7 @@ function UI:Build()
     UI.playerInfo:SetFont("Fonts\\FRIZQT__.ttf", 12, "OUTLINE")
 
     -- Pretty up the frame
-    local fd = FrameDecorations:Create(UI)
-    UI.characterPortrait = fd.characterPortrait
+    UI.fd = FrameDecorations:Create(UI)
 
     -- Make the Fish grid
     UI.grid = FishGrid:Create(DATA:GetSortedFishByCatchLevel(), UI, 42, 6, 3, 15)
@@ -200,7 +196,7 @@ function UI:Reload()
     end
     DATA:LoadPlayerData()
     if DATA.playerSkill.hasFishing then
-        local skillMod = DATA.playerSkill.skillModifier > 0 and "(|cFF00FF00+"..DATA.playerSkill.skillModifier.."|cFFFFFFFF) " or ""
+        local skillMod = DATA.playerSkill.skillModifier > 0 and "("..DATA.textColours.green.."+"..DATA.playerSkill.skillModifier..DATA.textColours.white..") " or ""
         UI.playerInfo:SetText("level "..DATA.playerSkill.level.." "..skillMod..DATA.playerSkill.rankName.." angler")
     else
         UI.playerInfo:SetText("needs to find a fishing trainer")
@@ -218,6 +214,6 @@ function UI:ReloadAll()
     end
     UI:Reload()
     Resipes:Update()
-    SetPortraitTexture(AnglerAtlas.UI.characterPortrait.texture, "player");
+    SetPortraitTexture(UI.fd.characterPortrait.texture, "player");
     UI.playerName:SetText(DATA.playerInfo.name)
 end
