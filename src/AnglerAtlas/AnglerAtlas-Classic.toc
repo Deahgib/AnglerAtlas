@@ -30,6 +30,7 @@ UI/ZoneInfoFishRates.lua
 UI/ZoneInfo.lua
 UI/Recipes.lua
 UI/Equipment.lua
+UI/RightSideInformationPanel.lua
 UI/MapFishRates.lua
 
 UI/UI.lua
