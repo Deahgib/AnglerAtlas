@@ -1,7 +1,7 @@
 ## Interface: 11506
 ## Title: AnglerAtlas 
 ## Notes: A fishing A-Z
-## Version: 0.1.1hotfix
+## Version: 0.1.2
 ## Author: deahgib
 ## SavedVariables: AnglerAtlasSettings
 ## OptionalDeps: Auctionator
@@ -13,8 +13,10 @@ Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua
 Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua
 
 ModuleManager.lua
-Dependencies.lua
+
 UI/UIPreloader.lua
+
+Dependencies.lua
 
 Data.lua
 Settings.lua
