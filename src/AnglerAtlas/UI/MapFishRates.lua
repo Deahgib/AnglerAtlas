@@ -89,11 +89,9 @@ function MapFishRates:Build()
             local zoneID = GetZoneIDFromMapID(GetCurrentMapID())
             if not zoneID then return end
             UI:SelectZone(zoneID)
-            
         end)
         fishIcon.texture = fishIcon:CreateTexture(nil,'ARTWORK')
         fishIcon.texture:SetAllPoints()
-        -- fishIcon:Hide()
 
         _G[fishIcon:GetName().."NormalTexture"]:SetSize(24*1.662, 24*1.662)
 

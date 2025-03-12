@@ -20,7 +20,7 @@ function FrameDecorations:Create(UIParent)
     local title = UIParent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     title:SetPoint("LEFT", UIParent.TitleBg, "LEFT", 60, 0)
     title:SetText(DATA.textColours.gold.."Angler Atlas")
-    title:SetFont("Fonts\\FRIZQT__.ttf", 11, "OUTLINE")
+    title:SetFont("Fonts\\FRIZQT__.ttf", 13, "OUTLINE")
 
     local topBanner = UIParent:CreateTexture(nil,'ARTWORK')
     topBanner:SetHorizTile(true)

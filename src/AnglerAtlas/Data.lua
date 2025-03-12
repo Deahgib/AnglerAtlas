@@ -2413,7 +2413,7 @@ DATA.textColours = {
     ['yellow'] = "|cFFFFFF00",
     ['grey'] = "|cFF888888",
     ['dark'] = "|cFF121212",
-    ['gold'] = "|cFFEAFF24"
+    ['gold'] = "|cFFF7C602"
 }
 
 function DATA:SkillLevelColor(lvl)
