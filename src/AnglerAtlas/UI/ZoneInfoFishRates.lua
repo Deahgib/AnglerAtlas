@@ -40,7 +40,7 @@ function ZoneInfoFishRates:Create(uiParent)
         fishIcon.rate = fishIcon:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         fishIcon.rate:SetPoint("BOTTOM", fishIcon, "BOTTOM", 0, 0)
         fishIcon.rate:SetFont("Fonts\\FRIZQT__.ttf", 14, "OUTLINE")
-        fishIcon.rate:SetText("|cFF00FF00"..tostring(50).."%")
+        fishIcon.rate:SetText(DATA.textColours.green..tostring(50).."%")
 
         fishIcon.data = {}
         fishIcon.data.name = "Fish name"
