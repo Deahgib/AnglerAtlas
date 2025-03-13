@@ -24,6 +24,8 @@ local Equipment = AnglerAtlas.MM:GetModule("Equipment")
 
 local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 
+local MapFishRates = AnglerAtlas.MM:GetModule("MapFishRates")
+
 
 -------------------------------------------------
 -- Battle plans:
@@ -122,6 +124,8 @@ function UI:Build()
 
     SettingsAA:Create(UI)
 
+    MapFishRates:Create()
+
     isInitialised = true
 end
 
@@ -196,6 +200,7 @@ function UI:SelectFish(fishId, skipZoneSelect)
     FishGrid:Update()
     FishInfo:Update()
     Resipes:Update()
+    MapFishRates:Update()
     if not skipZoneSelect then
         UI:SelectZone(tostring(zones[1].id), true)
 

@@ -1,8 +1,6 @@
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 local UI = AnglerAtlas.MM:GetModule("UI")
 
-local MapFishRates = AnglerAtlas.MM:GetModule("MapFishRates")
-
 local function LoadSettings()
     if AnglerAtlasSettings == nil then 
         AnglerAtlasSettings = {}
@@ -35,7 +33,6 @@ local function On_AddonLoaded()
     LoadSettings()
     UI:Build()
     UI:SelectFish(nil)
-    MapFishRates:Build()
 end
 
 local function On_PlayerLogout()
