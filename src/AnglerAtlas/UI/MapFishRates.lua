@@ -1,8 +1,10 @@
 local MapFishRates = {}
 local DATA = AnglerAtlas.MM:GetModule("DATA")
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local UI = AnglerAtlas.MM:GetModule("UI")
 local mapFishRates = nil
 local mapFishRatesText = nil
+local fishHighlight = nil
 
 local currentMapID = -1
 
@@ -39,7 +41,8 @@ function MapFishRates:OnMapOpened()
     MapFishRates:Update()
 end
 
-function MapFishRates:Build()
+function MapFishRates:Create()
+    -- print("MapFishRates:Create()")
     local map = WorldMapFrame
     if not map then return end
 
@@ -113,9 +116,28 @@ function MapFishRates:Build()
             fishIcon.rate:SetText(DATA:CatchRateColor(rate)..tostring(rate*100).."%")
         end
 
+        local GetWaterType = function(fishId)
+            local fishData = DATA.fish[fishId]
+            if fishData.type == "C" then
+                return DATA.textColours.white.."Can be caught in "..DATA.textColours.green.."coastal"..DATA.textColours.white.." waters."
+            elseif fishData.type == "I" then
+                return DATA.textColours.white.."Can be caught in "..DATA.textColours.green.."inland"..DATA.textColours.white.." waters."
+            else
+                return ""
+            end
+        end
+
+        GameTooltip:HookScript("OnTooltipSetItem", function(self)
+            if GameTooltip:GetOwner() == fishIcon then
+                GameTooltip:AddLine(" ")
+                GameTooltip:AddLine(GetWaterType(fishIcon.data.id))
+            end
+        end)
+
         -- Tooltip
         fishIcon:SetScript("OnEnter", function()
             GameTooltip:SetOwner(fishIcon, "ANCHOR_LEFT", 0, 0)
+            
             GameTooltip:SetItemByID(fishIcon.data.id)
             GameTooltip:Show()
         end)
@@ -126,6 +148,25 @@ function MapFishRates:Build()
 
         table.insert(mapFishRates.icons, fishIcon)
     end
+
+    
+    fishHighlight = CreateFrame("FRAME", "angler-map-fish-selected-icon", mapFishRates.icons[1])
+    fishHighlight:SetSize(24, 24)
+    fishHighlight:SetPoint("CENTER", 0, 0)
+    
+    fishHighlight.texture = fishHighlight:CreateTexture(nil,'OVERLAY')
+    fishHighlight.texture:SetTexture("Interface\\Transmogrify\\transmog-tooltip-arrow")
+    fishHighlight.texture:SetSize(8, 8)
+    fishHighlight.texture:SetRotation(math.pi)
+    fishHighlight.texture:SetPoint("CENTER", 13, 0)
+    -- fishHighlight.texture:SetBlendMode("ADD")
+    
+    fishHighlight.flareTexture = fishHighlight:CreateTexture(nil,'OVERLAY')
+    fishHighlight.flareTexture:SetTexture("Interface\\CURSOR\\FishingCursor")
+    fishHighlight.flareTexture:SetSize(12, 12)
+    fishHighlight.flareTexture:SetRotation(math.pi*0.23)
+    fishHighlight.flareTexture:SetPoint("CENTER", 22, 0)
+    -- print("MapFishRates:Create() done")
 end
 
 function MapFishRates:Update()
@@ -138,11 +179,14 @@ function MapFishRates:Update()
     local mapID = GetCurrentMapID()
     -- print("ID: "..mapID.." | currentZoneID: "..currentMapID)
     if not mapID then return end
-    if mapID == currentMapID then return end
+    -- if mapID == currentMapID then 
+    --     return 
+    -- end
     currentMapID = mapID
     -- print("New map ID: "..mapID)
     mapFishRates:Hide()
     mapFishRatesText:SetText("")
+    fishHighlight:Hide()
 
     local zoneID = GetZoneIDFromMapID(mapID)
     -- print("Zone ID: "..tostring(zoneID))
@@ -200,6 +244,8 @@ function MapFishRates:Update()
         end
     end
 
+    
+
     mapFishRatesText:SetText("Fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel).." - "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel))
 
     mapFishRates:SetSize(37, 10 + 26 * #sortedFish)
@@ -215,11 +261,14 @@ function MapFishRates:Update()
         else
             fishIcon:Show()
             fishIcon:SetFish(fishData.id, fishData.catchChance)
+            if STATE.selectedFish == fishData.id then
+                fishHighlight:SetPoint("CENTER", fishIcon, "CENTER", 0, 0)
+                fishHighlight:Show()
+            end
         end
     end
 
     mapFishRates:Show()
-
 end
 
 AnglerAtlas.MM:RegisterModule("MapFishRates", MapFishRates)

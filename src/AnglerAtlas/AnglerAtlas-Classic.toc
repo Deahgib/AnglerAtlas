@@ -1,7 +1,7 @@
 ## Interface: 11506
 ## Title: AnglerAtlas 
 ## Notes: A fishing A-Z
-## Version: 0.1.2
+## Version: 0.1.3
 ## Author: deahgib
 ## SavedVariables: AnglerAtlasSettings
 ## OptionalDeps: Auctionator
