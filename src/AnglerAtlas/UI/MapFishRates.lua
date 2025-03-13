@@ -116,9 +116,28 @@ function MapFishRates:Create()
             fishIcon.rate:SetText(DATA:CatchRateColor(rate)..tostring(rate*100).."%")
         end
 
+        local GetWaterType = function(fishId)
+            local fishData = DATA.fish[fishId]
+            if fishData.type == "C" then
+                return DATA.textColours.white.."Can be caught in "..DATA.textColours.green.."coastal"..DATA.textColours.white.." waters."
+            elseif fishData.type == "I" then
+                return DATA.textColours.white.."Can be caught in "..DATA.textColours.green.."inland"..DATA.textColours.white.." waters."
+            else
+                return ""
+            end
+        end
+
+        GameTooltip:HookScript("OnTooltipSetItem", function(self)
+            if GameTooltip:GetOwner() == fishIcon then
+                GameTooltip:AddLine(" ")
+                GameTooltip:AddLine(GetWaterType(fishIcon.data.id))
+            end
+        end)
+
         -- Tooltip
         fishIcon:SetScript("OnEnter", function()
             GameTooltip:SetOwner(fishIcon, "ANCHOR_LEFT", 0, 0)
+            
             GameTooltip:SetItemByID(fishIcon.data.id)
             GameTooltip:Show()
         end)
