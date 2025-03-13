@@ -1,7 +1,10 @@
 local ZoneInfoFishRates = {}
 
 local DATA = AnglerAtlas.MM:GetModule("DATA")
+local STATE = AnglerAtlas.MM:GetModule("STATE")
 local UI = AnglerAtlas.MM:GetModule("UI")
+
+local selectedFishHighlight = nil
 
 function ZoneInfoFishRates:Create(uiParent)
     
@@ -22,6 +25,7 @@ function ZoneInfoFishRates:Create(uiParent)
     fishRates:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     fishRates:SetSize(50, 408)
     fishRates:SetPoint("TOPLEFT", uiParent, "TOPRIGHT", 0, 0)
+
     fishRates.icons = {}
     for i = 1, 10 do
         local fishIcon = CreateFrame("BUTTON", "angler-zone-info-fish-icon-"..i, fishRates, "ItemButtonTemplate")
@@ -40,7 +44,7 @@ function ZoneInfoFishRates:Create(uiParent)
         fishIcon.rate = fishIcon:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         fishIcon.rate:SetPoint("BOTTOM", fishIcon, "BOTTOM", 0, 0)
         fishIcon.rate:SetFont("Fonts\\FRIZQT__.ttf", 14, "OUTLINE")
-        fishIcon.rate:SetText("|cFF00FF00"..tostring(50).."%")
+        fishIcon.rate:SetText(DATA.textColours.green..tostring(50).."%")
 
         fishIcon.data = {}
         fishIcon.data.name = "Fish name"
@@ -68,6 +72,27 @@ function ZoneInfoFishRates:Create(uiParent)
         -- fishRates.icons[i] = fishIcon
         table.insert(fishRates.icons, fishIcon)
     end
+    
+    selectedFishHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", fishRates)
+    selectedFishHighlight:SetSize(30, 30)
+    selectedFishHighlight:SetPoint("CENTER", 0, 0)
+    
+    selectedFishHighlight.texture = selectedFishHighlight:CreateTexture(nil,'OVERLAY')
+    selectedFishHighlight.texture:SetTexture("Interface\\Transmogrify\\transmog-tooltip-arrow")
+    selectedFishHighlight.texture:SetSize(10, 10)
+    selectedFishHighlight.texture:SetRotation(math.pi)
+    selectedFishHighlight.texture:SetPoint("CENTER", 18, 0)
+    selectedFishHighlight.texture:SetBlendMode("ADD")
+
+    selectedFishHighlight.flareTexture = selectedFishHighlight:CreateTexture(nil,'OVERLAY')
+    selectedFishHighlight.flareTexture:SetTexture("Interface\\CURSOR\\FishingCursor")
+    selectedFishHighlight.flareTexture:SetSize(17, 17)
+    selectedFishHighlight.flareTexture:SetRotation(math.pi*0.23)
+    selectedFishHighlight.flareTexture:SetPoint("CENTER", 30, 0)
+    -- selectedFishHighlight.flareTexture:SetBlendMode("ADD")
+
+    selectedFishHighlight:Hide()
+
     fishRates:Hide()
 
     return fishRates
@@ -75,6 +100,7 @@ end
 
 function ZoneInfoFishRates:Update(sortedFish, zoneinfo)
     zoneinfo.fishRates:Show()
+    selectedFishHighlight:Hide()
     for i = 1, #zoneinfo.fishRates.icons do
         local fishIcon = zoneinfo.fishRates.icons[i]
         if fishIcon == nil then
@@ -86,6 +112,11 @@ function ZoneInfoFishRates:Update(sortedFish, zoneinfo)
         else
             fishIcon:Show()
             fishIcon:SetFish(fishData.id, fishData.catchChance)
+
+            if STATE.selectedFish == fishData.id then
+                selectedFishHighlight:SetPoint("CENTER", fishIcon, "CENTER", 0, 0)
+                selectedFishHighlight:Show()
+            end
         end
     end
 end

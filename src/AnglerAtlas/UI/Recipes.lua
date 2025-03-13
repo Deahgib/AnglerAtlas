@@ -29,7 +29,7 @@ function Resipes:Create(uiParent, anchor)
     recipes.text = recipes:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     recipes.text:SetPoint("TOPLEFT", recipes, "TOPLEFT", 28, -25)
     recipes.text:SetFont("Fonts\\FRIZQT__.ttf", 14)
-    recipes.text:SetText(UI.ANGLER_DARK_FONT_COLOR.."Recipes for Raw Longjaw Mud Snapper")
+    recipes.text:SetText(DATA.textColours.dark.."Recipes for Raw Longjaw Mud Snapper")
 
     recipes.scrollFrame = CreateFrame("ScrollFrame", nil, recipes, "UIPanelScrollFrameTemplate")
     recipes.scrollFrame:SetPoint("TOPLEFT", 25, -43)
@@ -117,7 +117,7 @@ function Resipes:Create(uiParent, anchor)
             reagent:SetSize(28, 28)
             reagent:SetPoint("TOPLEFT", recipeItem.productName, "BOTTOMLEFT", 10 + (j - 1) * 31, -6)
             reagent:SetScript("OnClick", function()
-                AnglerAtlas.UI:SelectFish(nil, reagent)
+                UI:SelectFish(nil, reagent)
             end)
             SetItemButtonTexture(reagent, GetItemIcon(recipeItem.data.productId))
             -- reagent:Hide()
@@ -196,7 +196,7 @@ function Resipes:Update()
         return
     end
     if STATE.selectedFish == nil then
-        recipes.text:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."No fish selected")
+        recipes.text:SetText(DATA.textColours.dark.."No fish selected")
         for i = 1, #recipes.recipeItems do
             local recipeFrame = recipes.recipeItems[i]
             if recipeFrame == nil then
@@ -206,7 +206,7 @@ function Resipes:Update()
         end
         return
     end
-    recipes.text:SetText(AnglerAtlas.UI.ANGLER_DARK_FONT_COLOR.."Recipes for "..STATE.selectedFishData.name)
+    recipes.text:SetText(DATA.textColours.dark.."Recipes for "..STATE.selectedFishData.name)
     for i = 1, #recipes.recipeItems do
         local recipeFrame = recipes.recipeItems[i]
         if recipeFrame == nil then
