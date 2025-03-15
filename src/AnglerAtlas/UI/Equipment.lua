@@ -52,7 +52,8 @@ function Equipment:Create(uiParent, anchor)
 
     local equipment = CreateFrame("FRAME", "angler-equipment-info", uiParent, "BackdropTemplate")
     equipment:Raise()
-    equipment:SetBackdrop(BACKDROP_GOLD_DIALOG_32_32)
+    -- equipment:SetBackdrop(BACKDROP_GOLD_DIALOG_32_32)
+    equipment:SetBackdrop(BACKDROP_DIALOG_32_32)
     equipment:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
     equipment:SetSize(355, 408)
     equipment:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0)
