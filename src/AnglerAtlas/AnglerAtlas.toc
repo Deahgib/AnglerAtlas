@@ -1,7 +1,7 @@
 ## Interface: 11506
 ## Title: AnglerAtlas 
 ## Notes: A fishing A-Z
-## Version: 0.1.3
+## Version: 0.1.4
 ## Author: deahgib
 ## SavedVariables: AnglerAtlasSettings
 ## OptionalDeps: Auctionator
@@ -32,6 +32,7 @@ UI/ZoneInfoFishRates.lua
 UI/ZoneInfo.lua
 UI/Recipes.lua
 UI/Equipment.lua
+UI/RightSideInformationPanel.lua
 UI/MapFishRates.lua
 
 UI/UI.lua
