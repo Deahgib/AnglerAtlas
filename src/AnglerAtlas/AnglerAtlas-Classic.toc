@@ -26,6 +26,7 @@ UI/ShowButtons.lua
 UI/FrameDecorations.lua
 UI/GoldDisplay.lua
 UI/FishGrid.lua
+UI/FishInfoBuffs.lua
 UI/FishInfo.lua
 UI/ZonesList.lua
 UI/ZoneInfoFishRates.lua
@@ -34,7 +35,6 @@ UI/Recipes.lua
 UI/Equipment.lua
 UI/RightSideInformationPanel.lua
 UI/MapFishRates.lua
-UI/DebugGatherMate.lua
 
 UI/UI.lua
 

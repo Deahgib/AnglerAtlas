@@ -150,9 +150,16 @@ function ZoneInfo:Update()
         zoneInfoFrame.coastalInland:SetText(DATA.textColours.dark.."Has no "..DATA.textColours.red.."coastal"..DATA.textColours.dark.." or "..DATA.textColours.red.."inland"..DATA.textColours.dark.." waters.")
     end
 
-    zoneInfoFrame.fishingLevelMin:SetText(DATA.textColours.dark.."Min fishing level "..DATA:SkillLevelColor(zoneMinFishingLevel)..tostring(zoneMinFishingLevel))
+    zoneInfoFrame.fishingLevelMin:SetText(DATA.textColours.dark.."Min fishing level "..DATA:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel))
     zoneInfoFrame.fishingLevelMax:SetText(DATA.textColours.dark.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..DATA.textColours.dark.." (required to catch all fish in this zone)")
 
+    local notes = ""
+    if zoneData.extras ~= nil then
+        for i = 1, #zoneData.extras do
+            notes = notes..zoneData.extras[i].."\n"
+        end
+    end
+    zoneInfoFrame.notes:SetText(DATA.textColours.dark..notes)
 
     ZoneInfoFishRates:Update(sortedFish, zoneInfoFrame)
 end

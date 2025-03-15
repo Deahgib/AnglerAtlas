@@ -30,7 +30,7 @@ function DebugGatherMate:PrintCounts()
         end
         
         local zoneData = DATA.zones[zoneID]
-        print("==== Key: "..k.." ("..zoneID..") | "..zoneData.name)
+        print("==== Key: "..k.." ("..zoneID..") ========== | "..zoneData.name)
 
         angler_pool_data[zoneID] = {}
 
@@ -53,7 +53,7 @@ function DebugGatherMate:PrintCounts()
             if DATA.fishIconToId[k2] ~= nil then
                 local fishData = DATA.fish[DATA.fishIconToId[k2]]
                 if fishData ~= nil then
-                    print("| Fish: "..fishData.name.." | Count: "..v2)
+                    print("| Fish: "..k2.." | Count: "..v2.." Name: "..fishData.name)
                     table.insert(angler_pool_data[zoneID].fishingPools, {
                         id = DATA.fishIconToId[k2],
                         count = v2

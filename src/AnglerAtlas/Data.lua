@@ -3,11 +3,41 @@ local STATE = {
     selectedFish = nil,
     selectedFishInfo = nil,
     selectedZone = nil,
+    mode = "openwater", -- "openwater" or "pools"
     zones = {},
 }
 local DATA = {}
 DATA.playerSkill = {}
 DATA.playerInfo = {}
+
+
+
+DATA.textColours = {
+    ['green'] = "|cFF66FF00",
+    ['red'] = "|cFFFF0000",
+    ['white'] = "|cFFFFFFFF",
+    ['yellow'] = "|cFFFFFF00",
+    ['grey'] = "|cFF888888",
+    ['dark'] = "|cFF121212",
+    ['gold'] = "|cFFF7C602"
+}
+
+
+function DATA:SkillLevelColor(lvl)
+    if DATA.playerSkill.hasFishing then
+        local pLvl = DATA.playerSkill.modLevel
+        if lvl <= pLvl then
+            return DATA.textColours.green
+        elseif lvl > pLvl+75 then
+            return DATA.textColours.red
+        else
+            return DATA.textColours.yellow
+        end
+    else
+        return DATA.textColours.red
+    end
+end
+
 
 -- DATA TO BE ASSIMILATED INTO DATA.zones
 -- ["zones"] = {
@@ -355,7 +385,7 @@ DATA.zones = {
         ["id"] = 11,
         ["name"] = "Wetlands",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 125,
+        ["fishingLevel"] = 55,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -389,10 +419,10 @@ DATA.zones = {
         ["id"] = 17,
         ["name"] = "The Barrens",
         ["faction"] = "Horde",
-        ["fishingLevel"] = 100,
+        ["fishingLevel"] = 1,
         ["fishingPools"] = {
             {
-                ["id"] = "6359",
+                ["id"] = "6522",
                 ["count"] = 32,
             },
             {
@@ -439,7 +469,7 @@ DATA.zones = {
         ["id"] = 40,
         ["name"] = "Westfall",
         ["faction"] = "Alliance",
-        ["fishingLevel"] = 100,
+        ["fishingLevel"] = 1,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -477,7 +507,7 @@ DATA.zones = {
         ["id"] = 130,
         ["name"] = "Silverpine Forest",
         ["faction"] = "Horde",
-        ["fishingLevel"] = 100,
+        ["fishingLevel"] = 1,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -523,7 +553,7 @@ DATA.zones = {
         ["id"] = 148,
         ["name"] = "Darkshore",
         ["faction"] = "Alliance",
-        ["fishingLevel"] = 100,
+        ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Darkshore Grouper
             -- ["12238"] = {
@@ -559,7 +589,7 @@ DATA.zones = {
         ["id"] = 267,
         ["name"] = "Hillsbrad Foothills",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 150,
+        ["fishingLevel"] = 55,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -605,7 +635,7 @@ DATA.zones = {
         ["id"] = 1497,
         ["name"] = "Undercity",
         ["faction"] = "Horde",
-        ["fishingLevel"] = 100,
+        ["fishingLevel"] = 1,
         ["fishStats"] = {
             -- Raw Longjaw Mud Snapper
             ["6289"] = {
@@ -629,7 +659,10 @@ DATA.zones = {
         ["id"] = 33,
         ["name"] = "Stranglethorn Vale",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
+        ["extras"] = {
+            "Fishing level increased to "..DATA.SkillLevelColor(205).."205"..DATA.textColours.dark.." in Jaguero Isle.",
+        },
         ["fishingPools"] = {
             {
                 ["id"] = "13422",
@@ -687,7 +720,10 @@ DATA.zones = {
         ["id"] = 16,
         ["name"] = "Azshara",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
+        ["extras"] = {
+            "Fishing level increased to "..DATA.SkillLevelColor(330).."330"..DATA.textColours.dark.." around Bay of Storms, Hetaera's Clutch and Scalebeard's Cave.",
+        },
         ["fishingPools"] = {
             {
                 ["id"] = "13422",
@@ -757,7 +793,7 @@ DATA.zones = {
         ["id"] = 405,
         ["name"] = "Desolace",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -803,7 +839,10 @@ DATA.zones = {
         ["id"] = 357,
         ["name"] = "Feralas",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
+        ["extras"] = {
+            "Fishing level increased to "..DATA.SkillLevelColor(330).."330"..DATA.textColours.dark.." around Jademir Lake.",
+        },
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -869,7 +908,7 @@ DATA.zones = {
         ["id"] = 440,
         ["name"] = "Tanaris",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
         ["fishingPools"] = {
             {
                 ["id"] = "13422",
@@ -923,7 +962,7 @@ DATA.zones = {
         ["id"] = 15,
         ["name"] = "Dustwallow Marsh",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -965,7 +1004,7 @@ DATA.zones = {
         ["id"] = 8,
         ["name"] = "Swamp of Sorrows",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1007,7 +1046,7 @@ DATA.zones = {
         ["id"] = 406,
         ["name"] = "Stonetalon Mountains",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 55,
         ["fishingPools"] = {
             {
                 ["id"] = "6359",
@@ -1041,7 +1080,7 @@ DATA.zones = {
         ["id"] = 45,
         ["name"] = "Arathi Highlands",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1083,7 +1122,7 @@ DATA.zones = {
         ["id"] = 47,
         ["name"] = "Hinterlands",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1153,7 +1192,7 @@ DATA.zones = {
         ["id"] = 331,
         ["name"] = "Ashenvale",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 55,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1203,7 +1242,7 @@ DATA.zones = {
         ["id"] = 361,
         ["name"] = "Felwood",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1237,7 +1276,7 @@ DATA.zones = {
         ["id"] = 493,
         ["name"] = "Moonglade",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1271,7 +1310,7 @@ DATA.zones = {
         ["id"] = 490,
         ["name"] = "Un'Goro Crater",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1305,7 +1344,7 @@ DATA.zones = {
         ["id"] = 28,
         ["name"] = "Western Plaguelands",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 205,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1531,43 +1570,11 @@ DATA.zones = {
             },
         }
     },
-    ["4"] = {
-        ["id"] = 4,
-        ["name"] = "Blasted Lands",
-        ["faction"] = "Contested",
-        ["fishingLevel"] = 250,
-        ["fishStats"] = {
-            -- Raw Longjaw Mud Snapper
-            ["6289"] = {
-                ["catchChance"] = 0.33,
-            },
-            -- Deviate Fish
-            ["6522"] = {
-                ["catchChance"] = 0.12,
-            },
-            -- Raw Brilliant Smallfish
-            ["6291"] = {
-                ["catchChance"] = 0.09,
-            },
-            -- Raw Bristle Whisker Catfish
-            ["6308"] = {
-                ["catchChance"] = 0.09,
-            },
-            -- Raw Sunscale Salmon
-            ["13760"] = {
-                ["catchChance"] = 0.03,
-            },
-            -- Raw Whitescale Salmon
-            ["13889"] = {
-                ["catchChance"] = 0.03,
-            },
-        }
-    },
     ["1377"] = {
         ["id"] = 1377,
         ["name"] = "Silithus",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 330,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
             ["13889"] = {
@@ -1591,7 +1598,7 @@ DATA.zones = {
         ["id"] = 38,
         ["name"] = "Loch Modan",
         ["faction"] = "Alliance",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 1,
         ["fishingPools"] = {
             {
                 ["id"] = "21071",
@@ -1621,7 +1628,7 @@ DATA.zones = {
         ["id"] = 10,
         ["name"] = "Duskwood",
         ["faction"] = "Alliance",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 55,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1659,7 +1666,7 @@ DATA.zones = {
         ["id"] = 44,
         ["name"] = "Redridge Mountains",
         ["faction"] = "Alliance",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 55,
         ["fishStats"] = {
             -- Raw Bristle Whisker Catfish
             ["6308"] = {
@@ -1675,7 +1682,7 @@ DATA.zones = {
         ["id"] = 400,
         ["name"] = "Thousand Needles",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishStats"] = {
             -- Raw Mithril Head Trout
             ["8365"] = {
@@ -1691,7 +1698,7 @@ DATA.zones = {
         ["id"] = 36,
         ["name"] = "Alterac Mountains",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 130,
         ["fishingPools"] = {
             {
                 ["id"] = "21153",
@@ -1717,7 +1724,7 @@ DATA.zones = {
         ["id"] = 618,
         ["name"] = "Winterspring",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 330,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
             ["13889"] = {
@@ -1741,7 +1748,7 @@ DATA.zones = {
         ["id"] = 41,
         ["name"] = "Deadwind Pass",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 330,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
             ["13889"] = {
@@ -1765,7 +1772,7 @@ DATA.zones = {
         ["id"] = 139,
         ["name"] = "Eastern Plaguelands",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 330,
         ["fishingPools"] = {
             {
                 ["id"] = "6358",
@@ -1795,7 +1802,7 @@ DATA.zones = {
         ["id"] = 46,
         ["name"] = "Burning Steppes",
         ["faction"] = "Contested",
-        ["fishingLevel"] = 300,
+        ["fishingLevel"] = 330,
         ["fishStats"] = {
             -- Raw Whitescale Salmon
             ["13889"] = {
@@ -1840,8 +1847,7 @@ DATA.fish = {
             "The Wailing Caverns is also a good quiet place to fish these with a drop rate of ~31%.",
         },
         ["fishedIn"] = {
-            "17", -- The Barrens
-            "4" -- Blasted Lands
+            "17" -- The Barrens
         }
     },
     ["6359"] = {
@@ -1922,7 +1928,6 @@ DATA.fish = {
             "1519", -- Stormwind City
             "1638", -- Thunder Bluff
             "1497", -- Undercity
-            "4", -- Blasted Lands
             "38", -- Loch Modan
             "17", -- The Barrens
             "10", -- Duskwood
@@ -1953,7 +1958,6 @@ DATA.fish = {
             "36", -- Alterac Mountains
             "15", -- Dustwallow Marsh
             "38", -- Loch Modan
-            "4", -- Blasted Lands
             "17", -- The Barrens
             "8", -- Swamp of Sorrows
             "148", -- Darkshore
@@ -2004,7 +2008,6 @@ DATA.fish = {
             "215", -- Mulgore
             "12", -- Elwynn Forest
             "44", -- Redridge Mountains
-            "4", -- Blasted Lands
             "38", -- Loch Modan
             "10", -- Duskwood
             "85", -- Tirisfal Glades
@@ -2200,7 +2203,6 @@ DATA.fish = {
             "357", -- Feralas
             "493", -- Moonglade
             "490", -- Un'Goro Crater
-            "4", -- Blasted Lands
             "47", -- Hinterlands
             "10", -- Duskwood
 
@@ -2218,7 +2220,6 @@ DATA.fish = {
             "1377", -- Silithus
             "46", -- Burning Steppes
             "10", -- Duskwood
-            "4", -- Blasted Lands
         }
     },
     ["13422"] = {
@@ -2308,9 +2309,16 @@ DATA.pools = {
             "16", -- Azshara
         },
     },
+    ["6522"] = {
+        ["name"] = "Deviate Fish",
+        ["count"] = 32,
+        ["zones"] = {
+            "17", -- The Barrens
+        },
+    },
     ["6359"] = {
         ["name"] = "Firefin Snapper",
-        ["count"] = 722,
+        ["count"] = 690,
         ["zones"] = {
             "45", -- Arathi Highlands
             "267", -- Hillsbrad Foothills
@@ -2913,7 +2921,7 @@ DATA.fishIconToId = {
     [106] = "21153", -- Greater Sagefish
     [107] = "6358", -- Oily Blackmouth
     [108] = "21071", -- Sagefish
-    [109] = "6359", -- Firefin Snapper
+    [109] = "6522", -- Firefin Snapper
     [110] = "13422", -- Stonescale Eel
     [112] = "Treasure",
     [114] = "Treasure",
@@ -2981,7 +2989,6 @@ DATA.mapToZoneID = {
     [1416] = "36", -- Alterac Mountains
     [1417] = "45", -- Arathi Highlands
     [1418] = "3", -- Badlands
-    [1419] = "4", -- Blasted Lands
     [1420] = "85", -- Tirisfal Glades
     [1421] = "130", -- Silverpine Forest
     [1422] = "28", -- Western Plaguelands
@@ -3160,6 +3167,8 @@ DATA.validFish = {}
 for k in pairs(DATA.fish) do table.insert(DATA.validFish, k) end
 DATA.validZones = {}
 for k in pairs(DATA.zones) do table.insert(DATA.validZones, k) end
+DATA.validPools = {}
+for k in pairs(DATA.pools) do table.insert(DATA.validPools, k) end
   
 function DATA:SplitGold(sourceCopperValue)
     local gold = math.floor(sourceCopperValue / 10000)
@@ -3230,7 +3239,7 @@ end
 
 function DATA:GetSortedFishByCatchLevel()
     local sortedFish = {}
-    for i = 0, #DATA.validFish do
+    for i = 1, #DATA.validFish do
         table.insert(sortedFish, DATA.validFish[i])
     end
     table.sort(sortedFish, function(a, b)
@@ -3242,29 +3251,18 @@ function DATA:GetSortedFishByCatchLevel()
     return sortedFish
 end
 
-DATA.textColours = {
-    ['green'] = "|cFF66FF00",
-    ['red'] = "|cFFFF0000",
-    ['white'] = "|cFFFFFFFF",
-    ['yellow'] = "|cFFFFFF00",
-    ['grey'] = "|cFF888888",
-    ['dark'] = "|cFF121212",
-    ['gold'] = "|cFFF7C602"
-}
-
-function DATA:SkillLevelColor(lvl)
-    if DATA.playerSkill.hasFishing then
-        local pLvl = DATA.playerSkill.modLevel
-        if lvl <= pLvl then
-            return DATA.textColours.green
-        elseif lvl > pLvl+75 then
-            return DATA.textColours.red
-        else
-            return DATA.textColours.yellow
-        end
-    else
-        return DATA.textColours.red
+function DATA:GetSortedPoolsByCatchLevel()
+    local sortedPools = {}
+    for i = 1, #DATA.validPools do
+        table.insert(sortedPools, DATA.validPools[i])
     end
+    table.sort(sortedPools, function(a, b)
+        if DATA.fish[a].avoidGetawayLevel == DATA.fish[b].avoidGetawayLevel then
+            return DATA.fish[a].minimumFishingLevel < DATA.fish[b].minimumFishingLevel
+        end
+        return DATA.fish[a].avoidGetawayLevel < DATA.fish[b].avoidGetawayLevel
+    end)
+    return sortedPools
 end
 
 function DATA:CatchRateColor(rate)

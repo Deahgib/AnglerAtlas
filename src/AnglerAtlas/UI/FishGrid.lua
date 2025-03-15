@@ -41,8 +41,22 @@ local function CreateItemRow(itemIds, uiParent, itemSize, itemPadding)
 
         -- Fish data for this item
         local fishData = DATA.fish[itemID]
+        local poolData = DATA.pools[itemID]
         itemFrame.itemID = itemID
         itemFrame.fishData = fishData
+
+        if poolData ~= nil then
+            itemFrame.poolIndicator = CreateFrame("FRAME", "angler-item-pool-indicator-"..itemID, itemFrame)
+            itemFrame.poolIndicator:SetSize(itemSize*0.5, itemSize*0.5)
+            itemFrame.poolIndicator:SetPoint("TOPRIGHT", itemFrame, "TOPRIGHT", 0, 0)
+            itemFrame.poolIndicator.texture = itemFrame.poolIndicator:CreateTexture(nil,'ARTWORK')
+            itemFrame.poolIndicator.texture:SetTexture("Interface\\ICONS\\Spell_Frost_Stun")
+            itemFrame.poolIndicator.texture:SetTexCoord(0.0625, 0.9375, 0.0625, 0.9375)
+            itemFrame.poolIndicator.texture:SetAllPoints()
+            itemFrame.poolIndicator.texture:SetVertexColor(1.0, 1.0, 1.0, 0.9)
+            itemFrame.poolIndicator.texture:SetBlendMode("ADD")
+            itemFrame.poolIndicator:Show()
+        end
 
         itemFrame.status = CreateFrame("FRAME", "angler-item-status-"..itemID, itemFrame)
         itemFrame.status:SetSize(16, 16)
