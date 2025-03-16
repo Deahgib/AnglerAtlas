@@ -661,7 +661,7 @@ DATA.zones = {
         ["faction"] = "Contested",
         ["fishingLevel"] = 130,
         ["extras"] = {
-            "Fishing level increased to "..DATA.SkillLevelColor(205).."205"..DATA.textColours.dark.." in Jaguero Isle.",
+            "Fishing level increased to %fs205%fd in Jaguero Isle.",
         },
         ["fishingPools"] = {
             {
@@ -722,7 +722,7 @@ DATA.zones = {
         ["faction"] = "Contested",
         ["fishingLevel"] = 205,
         ["extras"] = {
-            "Fishing level increased to "..DATA.SkillLevelColor(330).."330"..DATA.textColours.dark.." around Bay of Storms, Hetaera's Clutch and Scalebeard's Cave.",
+            "Fishing level increased to %fs330%fd around Bay of Storms, Hetaera's Clutch and Scalebeard's Cave.",
         },
         ["fishingPools"] = {
             {
@@ -841,7 +841,7 @@ DATA.zones = {
         ["faction"] = "Contested",
         ["fishingLevel"] = 205,
         ["extras"] = {
-            "Fishing level increased to "..DATA.SkillLevelColor(330).."330"..DATA.textColours.dark.." around Jademir Lake.",
+            "Fishing level increased to %fs330%fd around Jademir Lake.",
         },
         ["fishingPools"] = {
             {
@@ -3177,6 +3177,15 @@ function DATA:SplitGold(sourceCopperValue)
     return gold, silver, copper
 end
 
+function DATA:IsInList(list, value)
+    for i = 1, #list do
+        if list[i] == value then
+            return true
+        end
+    end
+    return false
+end
+
 function DATA:GetSortedZonesForFish(fishId)
     local sortedZones = {}
     for i = 1, #DATA.fish[fishId].fishedIn do
@@ -3189,6 +3198,40 @@ function DATA:GetSortedZonesForFish(fishId)
         local aPerct = a.fishStats[fishId].catchChance
         local bPerct = b.fishStats[fishId].catchChance
         return aPerct > bPerct
+    end)
+    return sortedZones
+end
+
+function DATA:GetCountForZoneTable(table, fishId)
+    if table == nil then
+        print("table is nil")
+        return 0
+    end
+    
+    for i = 1, #table do
+        if table[i].id == fishId then
+            return table[i].count
+        end
+    end
+
+    return 0
+end
+
+function DATA:GetSortedZonesForPool(poolId)
+    local sortedZones = {}
+    if DATA.pools[poolId] == nil then
+        return sortedZones
+    end
+    for i = 1, #DATA.pools[poolId].zones do
+        local zoneId = DATA.pools[poolId].zones[i]
+        if DATA.zones[zoneId] ~= nil then
+            local zoneData = DATA.zones[zoneId]
+            zoneData.tmpCount = DATA:GetCountForZoneTable(DATA.zones[zoneId].fishingPools, poolId)
+            table.insert(sortedZones, zoneData)
+        end
+    end
+    table.sort(sortedZones, function(a, b)
+        return a.tmpCount > b.tmpCount
     end)
     return sortedZones
 end

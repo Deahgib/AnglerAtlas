@@ -96,12 +96,31 @@ function ZoneInfo:Update()
     end
 
     local sortedFish = {}
-    for k, v in pairs(zoneData.fishStats) do
-        table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+    if STATE.mode == "openwater" then
+        for k, v in pairs(zoneData.fishStats) do
+            table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+        end
+        table.sort(sortedFish, function(a, b)
+            return a.catchChance > b.catchChance
+        end)
+    elseif STATE.mode == "pools" then
+        if zoneData.fishingPools == nil then
+            for k, v in pairs(zoneData.fishStats) do
+                table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+            end
+            table.sort(sortedFish, function(a, b)
+                return a.catchChance > b.catchChance
+            end)
+        else
+            for k, v in pairs(zoneData.fishingPools) do
+                table.insert(sortedFish, {id = v.id, count = v.count})
+            end
+            table.sort(sortedFish, function(a, b)
+                return a.count > b.count
+            end)
+        end
     end
-    table.sort(sortedFish, function(a, b)
-        return a.catchChance > b.catchChance
-    end)
+    
 
     local zoneFishData = {}
     for i = 1, #sortedFish do
@@ -153,10 +172,14 @@ function ZoneInfo:Update()
     zoneInfoFrame.fishingLevelMin:SetText(DATA.textColours.dark.."Min fishing level "..DATA:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel))
     zoneInfoFrame.fishingLevelMax:SetText(DATA.textColours.dark.."Max fishing level "..DATA:SkillLevelColor(zoneMaxFishingLevel)..tostring(zoneMaxFishingLevel)..DATA.textColours.dark.." (required to catch all fish in this zone)")
 
-    local notes = ""
+    local notes = DATA.textColours.dark
     if zoneData.extras ~= nil then
         for i = 1, #zoneData.extras do
-            notes = notes..zoneData.extras[i].."\n"
+            local extract = string.match(zoneData.extras[i], "%%fs%d+")
+            local skillVal = tonumber(string.match(extract, "%d+"))
+            local extra = string.gsub(zoneData.extras[i], "%%fs", DATA:SkillLevelColor(skillVal))
+            extra = string.gsub(extra, "%%fd", DATA.textColours.dark)
+            notes = notes..extra.."\n"
         end
     end
     zoneInfoFrame.notes:SetText(DATA.textColours.dark..notes)

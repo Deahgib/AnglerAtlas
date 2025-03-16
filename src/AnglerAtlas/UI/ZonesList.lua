@@ -116,23 +116,6 @@ function ZonesList:HideSelected()
     selectedZoneHighlight:Hide()
 end
 
-local IsInList = function(list, value)
-    for i = 1, #list do
-        if list[i] == value then
-            return true
-        end
-    end
-    return false
-end
-
-local GetCountForZoneTable = function(table, fishId)
-    for i = 1, #table do
-        if table[i].id == fishId then
-            return table[i].count
-        end
-    end
-end
-
 function ZonesList:Update()
     if zones == nil then
         error("ZonesList not created")
@@ -151,7 +134,21 @@ function ZonesList:Update()
     -- local fishId = STATE.selectedFish
     -- local fishInfo = DATA.fish[fishId]
     -- local fishStats = DATA.zones[STATE.selectedZone].fishStats[fishId]
-    local sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+    local sortedZones = nil
+    if STATE.mode == "openwater" then
+        sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+    elseif STATE.mode == "pools" then
+        sortedZones = DATA:GetSortedZonesForPool(STATE.selectedFish)
+        if #sortedZones == 0 then
+            sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+        end
+    else
+        error("Unknown mode: "..STATE.mode)
+    end
+
+    
+    
+
     for i = 1, #zoneButtons do
         local zoneButton = zoneButtons[i]
         if zoneButton == nil then
@@ -164,7 +161,14 @@ function ZonesList:Update()
             zoneButton:Show()
 
             local zoneNameText = zoneData.name
-            local zoneCatchRateText = DATA:CatchRateColor(zoneData.fishStats[STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[STATE.selectedFish].catchChance*100).."%"
+            local catchChance = 0
+            local zoneCatchRateText = DATA:CatchRateColor(catchChance)..tostring(catchChance*100).."%"
+            if zoneData.fishStats[STATE.selectedFish] == nil then
+                zoneCatchRateText = ""
+            else
+                catchChance = zoneData.fishStats[STATE.selectedFish].catchChance
+                zoneCatchRateText = DATA:CatchRateColor(catchChance)..tostring(catchChance*100).."%"
+            end
             local zoneFishingLevelText = DATA:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel)
 
             if zoneData.faction == "Contested" then
@@ -182,13 +186,13 @@ function ZonesList:Update()
             local poolData = DATA.pools[STATE.selectedFish]
             local isPoolZoneForSelected = false
             if poolData ~= nil then
-                if IsInList(poolData.zones, tostring(zoneData.id)) then
+                if DATA:IsInList(poolData.zones, tostring(zoneData.id)) then
                     isPoolZoneForSelected = true
                 end
             end
             if isPoolZoneForSelected then
                 zoneButton.poolIndicator:Show()
-                local poolCount = GetCountForZoneTable(DATA.zones[tostring(zoneData.id)].fishingPools, STATE.selectedFish)
+                local poolCount = DATA:GetCountForZoneTable(DATA.zones[tostring(zoneData.id)].fishingPools, STATE.selectedFish)
                 zoneButton.poolCount:SetText(DATA.textColours.white..poolCount)
             else
                 zoneButton.poolIndicator:Hide()
