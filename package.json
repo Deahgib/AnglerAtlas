@@ -1,6 +1,6 @@
 {
   "name": "angleratlas",
-  "version": "0.1.5",
+  "version": "0.1.5-fixedMissingMapIDs",
   "classicInterfaceVersion": "11506",
   "description": "",
   "main": "none",
