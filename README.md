@@ -4,17 +4,17 @@
 _Only available for Classic Vanilla._
 
 **Angler Atlas**  is a lookup tool for fishers to find the best locations for fishing using a clean bizz-like UI.
-
-The Data is grabbed from wowhead. ( Thank you WowHead! )
+You can look for best open water fishing rates **OR** number of pools available
 
 This includes additional information as well such as:
 
 -   Per Fish zone info
--   Per zone fish loot tables
--   Per Zone catch rates
+-   Per zone fish catch rates
+-   Per zone pool counts
 -   Recipes the fish are used in
 -   Fishing equipment
 -   Fish catch requirements (Time of day/year)
+-   Map info: Fish available for zone and catch rates.
 -   [Auctionator] Tracked raw and cooked fish auction prices
   
 This tool aims to help keep you in the game instead of on a wow database website without giving you so much information that you have nothing to discover for yourself.  
@@ -24,6 +24,13 @@ Auction prices are available with the Auctionator addon also installed.
 >Note:  
 _The information available for vanilla fishing is not complete enough to provide accurate catch rates as the data is only an overall average rate and does not take into account other factors such as time of year, time of day and the fisher's skill level. Catch rates can also change throughout the day. All of which are important variables to determine how to catch those rare fish.
 Where relevant AnglerAtlas will display these requirements but the data should only be used as a good guideline._  
+
+Data sources:
+-   https://www.wowhead.com/classic
+-   https://www.wowhead.com/classic/guide/best-fishing-pools-farming-locations-classic-wow
+-   https://www.warcrafttavern.com/wow-classic/guides/fishing-1-300/
+-   https://vanilla-wow-archive.fandom.com/wiki/Fishing
+-   http://www.annomuseum.de/webseiten/www.capsu.org/wow/zone_base_fishing_skill.html
 
 ## Installation
 
