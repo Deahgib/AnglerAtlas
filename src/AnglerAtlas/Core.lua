@@ -32,7 +32,6 @@ EventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 local function On_AddonLoaded()
     LoadSettings()
     UI:Build()
-    UI:SelectFish(nil)
 end
 
 local function On_PlayerLogout()

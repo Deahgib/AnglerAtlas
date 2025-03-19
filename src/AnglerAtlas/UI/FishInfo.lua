@@ -5,6 +5,8 @@ local STATE = AnglerAtlas.MM:GetModule("STATE")
 local DATA = AnglerAtlas.MM:GetModule("DATA")
 local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
+local FishInfoBuffs = AnglerAtlas.MM:GetModule("FishInfoBuffs")
+
 local info = nil
 
 function FishInfo:Create(uiParent)
@@ -49,7 +51,7 @@ function FishInfo:Create(uiParent)
     info.goldAuctionPrice:Hide()
 
     info.buffFish = CreateFrame("FRAME", "angler-fish-info-buff", info)
-    info.buffFish:SetSize(30, 30)
+    info.buffFish:SetSize(28, 28)
     info.buffFish:SetPoint("TOPRIGHT", info, "TOPRIGHT", -8, -8)
     info.buffFish.texture = info.buffFish:CreateTexture(nil,'ARTWORK')
     info.buffFish.texture:SetTexture("Interface\\Icons\\Spell_Misc_Food")
@@ -66,7 +68,7 @@ function FishInfo:Create(uiParent)
     info.buffFish:Hide()
 
     info.alchemicFish = CreateFrame("FRAME", "angler-fish-info-alchemic", info)
-    info.alchemicFish:SetSize(30, 30)
+    info.alchemicFish:SetSize(28, 28)
     info.alchemicFish:SetPoint("TOPRIGHT", info.buffFish, "BOTTOMRIGHT", 0, -4)
     info.alchemicFish.texture = info.alchemicFish:CreateTexture(nil,'ARTWORK')
     info.alchemicFish.texture:SetTexture("Interface\\Icons\\INV_Potion_93")
@@ -81,6 +83,28 @@ function FishInfo:Create(uiParent)
         GameTooltip:Hide()
     end)
     info.alchemicFish:Hide()
+
+    info.poolsFish = CreateFrame("FRAME", "angler-fish-info-pools", info)
+    info.poolsFish:SetSize(28, 28)
+    info.poolsFish:SetPoint("TOPRIGHT", info.buffFish, "TOPLEFT", -4, 0)
+    info.poolsFish.texture = info.poolsFish:CreateTexture(nil,'ARTWORK')
+    info.poolsFish.texture:SetTexture("Interface\\ICONS\\Spell_Frost_Stun")
+    info.poolsFish.texture:SetAllPoints()
+    info.poolsFish.texture:SetVertexColor(1.0, 1.0, 1.0, 1.0)
+    info.poolsFish:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(info.poolsFish, "ANCHOR_BOTTOMRIGHT")
+        GameTooltip:AddLine("Pools available for this fish")
+        GameTooltip:Show()
+    end)
+    info.poolsFish:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+    info.poolsFish:Hide()
+
+    FishInfoBuffs:Create(info)
+    FishInfoBuffs:RegisterBuff(info.poolsFish)
+    FishInfoBuffs:RegisterBuff(info.buffFish)
+    FishInfoBuffs:RegisterBuff(info.alchemicFish)
 
     info.levelText = info:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     info.levelText:SetPoint("TOPLEFT", info.icon, "BOTTOMLEFT", 0, -10)
@@ -154,19 +178,26 @@ function FishInfo:Update()
     end
 
     local isBuffFish = fishData.isBuffFish ~= nil and fishData.isBuffFish == true
-    local isAlchemicFish = fishData.isAlchemicFish ~= nil and fishData.isAlchemicFish == true
-
     if isBuffFish then
         info.buffFish:Show()
     else
         info.buffFish:Hide()
     end
 
+    local isAlchemicFish = fishData.isAlchemicFish ~= nil and fishData.isAlchemicFish == true
     if isAlchemicFish then
         info.alchemicFish:Show()
     else
         info.alchemicFish:Hide()
     end
+
+    if DATA.pools[STATE.selectedFish] ~= nil then
+        info.poolsFish:Show()
+    else
+        info.poolsFish:Hide()
+    end
+
+    FishInfoBuffs:Update()
 
     
     info.levelText:SetText("Min fishing level "..DATA:SkillLevelColor(fishData.minimumFishingLevel)..tostring(fishData.minimumFishingLevel)..DATA.textColours.white..", optimal fishing level "..DATA:SkillLevelColor(fishData.avoidGetawayLevel)..tostring(fishData.avoidGetawayLevel))

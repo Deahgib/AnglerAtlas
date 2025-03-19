@@ -3,7 +3,7 @@
 ## Notes: A fishing A-Z
 ## Version: 0.1.5-fixedMissingMapIDs
 ## Author: deahgib
-## SavedVariables: AnglerAtlasSettings
+## SavedVariables: AnglerAtlasSettings, AnglerAtlasData
 ## OptionalDeps: Auctionator
 ## DefaultState: enabled
 
@@ -26,6 +26,7 @@ UI/ShowButtons.lua
 UI/FrameDecorations.lua
 UI/GoldDisplay.lua
 UI/FishGrid.lua
+UI/FishInfoBuffs.lua
 UI/FishInfo.lua
 UI/ZonesList.lua
 UI/ZoneInfoFishRates.lua

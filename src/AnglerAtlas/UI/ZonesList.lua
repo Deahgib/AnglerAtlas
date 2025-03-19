@@ -58,7 +58,7 @@ function ZonesList:Create(uiParent)
 
         zoneButton.name = zoneButton:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         zoneButton.name:SetPoint("LEFT", zoneButton.factionTexture, "RIGHT", 10, 0)
-        zoneButton.name:SetFont("Fonts\\FRIZQT__.ttf", 10)
+        zoneButton.name:SetFont("Fonts\\FRIZQT__.ttf", 11)
         -- zoneButton.name:SetText(zone.name)
 
         -- zoneButton.zoneLevel = zoneButton:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -68,8 +68,22 @@ function ZonesList:Create(uiParent)
 
         zoneButton.zoneCatchRate = zoneButton:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         zoneButton.zoneCatchRate:SetPoint("RIGHT", zoneButton, "RIGHT", -10, 0)
-        zoneButton.zoneCatchRate:SetFont("Fonts\\FRIZQT__.ttf", 10)
+        zoneButton.zoneCatchRate:SetFont("Fonts\\FRIZQT__.ttf", 11)
         --zoneButton.zoneCatchRate:SetText(DATA.textColours.white..tostring("50%"))
+
+        zoneButton.poolIndicator = zoneButton:CreateTexture(nil,'ARTWORK')
+        zoneButton.poolIndicator:SetTexture("Interface\\ICONS\\Spell_Frost_Stun")
+        zoneButton.poolIndicator:SetTexCoord(0.0625, 0.9375, 0.0625, 0.9375)
+        zoneButton.poolIndicator:SetVertexColor(1.0, 1.0, 1.0, 1.0)
+        zoneButton.poolIndicator:SetBlendMode("ADD")
+        zoneButton.poolIndicator:SetSize(22, 22)
+        zoneButton.poolIndicator:SetPoint("RIGHT", zoneButton, "RIGHT", -40, 0)
+        zoneButton.poolIndicator:Show()
+
+        zoneButton.poolCount = zoneButton:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        zoneButton.poolCount:SetPoint("RIGHT", zoneButton, "RIGHT", -61, 0)
+        zoneButton.poolCount:SetFont("Fonts\\FRIZQT__.ttf", 11)
+        zoneButton.poolCount:SetText("")
 
         function zoneButton:SetZone(zoneId, name, catchRate, level)
             self.zoneId = zoneId
@@ -91,6 +105,7 @@ function ZonesList:Create(uiParent)
     selectedZoneHighlight.texture:SetTexture("Interface\\Buttons\\UI-Common-MouseHilight")
     selectedZoneHighlight.texture:SetSize(380, 34)
     selectedZoneHighlight.texture:SetPoint("CENTER", 0, 0)
+    selectedZoneHighlight.texture:SetVertexColor(1.0, 1.0, 1.0, 0.8)
     selectedZoneHighlight.texture:SetBlendMode("ADD")
     selectedZoneHighlight:Hide()
     
@@ -119,7 +134,21 @@ function ZonesList:Update()
     -- local fishId = STATE.selectedFish
     -- local fishInfo = DATA.fish[fishId]
     -- local fishStats = DATA.zones[STATE.selectedZone].fishStats[fishId]
-    local sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+    local sortedZones = nil
+    if STATE.mode == "openwater" then
+        sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+    elseif STATE.mode == "pools" then
+        sortedZones = DATA:GetSortedZonesForPool(STATE.selectedFish)
+        if #sortedZones == 0 then
+            sortedZones = DATA:GetSortedZonesForFish(STATE.selectedFish)
+        end
+    else
+        error("Unknown mode: "..STATE.mode)
+    end
+
+    
+    
+
     for i = 1, #zoneButtons do
         local zoneButton = zoneButtons[i]
         if zoneButton == nil then
@@ -132,7 +161,14 @@ function ZonesList:Update()
             zoneButton:Show()
 
             local zoneNameText = zoneData.name
-            local zoneCatchRateText = DATA:CatchRateColor(zoneData.fishStats[STATE.selectedFish].catchChance)..tostring(zoneData.fishStats[STATE.selectedFish].catchChance*100).."%"
+            local catchChance = 0
+            local zoneCatchRateText = DATA:CatchRateColor(catchChance)..tostring(catchChance*100).."%"
+            if zoneData.fishStats[STATE.selectedFish] == nil then
+                zoneCatchRateText = ""
+            else
+                catchChance = zoneData.fishStats[STATE.selectedFish].catchChance
+                zoneCatchRateText = DATA:CatchRateColor(catchChance)..tostring(catchChance*100).."%"
+            end
             local zoneFishingLevelText = DATA:SkillLevelColor(zoneData.fishingLevel)..tostring(zoneData.fishingLevel)
 
             if zoneData.faction == "Contested" then
@@ -147,7 +183,22 @@ function ZonesList:Update()
                 zoneButton.factionTexture:Show()
             end
         
-            
+            local poolData = DATA.pools[STATE.selectedFish]
+            local isPoolZoneForSelected = false
+            if poolData ~= nil then
+                if DATA:IsInList(poolData.zones, tostring(zoneData.id)) then
+                    isPoolZoneForSelected = true
+                end
+            end
+            if isPoolZoneForSelected then
+                zoneButton.poolIndicator:Show()
+                local poolCount = DATA:GetCountForZoneTable(DATA.zones[tostring(zoneData.id)].fishingPools, STATE.selectedFish)
+                zoneButton.poolCount:SetText(DATA.textColours.white..poolCount)
+            else
+                zoneButton.poolIndicator:Hide()
+                zoneButton.poolCount:SetText("")
+            end
+
             zoneButton:SetZone(tostring(zoneData.id), zoneNameText, zoneCatchRateText, "")
             if tostring(zoneData.id) == STATE.selectedZone then
                 selectedZoneHighlight:SetPoint("CENTER", zoneButton,"CENTER", 0, 0)

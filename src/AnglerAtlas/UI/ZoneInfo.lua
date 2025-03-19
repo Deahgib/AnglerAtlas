@@ -96,12 +96,31 @@ function ZoneInfo:Update()
     end
 
     local sortedFish = {}
-    for k, v in pairs(zoneData.fishStats) do
-        table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+    if STATE.mode == "openwater" then
+        for k, v in pairs(zoneData.fishStats) do
+            table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+        end
+        table.sort(sortedFish, function(a, b)
+            return a.catchChance > b.catchChance
+        end)
+    elseif STATE.mode == "pools" then
+        if zoneData.fishingPools == nil then
+            for k, v in pairs(zoneData.fishStats) do
+                table.insert(sortedFish, {id = k, catchChance = v.catchChance})
+            end
+            table.sort(sortedFish, function(a, b)
+                return a.catchChance > b.catchChance
+            end)
+        else
+            for k, v in pairs(zoneData.fishingPools) do
+                table.insert(sortedFish, {id = v.id, count = v.count})
+            end
+            table.sort(sortedFish, function(a, b)
+                return a.count > b.count
+            end)
+        end
     end
-    table.sort(sortedFish, function(a, b)
-        return a.catchChance > b.catchChance
-    end)
+    
 
     local zoneFishData = {}
     for i = 1, #sortedFish do

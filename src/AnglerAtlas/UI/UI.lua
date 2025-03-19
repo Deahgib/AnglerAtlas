@@ -131,6 +131,12 @@ function UI:SelectZone(zoneId, incSF)
         STATE.selectedZone = zoneId
     end
 
+    if STATE.mode == "pools" then
+        if DATA.zones[STATE.selectedZone].fishingPools == nil then
+            STATE.mode = "openwater"
+        end
+    end
+
     incSF = incSF or false
     if not incSF then
         PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
@@ -161,6 +167,12 @@ function UI:SelectFish(fishId, skipZoneSelect)
     -- PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN, "Master");
     STATE.selectedFish = fishId
     STATE.selectedFishData = DATA.fish[STATE.selectedFish]
+
+    if STATE.mode == "pools" then
+        if DATA.pools[fishId] == nil then
+            STATE.mode = "openwater"
+        end
+    end
 
     local zones = DATA:GetSortedZonesForFish(STATE.selectedFish)
     
@@ -195,6 +207,17 @@ function UI:SelectFish(fishId, skipZoneSelect)
     end
 end
 
+function UI:SelectMode(mode)
+    if mode ~= "openwater" and mode ~= "pools" then
+        return
+    end
+    if STATE.mode == mode then
+        return
+    end
+    STATE.mode = mode
+    UI:Reload()
+end
+
 function UI:Reload()
     if not isInitialised then
         return
@@ -210,6 +233,7 @@ function UI:Reload()
     FishInfo:Update()
     ZonesList:Update()
     ZoneInfo:Update()
+    MapFishRates:Update()
 
 end
 

@@ -5,10 +5,13 @@ local STATE = AnglerAtlas.MM:GetModule("STATE")
 local UI = AnglerAtlas.MM:GetModule("UI")
 
 local selectedFishHighlight = nil
+local fishRates = nil
+
+local uiIcons = {}
 
 function ZoneInfoFishRates:Create(uiParent)
     
-    local fishRates = CreateFrame("FRAME", "angler-zone-info-fish", uiParent, "BackdropTemplate") 
+    fishRates = CreateFrame("FRAME", "angler-zone-info-fish", uiParent, "BackdropTemplate") 
     fishRates:SetBackdrop({
         bgFile = "Interface\\Garrison\\GarrisonUIBackground2", 
         edgeFile = "Interface\\FriendsFrame\\UI-Toast-Border", 
@@ -26,11 +29,66 @@ function ZoneInfoFishRates:Create(uiParent)
     fishRates:SetSize(50, 408)
     fishRates:SetPoint("TOPLEFT", uiParent, "TOPRIGHT", 0, 0)
 
-    fishRates.icons = {}
-    for i = 1, 10 do
+    local modeButtonSize = 25
+    local flareModSize = 2.0
+    fishRates.flare = CreateFrame("FRAME", "angler-zone-info-fish-mode-button-flare", fishRates)
+    fishRates.flare:SetSize(modeButtonSize*flareModSize, modeButtonSize*flareModSize)
+    fishRates.flare:SetPoint("TOPRIGHT", fishRates, "TOPRIGHT", -5, -3)
+
+    fishRates.flare.texture = fishRates.flare:CreateTexture(nil,'ARTWORK')
+    fishRates.flare.texture:SetTexture("Interface\\GuildBankFrame\\UI-GuildBankFrame-Tab")
+    fishRates.flare.texture:SetRotation(-math.pi*0.5)
+    fishRates.flare.texture:SetVertexColor(0.6, 0.6, 0.6, 1.0)
+    fishRates.flare.texture:SetAllPoints()
+
+    fishRates.modeButton = CreateFrame("BUTTON", "angler-zone-info-fish-mode-button", fishRates.flare, "ItemButtonTemplate")
+    fishRates.modeButton:SetSize(modeButtonSize, modeButtonSize)
+    fishRates.modeButton:SetPoint("TOP", fishRates, "TOP", 0, -6)
+
+    fishRates.modeButton.normalTexture = _G[fishRates.modeButton:GetName().."NormalTexture"]
+    fishRates.modeButton.normalTexture:SetSize(modeButtonSize*1.662, modeButtonSize*1.662)
+
+    fishRates.modeButton.texture = fishRates.modeButton:CreateTexture(nil,'ARTWORK')
+    fishRates.modeButton.texture:SetTexture("Interface\\ICONS\\Spell_Frost_Stun")
+    fishRates.modeButton.texture:SetAllPoints()
+
+    local function SetToolTipText()
+        GameTooltip:SetOwner(fishRates.modeButton, "ANCHOR_LEFT", 0, 0)
+        if STATE.mode == "openwater" then
+            GameTooltip:SetText("Switch to Pools")
+        else
+            GameTooltip:SetText("Switch to Open Water")
+        end
+        GameTooltip:Show()
+    end
+
+    fishRates.modeButton:SetScript("OnClick", function()
+        if STATE.mode == "openwater" then
+            if STATE.selectedZone == nil then return end
+            local zoneData = DATA.zones[STATE.selectedZone]
+            if zoneData.fishingPools ~= nil then
+                UI:SelectMode("pools")
+                GameTooltip:Hide()
+                SetToolTipText()
+            end
+        else
+            UI:SelectMode("openwater")
+            GameTooltip:Hide()
+            SetToolTipText()
+        end
+    end)
+    fishRates.modeButton:SetScript("OnEnter", function()
+        SetToolTipText()
+    end)
+    fishRates.modeButton:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+
+    uiIcons = {}
+    for i = 1, 9 do
         local fishIcon = CreateFrame("BUTTON", "angler-zone-info-fish-icon-"..i, fishRates, "ItemButtonTemplate")
         fishIcon:SetSize(37, 37)
-        fishIcon:SetPoint("TOP", fishRates, "TOP", 0, -6 - (i - 1) * 39)
+        fishIcon:SetPoint("TOP", fishRates, "TOP", 0, -46 - (i - 1) * 39)
         fishIcon:SetScript("OnClick", function()
             UI:SelectFish(fishIcon.data.id, true)
         end)
@@ -48,15 +106,6 @@ function ZoneInfoFishRates:Create(uiParent)
 
         fishIcon.data = {}
         fishIcon.data.name = "Fish name"
-        fishIcon.data.rate = 0.5
-
-        function fishIcon:SetFish(fishId, rate)
-            fishIcon.data.name = DATA.fish[fishId].name
-            fishIcon.data.rate = rate
-            fishIcon.data.id = fishId
-            fishIcon.texture:SetTexture(GetItemIcon(fishId))
-            fishIcon.rate:SetText(DATA:CatchRateColor(rate)..tostring(rate*100).."%")
-        end
 
         -- Tooltip
         fishIcon:SetScript("OnEnter", function()
@@ -69,8 +118,8 @@ function ZoneInfoFishRates:Create(uiParent)
             GameTooltip:Hide()
         end)
 
-        -- fishRates.icons[i] = fishIcon
-        table.insert(fishRates.icons, fishIcon)
+        -- uiIcons[i] = fishIcon
+        table.insert(uiIcons, fishIcon)
     end
     
     selectedFishHighlight = CreateFrame("FRAME", "angler-zone-selected-icon", fishRates)
@@ -98,11 +147,33 @@ function ZoneInfoFishRates:Create(uiParent)
     return fishRates
 end
 
-function ZoneInfoFishRates:Update(sortedFish, zoneinfo)
-    zoneinfo.fishRates:Show()
+function ZoneInfoFishRates:Update(sortedFish)
+    fishRates:Show()
     selectedFishHighlight:Hide()
-    for i = 1, #zoneinfo.fishRates.icons do
-        local fishIcon = zoneinfo.fishRates.icons[i]
+    if STATE.mode == "openwater" then
+        fishRates.modeButton.texture:SetTexture("Interface\\ICONS\\Spell_Frost_Stun")
+    elseif STATE.mode == "pools" then
+        fishRates.modeButton.texture:SetTexture("Interface\\Icons\\Spell_Arcane_TeleportStormWind")
+    end
+
+    if STATE.selectedZone == nil then
+        return
+    end
+    local zoneData = DATA.zones[STATE.selectedZone]
+    if zoneData == nil then
+        return
+    end
+
+    if zoneData.fishingPools == nil then
+        fishRates.modeButton:Disable()
+        fishRates.modeButton.texture:SetVertexColor(0.4, 0.4, 0.4, 1.0)
+    else
+        fishRates.modeButton:Enable()
+        fishRates.modeButton.texture:SetVertexColor(1.0, 1.0, 1.0, 1.0)
+    end
+
+    for i = 1, #uiIcons do
+        local fishIcon = uiIcons[i]
         if fishIcon == nil then
             break
         end
@@ -111,7 +182,14 @@ function ZoneInfoFishRates:Update(sortedFish, zoneinfo)
             fishIcon:Hide()
         else
             fishIcon:Show()
-            fishIcon:SetFish(fishData.id, fishData.catchChance)
+            fishIcon.texture:SetTexture(GetItemIcon(fishData.id))
+            fishIcon.data.id = fishData.id
+
+            if STATE.mode == "openwater" then
+                fishIcon.rate:SetText(DATA:CatchRateColor(fishData.catchChance)..tostring(fishData.catchChance*100).."%")
+            elseif STATE.mode == "pools" then
+                fishIcon.rate:SetText(DATA.textColours.white..fishData.count)
+            end
 
             if STATE.selectedFish == fishData.id then
                 selectedFishHighlight:SetPoint("CENTER", fishIcon, "CENTER", 0, 0)
