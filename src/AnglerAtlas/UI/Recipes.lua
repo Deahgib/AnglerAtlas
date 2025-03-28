@@ -1,4 +1,4 @@
-local Resipes = {}
+local Recipes = {}
 
 local UI = AnglerAtlas.MM:GetModule("UI")
 local STATE = AnglerAtlas.MM:GetModule("STATE")
@@ -8,7 +8,7 @@ local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
 local recipes = nil
 
-function Resipes:Create(uiParent, anchor)
+function Recipes:Create(uiParent, anchor)
     recipes = CreateFrame("FRAME", "angler-recipes-info", uiParent, "BackdropTemplate")
     recipes:Raise()
     recipes:SetBackdrop(UI.ANGLER_BACKDROP)
@@ -190,7 +190,7 @@ function Resipes:Create(uiParent, anchor)
 end
 
 
-function Resipes:Update()
+function Recipes:Update()
     if recipes == nil then
         error("Recipes frame not created")
         return
@@ -222,4 +222,4 @@ function Resipes:Update()
     end
 end
 
-AnglerAtlas.MM:RegisterModule("Resipes", Resipes)
+AnglerAtlas.MM:RegisterModule("Recipes", Recipes)

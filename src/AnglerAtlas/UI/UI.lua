@@ -16,7 +16,7 @@ local ZonesList = AnglerAtlas.MM:GetModule("ZonesList")
 
 local ZoneInfo = AnglerAtlas.MM:GetModule("ZoneInfo")
 
-local Resipes = AnglerAtlas.MM:GetModule("Resipes")
+local Recipes = AnglerAtlas.MM:GetModule("Recipes")
 
 local RightSideInformationPanel = AnglerAtlas.MM:GetModule("RightSideInformationPanel")
 
@@ -187,7 +187,7 @@ function UI:SelectFish(fishId, skipZoneSelect)
 
     FishGrid:Update()
     FishInfo:Update()
-    Resipes:Update()
+    Recipes:Update()
     MapFishRates:Update()
     if not skipZoneSelect then
         UI:SelectZone(tostring(zones[1].id), true)
@@ -242,7 +242,7 @@ function UI:ReloadAll()
         return
     end
     UI:Reload()
-    Resipes:Update()
+    Recipes:Update()
     SetPortraitTexture(UI.fd.characterPortrait.texture, "player");
     UI.playerName:SetText(DATA.playerInfo.name)
 end
