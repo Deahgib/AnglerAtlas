@@ -4,7 +4,7 @@ local UI = AnglerAtlas.MM:GetModule("UI")
 
 local TabManager = AnglerAtlas.MM:GetModule("TabManager")
 local ZoneInfo = AnglerAtlas.MM:GetModule("ZoneInfo")
-local Resipes = AnglerAtlas.MM:GetModule("Resipes")
+local Recipes = AnglerAtlas.MM:GetModule("Recipes")
 local Equipment = AnglerAtlas.MM:GetModule("Equipment")
 
 function RightSideInformationPanel:Create(uiParent)
@@ -20,7 +20,7 @@ function RightSideInformationPanel:Create(uiParent)
     local zoneInfo = ZoneInfo:Create(container)
 
     -- Make the recipes panel
-    local resipesUI = Resipes:Create(container, zoneInfo)
+    local RecipesUI = Recipes:Create(container, zoneInfo)
 
     -- Make the equipment panel
     local equipmentUI = Equipment:Create(container, zoneInfo)
@@ -37,7 +37,7 @@ function RightSideInformationPanel:Create(uiParent)
 
     -- Register the tabs
     tabManager:Register('default', defaultToggleButton, zoneInfo)
-    tabManager:Register('recipes', recipesToggleButton, resipesUI)
+    tabManager:Register('recipes', recipesToggleButton, RecipesUI)
     tabManager:Register('equipment', equipmentToggleButton, equipmentUI)
 
     tabManager:Select('default')
