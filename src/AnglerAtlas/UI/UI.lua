@@ -24,22 +24,6 @@ local SettingsAA = AnglerAtlas.MM:GetModule("SettingsAA")
 
 local MapFishRates = AnglerAtlas.MM:GetModule("MapFishRates")
 
-
--------------------------------------------------
--- Battle plans:
--------------------------------------------------
-
--- Get the UI local to be assigned to the UI in the Core.lua
-
--- Pull out the UI Initialization code from the Data.lua and place it in this file
-
--- Create a function UI:Build() that will build the UI this file will 
--- be using AnglerAtlasLoader to grab all the UI components
-
--- Create a function UI:ToggleUI() that will toggle the UI
-
--- Create a function UI:Refresh() that will update the fish
-
 local isInitialised = false
 
 function UI:Build()

@@ -39,347 +39,6 @@ function DATA:SkillLevelColor(lvl)
 end
 
 
--- DATA TO BE ASSIMILATED INTO DATA.zones
--- ["zones"] = {
---     ["40"] = {
---         ["id"] = "40",
---         ["name"] = "Westfall",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 38,
---             },
---         },
---     },
---     ["47"] = {
---         ["id"] = "47",
---         ["name"] = "Hinterlands",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 34,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 23,
---             },
---             {
---                 ["id"] = "13422",
---                 ["count"] = 2,
---             },
---         },
---     },
---     ["45"] = {
---         ["id"] = "45",
---         ["name"] = "Arathi Highlands",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 6,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 7,
---             },
---         },
---     },
---     ["357"] = {
---         ["id"] = "357",
---         ["name"] = "Feralas",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 49,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 63,
---             },
---             {
---                 ["id"] = "13422",
---                 ["count"] = 25,
---             },
---         },
---     },
---     ["493"] = {
---         ["id"] = "493",
---         ["name"] = "Moonglade",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 63,
---             },
---         },
---     },
---     ["38"] = {
---         ["id"] = "38",
---         ["name"] = "Loch Modan",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "21071",
---                 ["count"] = 17,
---             },
---         },
---     },
---     ["406"] = {
---         ["id"] = "406",
---         ["name"] = "Stonetalon Mountains",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6359",
---                 ["count"] = 17,
---             },
---             {
---                 ["id"] = "21071",
---                 ["count"] = 11,
---             },
---         },
---     },
---     ["11"] = {
---         ["id"] = "11",
---         ["name"] = "Wetlands",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 50,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 69,
---             },
---         },
---     },
---     ["130"] = {
---         ["id"] = "130",
---         ["name"] = "Silverpine Forest",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 24,
---             },
---             {
---                 ["id"] = "21071",
---                 ["count"] = 9,
---             },
---         },
---     },
---     ["490"] = {
---         ["id"] = "490",
---         ["name"] = "Un'Goro Crater",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 13,
---             },
---         },
---     },
---     ["139"] = {
---         ["id"] = "139",
---         ["name"] = "Eastern Plaguelands",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 1,
---             },
---         },
---     },
---     ["331"] = {
---         ["id"] = "331",
---         ["name"] = "Ashenvale",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 4,
---             },
---             {
---                 ["id"] = "21071",
---                 ["count"] = 28,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 6,
---             },
---         },
---     },
---     ["28"] = {
---         ["id"] = "28",
---         ["name"] = "Western Plaguelands",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 118,
---             },
---         },
---     },
---     ["440"] = {
---         ["id"] = "440",
---         ["name"] = "Tanaris",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "13422",
---                 ["count"] = 19,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 78,
---             },
---             {
---                 ["id"] = "6358",
---                 ["count"] = 14,
---             },
---         },
---     },
---     ["267"] = {
---         ["id"] = "267",
---         ["name"] = "Hillsbrad Foothills",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 36,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 33,
---             },
---             {
---                 ["id"] = "21071",
---                 ["count"] = 38,
---             },
---         },
---     },
---     ["405"] = {
---         ["id"] = "405",
---         ["name"] = "Desolace",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 15,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 35,
---             },
---         },
---     },
---     ["8"] = {
---         ["id"] = "8",
---         ["name"] = "Swamp of Sorrows",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 1,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 10,
---             },
---         },
---     },
---     ["15"] = {
---         ["id"] = "15",
---         ["name"] = "Dustwallow Marsh",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 33,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 88,
---             },
---         },
---     },
---     ["16"] = {
---         ["id"] = "16",
---         ["name"] = "Azshara",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "13422",
---                 ["count"] = 126,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 117,
---             },
---             {
---                 ["id"] = "6358",
---                 ["count"] = 28,
---             },
---         },
---     },
---     ["17"] = {
---         ["id"] = "17",
---         ["name"] = "The Barrens",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6359",
---                 ["count"] = 32,
---             },
---             {
---                 ["id"] = "6358",
---                 ["count"] = 28,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 5,
---             },
---         },
---     },
---     ["36"] = {
---         ["id"] = "36",
---         ["name"] = "Alterac Mountains",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "21153",
---                 ["count"] = 22,
---             },
---         },
---     },
---     ["361"] = {
---         ["id"] = "361",
---         ["name"] = "Felwood",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 17,
---             },
---         },
---     },
---     ["33"] = {
---         ["id"] = "33",
---         ["name"] = "Stranglethorn Vale",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "13422",
---                 ["count"] = 34,
---             },
---             {
---                 ["id"] = "6359",
---                 ["count"] = 139,
---             },
---             {
---                 ["id"] = "6358",
---                 ["count"] = 48,
---             },
---             {
---                 ["id"] = "21153",
---                 ["count"] = 47,
---             },
---         },
---     },
---     ["10"] = {
---         ["id"] = "10",
---         ["name"] = "Duskwood",
---         ["fishingPools"] = {
---             {
---                 ["id"] = "6358",
---                 ["count"] = 60,
---             },
---         },
---     },
--- }
--- End of DATA TO BE ASSIMILATED INTO DATA.zones
-
 DATA.zones = {
     ["11"] = {
         ["id"] = 11,
@@ -1821,6 +1480,30 @@ DATA.zones = {
                 ["catchChance"] = 0.02,
             },
         }
+    },
+    ["2597"] = {
+        ["id"] = 2597,
+        ["name"] = "Alterac Valley",
+        ["faction"] = "Contested",
+        ["fishingLevel"] = 205,
+        ["fishingPools"] = {},
+        ["fishStats"] = {}
+    },
+    ["3277"] = {
+        ["id"] = 3277,
+        ["name"] = "Warsong Gulch",
+        ["faction"] = "Contested",
+        ["fishingLevel"] = 1,
+        ["fishingPools"] = {},
+        ["fishStats"] = {}
+    },
+    ["3358"] = {
+        ["id"] = 3358,
+        ["name"] = "Arathi Basin",
+        ["faction"] = "Contested",
+        ["fishingLevel"] = 55,
+        ["fishingPools"] = {},
+        ["fishStats"] = {}
     }
 
 }
@@ -3029,6 +2712,9 @@ DATA.mapToZoneID = {
     [1456] = "1638", -- Thunder Bluff
     [1457] = "1657", -- Darnassus
     [1458] = "1497", -- Undercity
+    [1459] = "2597", -- Alterac Valley
+    [1460] = "3277", -- Warsong Gulch
+    [1461] = "3358", -- Arathi Basin
 }
 
 local function wrapText(text, maxLength)

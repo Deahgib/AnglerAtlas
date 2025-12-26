@@ -59,6 +59,60 @@ function ZoneInfo:Create(uiParent)
 
     zoneInfoFrame.fishRates = ZoneInfoFishRates:Create(zoneInfoFrame)
 
+    local zoneInfoShowOnMapButtonSize = 32
+    -- Add "Show on map" item button next to the zone name
+    zoneInfoFrame.showOnMapButton = CreateFrame("BUTTON", "angler-zone-info-showonmap-button", zoneInfoFrame, "ItemButtonTemplate")
+    zoneInfoFrame.showOnMapButton:SetSize(zoneInfoShowOnMapButtonSize, zoneInfoShowOnMapButtonSize)
+    zoneInfoFrame.showOnMapButton:SetPoint("BOTTOMLEFT", zoneInfoFrame, "BOTTOMLEFT", 28, 28)
+    zoneInfoFrame.showOnMapButton:Hide() -- Hide by default, show only when a valid zone is selected
+
+
+    _G[zoneInfoFrame.showOnMapButton:GetName().."NormalTexture"]:SetSize(zoneInfoShowOnMapButtonSize*1.662, zoneInfoShowOnMapButtonSize*1.662)
+
+    -- Set the map icon texture
+    zoneInfoFrame.showOnMapButton.texture = zoneInfoFrame.showOnMapButton:CreateTexture(nil, 'ARTWORK')
+    zoneInfoFrame.showOnMapButton.texture:SetTexture("Interface\\ICONS\\INV_Misc_Map02")
+    zoneInfoFrame.showOnMapButton.texture:SetAllPoints()
+
+    -- Remove the default icon if present
+    local normalTexture = _G[zoneInfoFrame.showOnMapButton:GetName().."NormalTexture"]
+    if normalTexture then
+        normalTexture:SetTexture(nil)
+    end
+
+    zoneInfoFrame.showOnMapButton:SetScript("OnClick", function()
+        if STATE.selectedZone then
+            local zoneId = tonumber(STATE.selectedZone)
+            local mapID = nil
+            for k, v in pairs(DATA.mapToZoneID) do
+                if tostring(v) == tostring(zoneId) then
+                    mapID = k
+                    break
+                end
+            end
+            if mapID then
+                if not WorldMapFrame:IsShown() then
+                    ToggleWorldMap()
+                end
+                C_Timer.After(0.05, function()
+                    if WorldMapFrame.SetMapID then
+                        WorldMapFrame:SetMapID(mapID)
+                    end
+                end)
+            else
+                print("AnglerAtlas: No mapID found for zone " .. tostring(zoneId))
+            end
+        end
+    end)
+    zoneInfoFrame.showOnMapButton:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:AddLine("Show this zone on the world map")
+        GameTooltip:Show()
+    end)
+    zoneInfoFrame.showOnMapButton:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+
     return zoneInfoFrame
 end
 
@@ -73,6 +127,7 @@ function ZoneInfo:Update()
         zoneInfoFrame.name:SetText(DATA.textColours.dark.."No zone selected")
         zoneInfoFrame.coastalInland:SetText("")
         zoneInfoFrame.fishRates:Hide()
+        zoneInfoFrame.showOnMapButton:Hide()
         return
     end
     local zoneData = DATA.zones[STATE.selectedZone]
@@ -80,10 +135,12 @@ function ZoneInfo:Update()
         zoneInfoFrame.name:SetText(DATA.textColours.dark.."No zone selected")
         zoneInfoFrame.coastalInland:SetText("")
         zoneInfoFrame.fishRates:Hide()
+        zoneInfoFrame.showOnMapButton:Hide()
         return
     end
     zoneInfoFrame.name:SetText(DATA.textColours.dark..zoneData.name)
-    
+    zoneInfoFrame.showOnMapButton:Show()
+
     if zoneData.faction == "Contested" then
         zoneInfoFrame.factionTexture:Hide()
     else
