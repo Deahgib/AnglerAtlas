@@ -6,43 +6,43 @@ local DATA = AnglerAtlas.MM:GetModule("DATA")
 
 local GoldDisplay = AnglerAtlas.MM:GetModule("GoldDisplay")
 
-local recipes = nil
+local recipesFrame = nil
 
 function Recipes:Create(uiParent, anchor)
-    recipes = CreateFrame("FRAME", "angler-recipes-info", uiParent, "BackdropTemplate")
-    recipes:Raise()
-    recipes:SetBackdrop(UI.ANGLER_BACKDROP)
-    recipes:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
-    recipes:SetSize(355, 408)
-    recipes:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0)
-    recipes:Hide()
+    recipesFrame = CreateFrame("FRAME", "angler-recipes-info", uiParent, "BackdropTemplate")
+    recipesFrame:Raise()
+    recipesFrame:SetBackdrop(UI.ANGLER_BACKDROP)
+    recipesFrame:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
+    recipesFrame:SetSize(355, 408)
+    recipesFrame:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0)
+    recipesFrame:Hide()
     -- On show hide
-    recipes:SetScript("OnShow", function()
+    recipesFrame:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
     end)
-    recipes:SetScript("OnHide", function()
+    recipesFrame:SetScript("OnHide", function()
         PlaySound(SOUNDKIT.IG_ABILITY_PAGE_TURN, "Master");
     end)
 
 
 
-    recipes.text = recipes:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    recipes.text:SetPoint("TOPLEFT", recipes, "TOPLEFT", 28, -25)
-    recipes.text:SetFont("Fonts\\FRIZQT__.ttf", 14)
-    recipes.text:SetText(DATA.textColours.dark.."Recipes for Raw Longjaw Mud Snapper")
+    recipesFrame.text = recipesFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    recipesFrame.text:SetPoint("TOPLEFT", recipesFrame, "TOPLEFT", 28, -25)
+    recipesFrame.text:SetFont("Fonts\\FRIZQT__.ttf", 14)
+    recipesFrame.text:SetText(DATA.textColours.dark.."Recipes for Raw Longjaw Mud Snapper")
 
-    recipes.scrollFrame = CreateFrame("ScrollFrame", nil, recipes, "UIPanelScrollFrameTemplate")
-    recipes.scrollFrame:SetPoint("TOPLEFT", 25, -43)
-    recipes.scrollFrame:SetPoint("BOTTOMRIGHT", -45, 25)
+    recipesFrame.scrollFrame = CreateFrame("ScrollFrame", nil, recipesFrame, "UIPanelScrollFrameTemplate")
+    recipesFrame.scrollFrame:SetPoint("TOPLEFT", 25, -43)
+    recipesFrame.scrollFrame:SetPoint("BOTTOMRIGHT", -45, 25)
 
-    recipes.scrollFrame.scrollChild = CreateFrame("Frame")
-    recipes.scrollFrame:SetScrollChild(recipes.scrollFrame.scrollChild)
-    recipes.scrollFrame.scrollChild:SetWidth(280)
-    recipes.scrollFrame.scrollChild:SetHeight(510)  -- 100 is the height of each panel (5 panels) + padding
+    recipesFrame.scrollFrame.scrollChild = CreateFrame("Frame")
+    recipesFrame.scrollFrame:SetScrollChild(recipesFrame.scrollFrame.scrollChild)
+    recipesFrame.scrollFrame.scrollChild:SetWidth(280)
+    recipesFrame.scrollFrame.scrollChild:SetHeight(510)  -- 100 is the height of each panel (5 panels) + padding
 
-    recipes.recipeItems = {}
+    recipesFrame.recipeItems = {}
     for i = 1, 5 do
-        local recipeItem = CreateFrame("FRAME", "angler-recipe-item-"..i, recipes.scrollFrame.scrollChild, "BackdropTemplate")
+        local recipeItem = CreateFrame("FRAME", "angler-recipe-item-"..i, recipesFrame.scrollFrame.scrollChild, "BackdropTemplate")
         local bd = CopyTable(BACKDROP_TEXT_PANEL_0_16)
         bd.bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background"
         bd.insets = { left = 3, right = 3, top = 3, bottom = 3 }
@@ -50,7 +50,7 @@ function Recipes:Create(uiParent, anchor)
         recipeItem:SetBackdrop(bd)
         recipeItem:SetBackdropColor(1.0, 1.0, 1.0, 1.0);
         recipeItem:SetSize(270, 100)
-        recipeItem:SetPoint("TOP", recipes.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 102)
+        recipeItem:SetPoint("TOP", recipesFrame.scrollFrame.scrollChild, "TOP", 0, -10 - (i - 1) * 102)
 
         recipeItem.data = {}
         recipeItem.data.recipeName = "Blackmouth Oil"
@@ -183,22 +183,22 @@ function Recipes:Create(uiParent, anchor)
             end
         end
 
-        recipes.recipeItems[i] = recipeItem
+        recipesFrame.recipeItems[i] = recipeItem
     end
 
-    return recipes
+    return recipesFrame
 end
 
 
 function Recipes:Update()
-    if recipes == nil then
+    if recipesFrame == nil then
         error("Recipes frame not created")
         return
     end
     if STATE.selectedFish == nil then
-        recipes.text:SetText(DATA.textColours.dark.."No fish selected")
-        for i = 1, #recipes.recipeItems do
-            local recipeFrame = recipes.recipeItems[i]
+        recipesFrame.text:SetText(DATA.textColours.dark.."No fish selected")
+        for i = 1, #recipesFrame.recipeItems do
+            local recipeFrame = recipesFrame.recipeItems[i]
             if recipeFrame == nil then
                 break
             end
@@ -206,9 +206,9 @@ function Recipes:Update()
         end
         return
     end
-    recipes.text:SetText(DATA.textColours.dark.."Recipes for "..STATE.selectedFishData.name)
-    for i = 1, #recipes.recipeItems do
-        local recipeFrame = recipes.recipeItems[i]
+    recipesFrame.text:SetText(DATA.textColours.dark.."Recipes for "..STATE.selectedFishData.name)
+    for i = 1, #recipesFrame.recipeItems do
+        local recipeFrame = recipesFrame.recipeItems[i]
         if recipeFrame == nil then
             break
         end
